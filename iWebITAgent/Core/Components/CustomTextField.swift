@@ -1,0 +1,34 @@
+//
+//  TextField.swift
+//  MODA
+//
+//  Created by Admin on 06/03/2023.
+//
+
+import SwiftUI
+
+struct CustomTextField: View {
+    let placeholder: String
+    @Binding var text: String
+    @State var isFocused: Bool = false
+    
+    var body: some View {
+        TextField(placeholder, text: $text, onEditingChanged: { isEditing in
+            isFocused = isEditing
+        }, onCommit: {
+            DispatchQueue.main.async {
+                NSApp.keyWindow?.makeFirstResponder(nil)
+            }
+        })
+        .font(.title3)
+        .textFieldStyle(.plain)
+        .foregroundColor(.theme.onBackground)
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.theme.darkGray)
+                .brightness(isFocused ? 0.04 : 0)
+        )
+        .padding(.bottom)
+    }
+}

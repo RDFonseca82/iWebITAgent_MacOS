@@ -7,19 +7,83 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		84AE462F2A84FA3600783806 /* iWebITAgent_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgent_macOSApp.swift */; };
-		84AE46312A84FA3600783806 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE46302A84FA3600783806 /* ContentView.swift */; };
+		8444A6812A8AA26400F3C1D6 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6802A8AA26400F3C1D6 /* MenuBarButton.swift */; };
+		8444A68B2A8CFA9800F3C1D6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A68A2A8CFA9800F3C1D6 /* AppInfo.swift */; };
+		8444A6922A8D496400F3C1D6 /* HomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6912A8D496400F3C1D6 /* HomeWindow.swift */; };
+		8444A6942A8D498E00F3C1D6 /* LoginWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6932A8D498E00F3C1D6 /* LoginWindow.swift */; };
+		8444A6962A8D49F400F3C1D6 /* SupportDetailWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6952A8D49F400F3C1D6 /* SupportDetailWindow.swift */; };
+		8444A6982A8D4A1600F3C1D6 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6972A8D4A1600F3C1D6 /* SettingsWindow.swift */; };
+		8444A69D2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A69C2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift */; };
+		8444A6A12A8D508B00F3C1D6 /* iWebITCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6A02A8D508B00F3C1D6 /* iWebITCommands.swift */; };
+		8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6A22A8E702800F3C1D6 /* WindowAccessor.swift */; };
+		8444A6A52A8E731C00F3C1D6 /* ViewSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6A42A8E731C00F3C1D6 /* ViewSizeModifier.swift */; };
+		8444A6A72A8E762900F3C1D6 /* WindowPositioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6A62A8E762900F3C1D6 /* WindowPositioning.swift */; };
+		8444A6A92A8E7BBC00F3C1D6 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6A82A8E7BBC00F3C1D6 /* LoginViewModel.swift */; };
+		8444A6AB2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6AA2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift */; };
+		8444A6AD2A8E822400F3C1D6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6AC2A8E822400F3C1D6 /* Color.swift */; };
+		8444A6AF2A8E831500F3C1D6 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6AE2A8E831500F3C1D6 /* CustomTextField.swift */; };
+		8444A6B12A8F916E00F3C1D6 /* CursorViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6B02A8F916E00F3C1D6 /* CursorViewModifier.swift */; };
+		8444A6C32A90007200F3C1D6 /* AppInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C22A90007200F3C1D6 /* AppInfoManager.swift */; };
+		8444A6C42A90007200F3C1D6 /* AppInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C22A90007200F3C1D6 /* AppInfoManager.swift */; };
+		8444A6C62A90025300F3C1D6 /* FilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C52A90025300F3C1D6 /* FilesManager.swift */; };
+		8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C52A90025300F3C1D6 /* FilesManager.swift */; };
+		8444A6C82A90026700F3C1D6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A68A2A8CFA9800F3C1D6 /* AppInfo.swift */; };
+		8444A6C92A910A4B00F3C1D6 /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
+		8444A6CC2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */; };
+		8444A6CD2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */; };
+		8444A6CF2A9113D500F3C1D6 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */; };
+		8444A6D02A9113D500F3C1D6 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */; };
+		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
-		84AE46362A84FA3700783806 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46352A84FA3700783806 /* Preview Assets.xcassets */; };
+		84BE9B3F2A893A9300822D2C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* Constants.swift */; };
+		84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
+		84BE9B4A2A893A9E00822D2C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B452A893A9E00822D2C /* Logger.swift */; };
+		84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
+		84BE9B4E2A893AC200822D2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B4D2A893AC200822D2C /* AppDelegate.swift */; };
+		84BE9B5B2A8A9F8A00822D2C /* iWebITServiceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B5A2A8A9F8A00822D2C /* iWebITServiceApp.swift */; };
+		84BE9B5D2A8A9F8A00822D2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B5C2A8A9F8A00822D2C /* ContentView.swift */; };
+		84BE9B5F2A8A9F8B00822D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */; };
+		84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		84AE462B2A84FA3600783806 /* iWebITAgent-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iWebITAgent-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		84AE462E2A84FA3600783806 /* iWebITAgent_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgent_macOSApp.swift; sourceTree = "<group>"; };
-		84AE46302A84FA3600783806 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8444A6802A8AA26400F3C1D6 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
+		8444A6842A8AA2F700F3C1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8444A6852A8BC6A600F3C1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8444A68A2A8CFA9800F3C1D6 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		8444A6912A8D496400F3C1D6 /* HomeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWindow.swift; sourceTree = "<group>"; };
+		8444A6932A8D498E00F3C1D6 /* LoginWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWindow.swift; sourceTree = "<group>"; };
+		8444A6952A8D49F400F3C1D6 /* SupportDetailWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDetailWindow.swift; sourceTree = "<group>"; };
+		8444A6972A8D4A1600F3C1D6 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
+		8444A69C2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWindowSizeModifier.swift; sourceTree = "<group>"; };
+		8444A6A02A8D508B00F3C1D6 /* iWebITCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITCommands.swift; sourceTree = "<group>"; };
+		8444A6A22A8E702800F3C1D6 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
+		8444A6A42A8E731C00F3C1D6 /* ViewSizeModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSizeModifier.swift; sourceTree = "<group>"; };
+		8444A6A62A8E762900F3C1D6 /* WindowPositioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowPositioning.swift; sourceTree = "<group>"; };
+		8444A6A82A8E7BBC00F3C1D6 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		8444A6AA2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButtonViewModifier.swift; sourceTree = "<group>"; };
+		8444A6AC2A8E822400F3C1D6 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		8444A6AE2A8E831500F3C1D6 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		8444A6B02A8F916E00F3C1D6 /* CursorViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorViewModifier.swift; sourceTree = "<group>"; };
+		8444A6C22A90007200F3C1D6 /* AppInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoManager.swift; sourceTree = "<group>"; };
+		8444A6C52A90025300F3C1D6 /* FilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesManager.swift; sourceTree = "<group>"; };
+		8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		84AE462B2A84FA3600783806 /* iWebITAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		84AE46352A84FA3700783806 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		84AE46372A84FA3700783806 /* iWebITAgent_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITAgent_macOS.entitlements; sourceTree = "<group>"; };
+		84AE46372A84FA3700783806 /* iWebITAgent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITAgent.entitlements; sourceTree = "<group>"; };
+		84BE9B3C2A893A9300822D2C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		84BE9B3E2A893A9300822D2C /* iWebITError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iWebITError.swift; sourceTree = "<group>"; };
+		84BE9B452A893A9E00822D2C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		84BE9B462A893A9E00822D2C /* NetworkingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
+		84BE9B4D2A893AC200822D2C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		84BE9B582A8A9F8A00822D2C /* iWebITService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITService.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		84BE9B5A2A8A9F8A00822D2C /* iWebITServiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITServiceApp.swift; sourceTree = "<group>"; };
+		84BE9B5C2A8A9F8A00822D2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		84BE9B632A8A9F8B00822D2C /* iWebITService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITService.entitlements; sourceTree = "<group>"; };
+		84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,51 +94,241 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84BE9B552A8A9F8A00822D2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8444A67F2A8AA24400F3C1D6 /* MenuBarButton */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6802A8AA26400F3C1D6 /* MenuBarButton.swift */,
+			);
+			path = MenuBarButton;
+			sourceTree = "<group>";
+		};
+		8444A6862A8CF8E700F3C1D6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6C12A90000500F3C1D6 /* Repos */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8444A6892A8CFA7B00F3C1D6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8444A68C2A8D04B700F3C1D6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6992A8D4F6100F3C1D6 /* Utils */,
+				8444A69A2A8D4F6700F3C1D6 /* Components */,
+				8444A69B2A8D4F6E00F3C1D6 /* Modifiers */,
+				8444A68D2A8D48E200F3C1D6 /* Login */,
+				8444A68E2A8D48ED00F3C1D6 /* Home */,
+				8444A68F2A8D48FA00F3C1D6 /* SupportDetail */,
+				8444A6902A8D490600F3C1D6 /* Settings */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		8444A68D2A8D48E200F3C1D6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6932A8D498E00F3C1D6 /* LoginWindow.swift */,
+				8444A6A82A8E7BBC00F3C1D6 /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		8444A68E2A8D48ED00F3C1D6 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6912A8D496400F3C1D6 /* HomeWindow.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		8444A68F2A8D48FA00F3C1D6 /* SupportDetail */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6952A8D49F400F3C1D6 /* SupportDetailWindow.swift */,
+			);
+			path = SupportDetail;
+			sourceTree = "<group>";
+		};
+		8444A6902A8D490600F3C1D6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6972A8D4A1600F3C1D6 /* SettingsWindow.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		8444A6992A8D4F6100F3C1D6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6AC2A8E822400F3C1D6 /* Color.swift */,
+				8444A6A22A8E702800F3C1D6 /* WindowAccessor.swift */,
+				8444A6A62A8E762900F3C1D6 /* WindowPositioning.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		8444A69A2A8D4F6700F3C1D6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6AE2A8E831500F3C1D6 /* CustomTextField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		8444A69B2A8D4F6E00F3C1D6 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				8444A69C2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift */,
+				8444A6A42A8E731C00F3C1D6 /* ViewSizeModifier.swift */,
+				8444A6A02A8D508B00F3C1D6 /* iWebITCommands.swift */,
+				8444A6AA2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift */,
+				8444A6B02A8F916E00F3C1D6 /* CursorViewModifier.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		8444A6B72A8FA51E00F3C1D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8444A6BE2A8FFFB900F3C1D6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6C02A8FFFCC00F3C1D6 /* Common */,
+				8444A6BF2A8FFFC500F3C1D6 /* Models */,
+				8444A6CA2A9112EC00F3C1D6 /* Extensions */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		8444A6BF2A8FFFC500F3C1D6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8444A68A2A8CFA9800F3C1D6 /* AppInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8444A6C02A8FFFCC00F3C1D6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6C22A90007200F3C1D6 /* AppInfoManager.swift */,
+				8444A6C52A90025300F3C1D6 /* FilesManager.swift */,
+				84BE9B3E2A893A9300822D2C /* iWebITError.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8444A6C12A90000500F3C1D6 /* Repos */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repos;
+			sourceTree = "<group>";
+		};
+		8444A6CA2A9112EC00F3C1D6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */,
+				8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		84AE46222A84FA3600783806 = {
 			isa = PBXGroup;
 			children = (
-				84AE462D2A84FA3600783806 /* iWebITAgent-macOS */,
+				8444A6BE2A8FFFB900F3C1D6 /* Shared */,
+				84AE462D2A84FA3600783806 /* iWebITAgent */,
+				84BE9B592A8A9F8A00822D2C /* iWebITService */,
 				84AE462C2A84FA3600783806 /* Products */,
+				8444A6B72A8FA51E00F3C1D6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		84AE462C2A84FA3600783806 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				84AE462B2A84FA3600783806 /* iWebITAgent-macOS.app */,
+				84AE462B2A84FA3600783806 /* iWebITAgent.app */,
+				84BE9B582A8A9F8A00822D2C /* iWebITService.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		84AE462D2A84FA3600783806 /* iWebITAgent-macOS */ = {
+		84AE462D2A84FA3600783806 /* iWebITAgent */ = {
 			isa = PBXGroup;
 			children = (
-				84AE462E2A84FA3600783806 /* iWebITAgent_macOSApp.swift */,
-				84AE46302A84FA3600783806 /* ContentView.swift */,
+				84BE9B3B2A893A9300822D2C /* Common */,
+				84BE9B422A893A9E00822D2C /* Utilities */,
+				8444A6862A8CF8E700F3C1D6 /* Services */,
+				8444A6892A8CFA7B00F3C1D6 /* Models */,
+				8444A68C2A8D04B700F3C1D6 /* Core */,
+				84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */,
+				84BE9B4D2A893AC200822D2C /* AppDelegate.swift */,
 				84AE46322A84FA3700783806 /* Assets.xcassets */,
-				84AE46372A84FA3700783806 /* iWebITAgent_macOS.entitlements */,
-				84AE46342A84FA3700783806 /* Preview Content */,
+				84AE46372A84FA3700783806 /* iWebITAgent.entitlements */,
+				8444A6852A8BC6A600F3C1D6 /* Info.plist */,
 			);
-			path = "iWebITAgent-macOS";
+			path = iWebITAgent;
 			sourceTree = "<group>";
 		};
-		84AE46342A84FA3700783806 /* Preview Content */ = {
+		84BE9B3B2A893A9300822D2C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				84AE46352A84FA3700783806 /* Preview Assets.xcassets */,
+				84BE9B3C2A893A9300822D2C /* Constants.swift */,
 			);
-			path = "Preview Content";
+			path = Common;
+			sourceTree = "<group>";
+		};
+		84BE9B422A893A9E00822D2C /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				84BE9B452A893A9E00822D2C /* Logger.swift */,
+				84BE9B462A893A9E00822D2C /* NetworkingManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		84BE9B592A8A9F8A00822D2C /* iWebITService */ = {
+			isa = PBXGroup;
+			children = (
+				8444A6842A8AA2F700F3C1D6 /* Info.plist */,
+				8444A67F2A8AA24400F3C1D6 /* MenuBarButton */,
+				84BE9B5A2A8A9F8A00822D2C /* iWebITServiceApp.swift */,
+				84BE9B5C2A8A9F8A00822D2C /* ContentView.swift */,
+				84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */,
+				84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */,
+				84BE9B632A8A9F8B00822D2C /* iWebITService.entitlements */,
+			);
+			path = iWebITService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		84AE462A2A84FA3600783806 /* iWebITAgent-macOS */ = {
+		84AE462A2A84FA3600783806 /* iWebITAgent */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84AE463A2A84FA3700783806 /* Build configuration list for PBXNativeTarget "iWebITAgent-macOS" */;
+			buildConfigurationList = 84AE463A2A84FA3700783806 /* Build configuration list for PBXNativeTarget "iWebITAgent" */;
 			buildPhases = (
 				84AE46272A84FA3600783806 /* Sources */,
 				84AE46282A84FA3600783806 /* Frameworks */,
@@ -84,9 +338,28 @@
 			);
 			dependencies = (
 			);
-			name = "iWebITAgent-macOS";
+			name = iWebITAgent;
+			packageProductDependencies = (
+			);
 			productName = "iWebITAgent-macOS";
-			productReference = 84AE462B2A84FA3600783806 /* iWebITAgent-macOS.app */;
+			productReference = 84AE462B2A84FA3600783806 /* iWebITAgent.app */;
+			productType = "com.apple.product-type.application";
+		};
+		84BE9B572A8A9F8A00822D2C /* iWebITService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84BE9B642A8A9F8B00822D2C /* Build configuration list for PBXNativeTarget "iWebITService" */;
+			buildPhases = (
+				84BE9B542A8A9F8A00822D2C /* Sources */,
+				84BE9B552A8A9F8A00822D2C /* Frameworks */,
+				84BE9B562A8A9F8A00822D2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iWebITService;
+			productName = iWebITService;
+			productReference = 84BE9B582A8A9F8A00822D2C /* iWebITService.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,6 +375,9 @@
 					84AE462A2A84FA3600783806 = {
 						CreatedOnToolsVersion = 14.1;
 					};
+					84BE9B572A8A9F8A00822D2C = {
+						CreatedOnToolsVersion = 14.1;
+					};
 				};
 			};
 			buildConfigurationList = 84AE46262A84FA3600783806 /* Build configuration list for PBXProject "iWebITAgent-macOS" */;
@@ -113,11 +389,15 @@
 				Base,
 			);
 			mainGroup = 84AE46222A84FA3600783806;
+			packageReferences = (
+				8444A6B42A8FA44500F3C1D6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = 84AE462C2A84FA3600783806 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84AE462A2A84FA3600783806 /* iWebITAgent-macOS */,
+				84AE462A2A84FA3600783806 /* iWebITAgent */,
+				84BE9B572A8A9F8A00822D2C /* iWebITService */,
 			);
 		};
 /* End PBXProject section */
@@ -127,8 +407,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84AE46362A84FA3700783806 /* Preview Assets.xcassets in Resources */,
 				84AE46332A84FA3700783806 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84BE9B562A8A9F8A00822D2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84BE9B5F2A8A9F8B00822D2C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,8 +426,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84AE46312A84FA3600783806 /* ContentView.swift in Sources */,
-				84AE462F2A84FA3600783806 /* iWebITAgent_macOSApp.swift in Sources */,
+				8444A6962A8D49F400F3C1D6 /* SupportDetailWindow.swift in Sources */,
+				8444A6AF2A8E831500F3C1D6 /* CustomTextField.swift in Sources */,
+				8444A6A52A8E731C00F3C1D6 /* ViewSizeModifier.swift in Sources */,
+				8444A6B12A8F916E00F3C1D6 /* CursorViewModifier.swift in Sources */,
+				8444A6AD2A8E822400F3C1D6 /* Color.swift in Sources */,
+				84BE9B4E2A893AC200822D2C /* AppDelegate.swift in Sources */,
+				8444A6982A8D4A1600F3C1D6 /* SettingsWindow.swift in Sources */,
+				8444A6CF2A9113D500F3C1D6 /* StringExtension.swift in Sources */,
+				8444A69D2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift in Sources */,
+				8444A6AB2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift in Sources */,
+				8444A6C32A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
+				8444A6A12A8D508B00F3C1D6 /* iWebITCommands.swift in Sources */,
+				84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */,
+				84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */,
+				84BE9B3F2A893A9300822D2C /* Constants.swift in Sources */,
+				8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */,
+				8444A6CC2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
+				8444A6922A8D496400F3C1D6 /* HomeWindow.swift in Sources */,
+				8444A6942A8D498E00F3C1D6 /* LoginWindow.swift in Sources */,
+				8444A6C62A90025300F3C1D6 /* FilesManager.swift in Sources */,
+				84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */,
+				8444A6A72A8E762900F3C1D6 /* WindowPositioning.swift in Sources */,
+				84BE9B4A2A893A9E00822D2C /* Logger.swift in Sources */,
+				8444A6A92A8E7BBC00F3C1D6 /* LoginViewModel.swift in Sources */,
+				8444A68B2A8CFA9800F3C1D6 /* AppInfo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84BE9B542A8A9F8A00822D2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8444A6CD2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
+				8444A6C42A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
+				8444A6D02A9113D500F3C1D6 /* StringExtension.swift in Sources */,
+				8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */,
+				8444A6C92A910A4B00F3C1D6 /* iWebITError.swift in Sources */,
+				8444A6812A8AA26400F3C1D6 /* MenuBarButton.swift in Sources */,
+				84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */,
+				84BE9B5D2A8A9F8A00822D2C /* ContentView.swift in Sources */,
+				8444A6C82A90026700F3C1D6 /* AppInfo.swift in Sources */,
+				84BE9B5B2A8A9F8A00822D2C /* iWebITServiceApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,22 +592,25 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iWebITAgent-macOS/iWebITAgent_macOS.entitlements";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = iWebITAgent/iWebITAgent.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iWebITAgent-macOS/Preview Content\"";
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iWebITAgent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rdfonseca.iWebITAgent-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -292,22 +622,85 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iWebITAgent-macOS/iWebITAgent_macOS.entitlements";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = iWebITAgent/iWebITAgent.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iWebITAgent-macOS/Preview Content\"";
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iWebITAgent/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rdfonseca.iWebITAgent-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITAgent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		84BE9B652A8A9F8B00822D2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8VHDNRMJJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iWebITService/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		84BE9B662A8A9F8B00822D2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8VHDNRMJJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iWebITService/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -326,7 +719,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84AE463A2A84FA3700783806 /* Build configuration list for PBXNativeTarget "iWebITAgent-macOS" */ = {
+		84AE463A2A84FA3700783806 /* Build configuration list for PBXNativeTarget "iWebITAgent" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84AE463B2A84FA3700783806 /* Debug */,
@@ -335,7 +728,27 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		84BE9B642A8A9F8B00822D2C /* Build configuration list for PBXNativeTarget "iWebITService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84BE9B652A8A9F8B00822D2C /* Debug */,
+				84BE9B662A8A9F8B00822D2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8444A6B42A8FA44500F3C1D6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 84AE46232A84FA3600783806 /* Project object */;
 }
