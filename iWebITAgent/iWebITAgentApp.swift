@@ -12,6 +12,14 @@ struct iWebITAgent: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
+        WindowGroup("Ocorrências") {
+            HomeWindow()
+                .defaultWindowSize()
+                .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
+        }
+        .handlesExternalEvents(matching: ["support"])
+        .windowStyle(HiddenTitleBarWindowStyle())
+        
         WindowGroup("Login") {
             LoginWindow()
                 .frame(width: 650, height: 300)
@@ -20,14 +28,6 @@ struct iWebITAgent: App {
         .handlesExternalEvents(matching: ["login"])
         .windowStyle(HiddenTitleBarWindowStyle())
         .iwebitCommands()
-        
-        WindowGroup("Ocorrências") {
-            HomeWindow()
-                .defaultWindowSize()
-                .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
-        }
-        .handlesExternalEvents(matching: ["support"])
-        .windowStyle(HiddenTitleBarWindowStyle())
         
         WindowGroup {
             SupportDetailWindow()

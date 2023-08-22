@@ -45,7 +45,11 @@ class AppInfoManager {
     }
     
     private func createAppInfoFileIfNeeded() {
-        filesManager.createIfNeeded(filename: appInfoFileName, content: initialAppInfo)
+        do {
+            try filesManager.createFileIfNeeded(filename: appInfoFileName, content: initialAppInfo)
+        } catch {
+            print("ERRO1: \(error)")
+        }
     }
 }
 

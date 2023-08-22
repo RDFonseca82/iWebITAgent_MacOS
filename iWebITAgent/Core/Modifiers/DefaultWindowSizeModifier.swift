@@ -19,7 +19,7 @@ struct DefaultWindowSizeModifier: ViewModifier {
 
 
 extension View {
-    func defaultWindowSize(minWidth: CGFloat = 800, minHeight: CGFloat = 600) -> some View {
+    func defaultWindowSize(minWidth: CGFloat = 500, minHeight: CGFloat = 500) -> some View {
         modifier(DefaultWindowSizeModifier(minWidth: minWidth, minHeight: minHeight))
     }
 }

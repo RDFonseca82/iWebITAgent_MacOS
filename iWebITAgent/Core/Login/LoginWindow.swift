@@ -29,23 +29,25 @@ struct LoginWindow: View {
                     .padding(.bottom, 30)
                 
                 CustomTextField(placeholder: "IDSync", text: $loginVm.idSync)
+                    .padding(.bottom, 10)
                 
                 HStack {
                     Button {
                         openURL(Constants.iwebitSiteUrl)
                     } label: {
                         Text("Não tem o seu IdSync?")
+                            .hoverEffect()
                     }
                     .buttonStyle(.link)
-                    .cursor(.pointingHand)
                     
                     Spacer()
                     
                     Button {
-                        
+                        loginVm.login()
                     } label: {
                         Text("Entrar")
                             .defaultButtonView()
+                            .hoverEffect()
                     }
                     .buttonStyle(.plain)
 

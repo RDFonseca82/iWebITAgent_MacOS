@@ -25,10 +25,13 @@ struct CustomTextField: View {
         .foregroundColor(.theme.onBackground)
         .padding(10)
         .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.theme.darkGray)
+            Color.theme.darkGray
+                .cornerRadius(8)
                 .brightness(isFocused ? 0.04 : 0)
+                .shadow(
+                    color: Color.theme.onBackground.opacity(0.15),
+                    radius: 4
+                )
         )
-        .padding(.bottom)
     }
 }

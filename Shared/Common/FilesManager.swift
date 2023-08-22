@@ -17,12 +17,12 @@ class FilesManager {
     private init() {}
     
     func getApplicationSupportDirectory() -> URL? {
-        guard let appSupportDir = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        guard let appSupportDir = fileManager.urls(for: .applicationSupportDirectory, in: .localDomainMask).first else {
             return nil
         }
         let appDirectory = appSupportDir.appendingPathComponent(applicationFolderName)
-        if !fileManager.fileExists(atPath: appDirectory.path) {
-            try? fileManager.createDirectory(at: appDirectory, withIntermediateDirectories: true, attributes: nil)
+        if !fileManager.dirExists(atPath: appDirectory.path) {
+            try? fileManager.createDirectory(atPath: appDirectory.path, withIntermediateDirectories: true)
         }
         return appDirectory
     }
@@ -51,14 +51,20 @@ class FilesManager {
         return nil
     }
     
-    func createIfNeeded(filename: String, content: String) {
+    func createFileIfNeeded(filename: String, content: String) throws {
         if let appDirectory = getApplicationSupportDirectory() {
             let filePath = appDirectory.appendingPathComponent(filename).path
-            
             if !fileManager.fileExists(atPath: filePath) {
-                fileManager.createFile(atPath: filePath, contents: nil)
-                saveFile(filename: filename, content: content)
+                try content.write(toFile: filePath, atomically: false, encoding: .utf8)
             }
         }
+    }
+}
+
+extension FileManager {
+    func dirExists(atPath: String) -> Bool {
+        var isDirectory : ObjCBool = true
+        let exists = FileManager.default.fileExists(atPath: atPath, isDirectory: &isDirectory)
+        return exists && isDirectory.boolValue
     }
 }

@@ -10,14 +10,14 @@ import AppKit
 
 struct WindowAccessor: NSViewRepresentable {
     @Binding var window: NSWindow?
-    var windowTitle: String? = nil
+    var initialTitle: String? = nil
     var shouldCenter: Bool = false
     
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
         DispatchQueue.main.async {
             self.window = view.window
-            if let title = windowTitle {
+            if let title = initialTitle {
                 self.window?.title = title
             }
             if shouldCenter {

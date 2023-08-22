@@ -15,7 +15,6 @@ struct DefaultButtonViewModifier: ViewModifier {
             .padding(.horizontal)
             .background(Color.theme.accent)
             .cornerRadius(8)
-            .cursor(.pointingHand)
     }
 }
 
