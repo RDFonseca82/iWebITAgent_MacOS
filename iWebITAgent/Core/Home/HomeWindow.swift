@@ -30,5 +30,10 @@ struct HomeWindow: View {
         .ignoresSafeArea()
         .background(WindowAccessor(window: $window, initialTitle: "Ocorrências", shouldCenter: false))
         .environmentObject(homeVm)
+        .onAppear {
+            Task {
+                await homeVm.getSupports()
+            }
+        }
     }
 }

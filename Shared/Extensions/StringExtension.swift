@@ -13,4 +13,10 @@ extension String {
         guard let jsonData = self.data(using: .utf8) else { throw iWebITError.decodingError }
         return try JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
     }
+    func isBlank() -> Bool {
+        return self.trimmingCharacters(in: [" "]) == ""
+    }
+    func isNotBlank() -> Bool {
+        return !self.isBlank()
+    }
 }
