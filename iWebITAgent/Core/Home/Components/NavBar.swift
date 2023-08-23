@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NavBar: View {
     @Environment(\.openURL) var openURL
+    @Environment(\.colorScheme) var colorScheme
     
     @Binding var showingOcorrencias: Bool
     
@@ -20,13 +21,13 @@ struct NavBar: View {
                 .height(60)
             
             NavBarItem(
-                imageName: "clipboard",
+                imageName: showingOcorrencias ? "clipboard_white" : (colorScheme == .dark ? "clipboard_white" : "clipboard"),
                 tooltipText: "Ocorrências",
                 selected: showingOcorrencias
             )
             .onTapGesture { withAnimation { showingOcorrencias = true } }
             NavBarItem(
-                imageName: "support",
+                imageName: !showingOcorrencias ? "support_white" : (colorScheme == .dark ? "support_white" : "support"),
                 tooltipText: "Suporte",
                 selected: !showingOcorrencias
             )
