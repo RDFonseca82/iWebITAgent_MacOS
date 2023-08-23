@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SupportDetailWindow: View {
     var body: some View {
-        Text("Hello, Detail!")
+        LazyVStack {
+            
+        }
     }
 }

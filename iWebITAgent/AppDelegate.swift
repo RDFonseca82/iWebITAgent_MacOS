@@ -16,10 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         AppInfo.uniqueid = "bb01123842c6187babfe654137e712c02fba689741ba8fd4e78b5f1d8e94e8fe"
     }
     
-    func application(_ application: NSApplication, open urls: [URL]) {
-        print("HEYYE")
-    }
-    
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }

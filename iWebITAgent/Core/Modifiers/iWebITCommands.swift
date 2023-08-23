@@ -11,7 +11,7 @@ extension Scene {
     func iwebitCommands() -> some Scene {
         return self
             .commands {
-                CommandGroup(replacing: .pasteboard) { }
+//                CommandGroup(replacing: .pasteboard) { }
                 CommandGroup(replacing: .undoRedo) { }
                 CommandGroup(replacing: .newItem) { }
                 CommandGroup(replacing: .help) { }

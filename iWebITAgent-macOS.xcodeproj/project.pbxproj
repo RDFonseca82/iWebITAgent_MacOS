@@ -48,6 +48,9 @@
 		8444A70F2A94EFE400F3C1D6 /* SupportDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A70E2A94EFE400F3C1D6 /* SupportDTO.swift */; };
 		8444A7112A94F0AB00F3C1D6 /* iWebITRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7102A94F0AB00F3C1D6 /* iWebITRepository.swift */; };
 		8444A7132A94F1C500F3C1D6 /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7122A94F1C500F3C1D6 /* Support.swift */; };
+		8444A7192A9618A800F3C1D6 /* SendSupportDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7182A9618A800F3C1D6 /* SendSupportDataService.swift */; };
+		8444A71B2A9619BE00F3C1D6 /* HomeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A71A2A9619BE00F3C1D6 /* HomeState.swift */; };
+		8444A7222A96347C00F3C1D6 /* MaxLengthBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7212A96347C00F3C1D6 /* MaxLengthBinding.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
@@ -96,6 +99,9 @@
 		8444A70E2A94EFE400F3C1D6 /* SupportDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDTO.swift; sourceTree = "<group>"; };
 		8444A7102A94F0AB00F3C1D6 /* iWebITRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITRepository.swift; sourceTree = "<group>"; };
 		8444A7122A94F1C500F3C1D6 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		8444A7182A9618A800F3C1D6 /* SendSupportDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendSupportDataService.swift; sourceTree = "<group>"; };
+		8444A71A2A9619BE00F3C1D6 /* HomeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeState.swift; sourceTree = "<group>"; };
+		8444A7212A96347C00F3C1D6 /* MaxLengthBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxLengthBinding.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebITAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -182,6 +188,7 @@
 		8444A68E2A8D48ED00F3C1D6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				8444A71C2A9619F100F3C1D6 /* States */,
 				8444A6D62A937E4600F3C1D6 /* Components */,
 				8444A6912A8D496400F3C1D6 /* HomeWindow.swift */,
 				8444A6DF2A93E7DE00F3C1D6 /* HomeViewModel.swift */,
@@ -213,6 +220,7 @@
 				8444A6A22A8E702800F3C1D6 /* WindowAccessor.swift */,
 				8444A6A62A8E762900F3C1D6 /* WindowPositioning.swift */,
 				8444A6DD2A93AC0000F3C1D6 /* OpenWindow.swift */,
+				8444A7212A96347C00F3C1D6 /* MaxLengthBinding.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -306,6 +314,7 @@
 			children = (
 				8444A70D2A94EFB900F3C1D6 /* DTOs */,
 				8444A70B2A94EE2700F3C1D6 /* GetSupportDataService.swift */,
+				8444A7182A9618A800F3C1D6 /* SendSupportDataService.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -316,6 +325,14 @@
 				8444A70E2A94EFE400F3C1D6 /* SupportDTO.swift */,
 			);
 			path = DTOs;
+			sourceTree = "<group>";
+		};
+		8444A71C2A9619F100F3C1D6 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				8444A71A2A9619BE00F3C1D6 /* HomeState.swift */,
+			);
+			path = States;
 			sourceTree = "<group>";
 		};
 		84AE46222A84FA3600783806 = {
@@ -503,6 +520,7 @@
 				8444A69D2A8D4F8F00F3C1D6 /* DefaultWindowSizeModifier.swift in Sources */,
 				8444A6AB2A8E81E100F3C1D6 /* DefaultButtonViewModifier.swift in Sources */,
 				8444A6C32A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
+				8444A7192A9618A800F3C1D6 /* SendSupportDataService.swift in Sources */,
 				8444A7052A94CC9900F3C1D6 /* MessageView.swift in Sources */,
 				8444A7072A94CD7E00F3C1D6 /* FormatDate.swift in Sources */,
 				8444A6A12A8D508B00F3C1D6 /* iWebITCommands.swift in Sources */,
@@ -512,6 +530,7 @@
 				84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */,
 				8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */,
 				8444A6DC2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift in Sources */,
+				8444A7222A96347C00F3C1D6 /* MaxLengthBinding.swift in Sources */,
 				8444A7112A94F0AB00F3C1D6 /* iWebITRepository.swift in Sources */,
 				8444A7132A94F1C500F3C1D6 /* Support.swift in Sources */,
 				8444A6CC2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
@@ -527,6 +546,7 @@
 				8444A7092A94E86A00F3C1D6 /* SuporteScreen.swift in Sources */,
 				8444A6A92A8E7BBC00F3C1D6 /* LoginViewModel.swift in Sources */,
 				8444A6E02A93E7DE00F3C1D6 /* HomeViewModel.swift in Sources */,
+				8444A71B2A9619BE00F3C1D6 /* HomeState.swift in Sources */,
 				8444A68B2A8CFA9800F3C1D6 /* AppInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

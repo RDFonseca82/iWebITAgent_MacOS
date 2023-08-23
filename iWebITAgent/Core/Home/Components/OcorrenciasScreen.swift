@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
 
 struct OcorrenciasScreen: View {
     @EnvironmentObject var homeVm: HomeViewModel
@@ -19,7 +18,9 @@ struct OcorrenciasScreen: View {
             
             HStack {
                 CustomTextField(placeholder: "Procurar...", text: $homeVm.searchText)
-                    .width(250)
+                    .width(350)
+                    .height(40)
+                    .fixedSize()
                 
                 Image("refresh")
                     .resizable()
@@ -42,8 +43,11 @@ struct OcorrenciasScreen: View {
                 LazyVStack {
                     Spacer()
                         .height(12)
-                    ForEach(0..<100) { index in
+                    ForEach(homeVm.supports) { support in
                         MessageView()
+                            .onTapGesture {
+                                openDeepLink(destination: "detail")
+                            }
                     }
                 }
                 .padding(.trailing, 16)

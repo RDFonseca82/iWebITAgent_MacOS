@@ -20,6 +20,7 @@ struct CustomTextField: View {
                 NSApp.keyWindow?.makeFirstResponder(nil)
             }
         })
+        .lineLimit(1)
         .font(.title3)
         .textFieldStyle(.plain)
         .foregroundColor(.theme.onBackground)

@@ -8,7 +8,8 @@
 import Foundation
 
 
-struct Support {
+struct Support: Identifiable {
+    let id = UUID().uuidString
     let nome, deviceSupport, deviceSupportDate: String?
     
     init() {

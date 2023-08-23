@@ -11,12 +11,15 @@ import Foundation
 class HomeViewModel: ObservableObject {
     private let repository = iWebITRepository.shared
     
+    @Published var supports: [Support] = []
+    @Published var selectedSupport: Support = Support()
+    
+    @Published var state: HomeState = HomeState()
+    
     @Published var searchText: String = ""
     
     @Published var suporteNome: String = ""
     @Published var suporteMensagem: String = ""
-    
-    @Published var supports: [Support] = []
     
     func getSupports() async {
         do {
@@ -25,6 +28,14 @@ class HomeViewModel: ObservableObject {
                 self.supports = supports
             }
             print(supports)
+        } catch {
+            print("ERROR HOME VIEWMODEL: \(error)")
+        }
+    }
+    
+    func sendSupport() async {
+        do {
+            try await repository.sendSupport(nome: suporteNome, message: suporteMensagem)
         } catch {
             print("ERROR HOME VIEWMODEL: \(error)")
         }
