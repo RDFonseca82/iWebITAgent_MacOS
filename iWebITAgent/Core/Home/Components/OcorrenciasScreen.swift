@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OcorrenciasScreen: View {
+    @EnvironmentObject var globalVm: GlobalViewModel
     @EnvironmentObject var homeVm: HomeViewModel
     
     var body: some View {
@@ -31,6 +32,11 @@ struct OcorrenciasScreen: View {
                         Color.theme.darkGray.cornerRadius(8)
                     )
                     .hoverEffect()
+                    .onTapGesture {
+                        Task {
+                            await homeVm.getSupports()
+                        }
+                    }
             }
             .padding(.top, -14)
             
@@ -46,6 +52,7 @@ struct OcorrenciasScreen: View {
                     ForEach(homeVm.supports) { support in
                         MessageView()
                             .onTapGesture {
+                                globalVm.selectedSupport = support
                                 openDeepLink(destination: "detail")
                             }
                     }
@@ -53,17 +60,46 @@ struct OcorrenciasScreen: View {
                 .padding(.trailing, 16)
             }
             .overlay(
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .padding(8)
-                    .background(
-                        Circle()
-                            .fill(Color.theme.background)
-                            .shadow(
-                                color: Color.theme.onBackground.opacity(0.15),
-                                radius: 7
+                ZStack {
+                    if (homeVm.state.error == .httpError || homeVm.state.error == .generalError) && homeVm.supports.isEmpty {
+                        VStack {
+                            Image("no_internet")
+                                .resizable()
+                                .scaledToFit()
+                                .height(250)
+                            Text(homeVm.state.error.description)
+                                .foregroundColor(.gray)
+                                .font(.system(size: 15))
+                        }
+                    } else if homeVm.supports.isEmpty && !homeVm.state.isLoading {
+                        VStack {
+                            Image("empty_list")
+                                .resizable()
+                                .scaledToFit()
+                                .height(250)
+                            Text("Aparentemente, ainda não reportou ocorrências.")
+                                .foregroundColor(.gray)
+                                .font(.system(size: 15))
+                        }
+                    }
+                }
+            )
+            .overlay(
+                ZStack {
+                    if homeVm.state.isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .padding(8)
+                            .background(
+                                Circle()
+                                    .fill(Color.theme.background)
+                                    .shadow(
+                                        color: Color.theme.onBackground.opacity(0.15),
+                                        radius: 7
+                                    )
                             )
-                    )
+                    }
+                }
                     .padding(.bottom),
                 alignment: .bottom
             )

@@ -11,6 +11,7 @@ struct HomeWindow: View {
     @State private var window: NSWindow?
     
     @StateObject var homeVm = HomeViewModel()
+    @StateObject var toastVm = SnackbarViewModel()
     
     @State private var showingOcorrencias = true
     
@@ -29,11 +30,32 @@ struct HomeWindow: View {
         }
         .ignoresSafeArea()
         .background(WindowAccessor(window: $window, initialTitle: "Ocorrências", shouldCenter: false))
+        .overlay(
+            ZStack {
+                if toastVm.showing {
+                    Toast(vm: toastVm)
+                        .padding(.bottom)
+                        .padding(.leading, 96)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            },
+            alignment: .bottomLeading
+        )
+        .onAppear {
+            Task {
+                await homeVm.getSupports()
+            }
+        }
+        .onChange(of: homeVm.state.error) { newError in
+            print("Aqui 2 \(newError)")
+            if newError != .none {
+                toastVm.showSnackbar(
+                    text: newError.description
+                )
+            } else {
+                toastVm.close()
+            }
+        }
         .environmentObject(homeVm)
-//        .onAppear {
-//            Task {
-//                await homeVm.getSupports()
-//            }
-//        }
     }
 }

@@ -11,11 +11,14 @@ import SwiftUI
 struct iWebITAgent: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    @StateObject var globalVm = GlobalViewModel()
+    
     var body: some Scene {
         WindowGroup("Ocorrências") {
             HomeWindow()
-                .defaultWindowSize()
+                .defaultWindowSize(minWidth: 550)
                 .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
+                .environmentObject(globalVm)
         }
         .handlesExternalEvents(matching: ["support"])
         .windowStyle(HiddenTitleBarWindowStyle())
@@ -33,6 +36,7 @@ struct iWebITAgent: App {
             SupportDetailWindow()
                 .defaultWindowSize()
                 .handlesExternalEvents(preferring: ["detail"], allowing: ["detail"])
+                .environmentObject(globalVm)
         }
         .handlesExternalEvents(matching: ["detail"])
         .windowStyle(HiddenTitleBarWindowStyle())
