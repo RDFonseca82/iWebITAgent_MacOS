@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Support: Identifiable {
+struct Support: Identifiable, Equatable {
     let id = UUID().uuidString
     let nome, deviceSupport: String?
     let deviceSupportDate: Date

@@ -16,7 +16,7 @@ struct iWebITAgent: App {
     var body: some Scene {
         WindowGroup("Ocorrências") {
             HomeWindow()
-                .defaultWindowSize(minWidth: 550)
+                .defaultWindowSize(minWidth: 600, minHeight: 580)
                 .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
                 .environmentObject(globalVm)
         }

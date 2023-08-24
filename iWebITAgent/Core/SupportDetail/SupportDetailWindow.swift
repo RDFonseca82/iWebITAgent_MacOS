@@ -43,7 +43,14 @@ struct SupportDetailWindow: View {
         .background(WindowAccessor(window: $window, initialTitle: "Detalhes", shouldCenter: false))
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                
+                if let nome = globalVm.selectedSupport.nome{
+                    window?.title = "Detalhes - " + nome
+                }
+            }
+        }
+        .onChange(of: globalVm.selectedSupport) { newSupport in
+            if let nome = globalVm.selectedSupport.nome{
+                window?.title = "Detalhes - " + nome
             }
         }
     }
