@@ -17,7 +17,9 @@ class iWebITRepository {
     func getSupports() async throws -> [Support] {
         let supports = try await getSupportDataService.getSupport()
         
-        return supports.map { Support(dto: $0) }
+        return supports.map { Support(dto: $0) }.sorted {
+            return $0.deviceSupportDate > $1.deviceSupportDate
+        }
     }
     
     func sendSupport(nome: String, message: String) async throws {

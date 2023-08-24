@@ -22,7 +22,7 @@ struct HomeWindow: View {
                 if showingOcorrencias {
                     OcorrenciasScreen()
                 } else {
-                    SuporteScreen()
+                    SuporteScreen(showingOcorrencias: $showingOcorrencias)
                 }
             }
             .fillMaxSize()
@@ -44,10 +44,10 @@ struct HomeWindow: View {
         .onAppear {
             Task {
                 await homeVm.getSupports()
+                homeVm.firstRequest = false
             }
         }
         .onChange(of: homeVm.state.error) { newError in
-            print("Aqui 2 \(newError)")
             if newError != .none {
                 toastVm.showSnackbar(
                     text: newError.description
@@ -57,5 +57,6 @@ struct HomeWindow: View {
             }
         }
         .environmentObject(homeVm)
+        .environmentObject(toastVm)
     }
 }

@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct MessageView: View {
+    let support: Support
+    
     var body: some View {
         VStack {
             HStack {
-                Text("MESSAGEGEGEGEGGEGE message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message")
+                Text(support.nome ?? "-")
                     .lineLimit(1)
                     .font(.title2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(.lightBlue)
                 
-                Text("há 50 segundos")
+                Text(FormatDt.shared.formatDateToHuman(support.deviceSupportDate))
                     .foregroundColor(.gray)
                     .font(.system(size: 12))
                     .offset(y: -10)
             }
             .padding(.bottom, 2)
             
-            Text("message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message message")
+            Text(support.deviceSupport ?? "-")
                 .lineLimit(1)
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)

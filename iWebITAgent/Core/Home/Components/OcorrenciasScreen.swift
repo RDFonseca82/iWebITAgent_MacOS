@@ -18,7 +18,7 @@ struct OcorrenciasScreen: View {
                 .foregroundColor(.theme.onBackground)
             
             HStack {
-                CustomTextField(placeholder: "Procurar...", text: $homeVm.searchText)
+                CustomTextField(placeholder: "Procurar...", text: $homeVm.searchBy.max(50).noNewLine())
                     .width(350)
                     .height(40)
                     .fixedSize()
@@ -33,6 +33,9 @@ struct OcorrenciasScreen: View {
                     )
                     .hoverEffect()
                     .onTapGesture {
+                        if homeVm.state.isLoading {
+                            return 
+                        }
                         Task {
                             await homeVm.getSupports()
                         }
@@ -49,8 +52,8 @@ struct OcorrenciasScreen: View {
                 LazyVStack {
                     Spacer()
                         .height(12)
-                    ForEach(homeVm.supports) { support in
-                        MessageView()
+                    ForEach(homeVm.filteredSupports) { support in
+                        MessageView(support: support)
                             .onTapGesture {
                                 globalVm.selectedSupport = support
                                 openDeepLink(destination: "detail")
@@ -71,7 +74,7 @@ struct OcorrenciasScreen: View {
                                 .foregroundColor(.gray)
                                 .font(.system(size: 15))
                         }
-                    } else if homeVm.supports.isEmpty && !homeVm.state.isLoading {
+                    } else if homeVm.supports.isEmpty && !homeVm.state.isLoading && !homeVm.firstRequest {
                         VStack {
                             Image("empty_list")
                                 .resizable()
@@ -89,6 +92,7 @@ struct OcorrenciasScreen: View {
                     if homeVm.state.isLoading {
                         ProgressView()
                             .progressViewStyle(.circular)
+                            .scaleEffect(0.8)
                             .padding(8)
                             .background(
                                 Circle()
@@ -106,5 +110,8 @@ struct OcorrenciasScreen: View {
         }
         .fillMaxSize()
         .padding([.leading, .top], 12)
+        .onChange(of: homeVm.searchBy) { newValue in
+            homeVm.filterSupports(newValue)
+        }
     }
 }

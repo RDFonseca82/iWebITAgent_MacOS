@@ -9,7 +9,13 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct SuporteScreen: View {
+    @EnvironmentObject var toastVm: SnackbarViewModel
     @EnvironmentObject var homeVm: HomeViewModel
+    
+    @Binding var showingOcorrencias: Bool
+    
+    @State var showNomeError: Bool = false
+    @State var showMensagemError: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -21,10 +27,15 @@ struct SuporteScreen: View {
             CustomTextField(placeholder: "Nome", text: $homeVm.suporteNome.max(50).noNewLine())
                 .fillMaxWidth()
                 .overlay(
-                    Text("\(homeVm.suporteNome.count)/50")
-                        .foregroundColor(.gray)
+                    HStack {
+                        Text(showNomeError ? "Por favor, digite o seu nome." : "")
+                            .foregroundColor(.darkRed)
+                        Spacer()
+                        Text("\(homeVm.suporteNome.count)/50")
+                            .foregroundColor(.gray)
+                    }
                         .offset(y: 18),
-                    alignment: .bottomTrailing
+                    alignment: .bottom
                 )
                 .padding(.bottom, 30)
             
@@ -46,10 +57,15 @@ struct SuporteScreen: View {
                     .font(.title3)
             }
             .overlay(
-                Text("\(homeVm.suporteMensagem.count)/5000")
-                    .foregroundColor(.gray)
+                HStack {
+                    Text(showMensagemError ? "Por favor, digite o seu pedido de suporte." : "")
+                        .foregroundColor(.darkRed)
+                    Spacer()
+                    Text("\(homeVm.suporteMensagem.count)/5000")
+                        .foregroundColor(.gray)
+                }
                     .offset(y: 18),
-                alignment: .bottomTrailing
+                alignment: .bottom
             )
             
             .background(
@@ -63,15 +79,40 @@ struct SuporteScreen: View {
             .padding(.bottom, 30)
             
             Button {
+                showNomeError = homeVm.suporteNome.isBlank()
+                showMensagemError = homeVm.suporteMensagem.isBlank()
+                
+                if showNomeError || showMensagemError {
+                    return
+                }
+                
                 Task {
                     await homeVm.sendSupport()
+                    if homeVm.state.error == .none {
+                        await MainActor.run {
+                            toastVm.showSnackbar(text: "Suporte enviado com sucesso.")
+                            homeVm.suporteNome = ""
+                            homeVm.suporteMensagem = ""
+                            showingOcorrencias = true
+                        }
+                        await homeVm.getSupports()
+                    }
                 }
             } label: {
-                Text("Enviar")
-                    .defaultButtonView()
-                    .hoverEffect()
+                HStack {
+                    if homeVm.state.isLoadingSend {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .controlSize(.small)
+                            .offset(x: -8)
+                    }
+                    Text("Enviar")
+                }
+                .defaultButtonView()
+                .hoverEffect()
             }
             .buttonStyle(.plain)
+            .disabled(homeVm.state.isLoadingSend)
             Spacer()
         }
         .fillMaxSize()

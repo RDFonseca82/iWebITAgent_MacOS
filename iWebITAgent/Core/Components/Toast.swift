@@ -21,7 +21,7 @@ struct Toast: View {
         }
         .frame(minHeight: 50)
         .width(300)
-        .foregroundColor(.theme.onBackground)
+        .foregroundColor(.theme.background)
         .background(Color(white: colorScheme == .dark ? 0.6 : 0.3))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal, 10)
@@ -38,7 +38,6 @@ class SnackbarViewModel: ObservableObject {
     private var sortJob: Task<(), Never>? = nil
 
     func showSnackbar(text newText: String, timeMillis: UInt64 = 4000) {
-        print("Aqui \(newText)")
         if newText.isEmpty { return }
 
         if newText == text && showing { return }

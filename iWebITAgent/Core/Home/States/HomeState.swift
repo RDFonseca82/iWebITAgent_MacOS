@@ -11,4 +11,5 @@ import Foundation
 struct HomeState {
     var error: iWebITError = .none
     var isLoading: Bool = false
+    var isLoadingSend: Bool = false
 }

@@ -16,12 +16,8 @@ class SendSupportDataService {
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             
             let _ = try await NetworkingManager.send(
-                url: Constants.getSupportUrl+"?UniqueID=\(AppInfo.uniqueid)",
-                parameters: [
-                    "Nome": nome,
-                    "DeviceSupport": message,
-                    "DeviceSupportDate": formatter.string(from: Date())
-                ]
+                url: Constants.postSupportUrl+"?UniqueID=\(AppInfo.uniqueid)",
+                formEncoded: "Nome=\(nome)&DeviceSupport=\(message)&DeviceSupportDate=\(formatter.string(from: Date()))".data(using: .utf8)!
             )
         } catch {
             throw iWebITError.httpError
@@ -29,3 +25,5 @@ class SendSupportDataService {
             
     }
 }
+
+//formEncoded: "Nome=\(nome)&DeviceSupport=\(message)&DeviceSupportDate=\(formatter.string(from: Date()))".data(using: .utf8)!

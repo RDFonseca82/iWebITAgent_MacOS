@@ -8,16 +8,24 @@
 import Foundation
 
 struct FormatDt {
-    static let dtF = DateFormatter()
-    static let defaultDate = Date()
+    static let shared = FormatDt()
     
-    static func toDate(stringData: String?, pattern: String = "yyyy-MM-dd HH:mm:ss") -> Date? {
+    let dtF = DateFormatter()
+    var defaultDate: Date
+    let months =  ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+    
+    init() {
+        dtF.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        defaultDate = dtF.date(from: "2000-01-01 00:00:00")!
+    }
+    
+    func toDate(stringData: String?, pattern: String = "yyyy-MM-dd HH:mm:ss") -> Date? {
         guard let stringData = stringData else { return nil }
         dtF.dateFormat = pattern
         return dtF.date(from: stringData)
     }
     
-    static func formatDateToHuman(_ dt: Date) -> String {
+    func formatDateToHuman(_ dt: Date) -> String {
         let ts = Int(Date().timeIntervalSince(dt))
 
         let days = Int(ts / (24 * 60 * 60))
