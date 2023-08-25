@@ -4,12 +4,15 @@ import SwiftUI
 class MenuBarButton {
     
     let statusItem: NSStatusItem
+    let service: MenuBarButtonService
     
     init() {
-        statusItem = NSStatusBar.system
+        self.statusItem = NSStatusBar.system
             .statusItem(withLength: CGFloat(NSStatusItem.squareLength))
+        
+        self.service = MenuBarButtonService(statusItem: self.statusItem)
                 
-        guard let button = statusItem.button else {
+        guard let button = self.statusItem.button else {
             return
         }
         
@@ -25,11 +28,10 @@ class MenuBarButton {
     @objc
     func showMenu(_ sender: AnyObject?) {
         let menu = NSMenu()
-        addItem("Acerca da Aplicação iWebIT", action: #selector(showLogin), key: "", to: menu)
-        addItem("Apoio Técnico Remoto", action: #selector(showHome), key: "", to: menu)
-        addItem("Pedido de Suporte", action: #selector(showDetail), key: "", to: menu)
+        addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
+        addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
         menu.addItem(NSMenuItem.separator())
-        addItem("Forçar Sincronização", action: #selector(showSettings), key: "", to: menu)
+        addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
         showStatusItemMenu(menu)
     }
     
@@ -51,16 +53,16 @@ class MenuBarButton {
     // MARK: - Actions
     
     @objc
-    func showLogin() {
+    func showAbout() {
         let workspace = NSWorkspace.shared
         
-        if let deepLinkUrl = URL(string: "iwebit://login") {
+        if let deepLinkUrl = URL(string: "iwebit://settings") {
             workspace.open(deepLinkUrl)
         }
     }
 
     @objc
-    func showHome() {
+    func showSuporte() {
         let workspace = NSWorkspace.shared
         
         if let deepLinkUrl = URL(string: "iwebit://support") {
@@ -69,20 +71,12 @@ class MenuBarButton {
     }
 
     @objc
-    func showDetail() {
-        let workspace = NSWorkspace.shared
-        
-        if let deepLinkUrl = URL(string: "iwebit://detail") {
-            workspace.open(deepLinkUrl)
-        }
-    }
-
-    @objc
-    func showSettings() {
-        let workspace = NSWorkspace.shared
-        
-        if let deepLinkUrl = URL(string: "iwebit://settings") {
-            workspace.open(deepLinkUrl)
-        }
+    func forceSync() {
+        let alert = NSAlert()
+        alert.messageText = "Agente iWebIT"
+        alert.informativeText = "O serviço irá realizar uma sincronização completa."
+        alert.addButton(withTitle: "Ok")
+        alert.alertStyle = .informational
+        alert.runModal()
     }
 }

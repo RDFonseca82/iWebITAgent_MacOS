@@ -12,7 +12,7 @@ class FilesManager {
     static let shared = FilesManager()
     
     private let fileManager = FileManager.default
-    private let applicationFolderName = Bundle.main.bundleIdentifier!
+    private let applicationFolderName = "com.rdfonseca.iWebITAgent"
     
     private init() {}
     

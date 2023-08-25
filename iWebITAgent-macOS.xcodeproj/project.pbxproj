@@ -53,6 +53,9 @@
 		8444A7222A96347C00F3C1D6 /* MaxLengthBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7212A96347C00F3C1D6 /* MaxLengthBinding.swift */; };
 		8444A7242A9649D300F3C1D6 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7232A9649D300F3C1D6 /* Toast.swift */; };
 		8444A7262A964A5E00F3C1D6 /* GlobalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7252A964A5E00F3C1D6 /* GlobalViewModel.swift */; };
+		8444A7292A97D94300F3C1D6 /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7282A97D94300F3C1D6 /* ConstantsExtended.swift */; };
+		8444A7372A97DCC500F3C1D6 /* MenuBarButtonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7362A97DCC500F3C1D6 /* MenuBarButtonService.swift */; };
+		8444A7482A98E1CB00F3C1D6 /* TakeScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
@@ -106,6 +109,9 @@
 		8444A7212A96347C00F3C1D6 /* MaxLengthBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxLengthBinding.swift; sourceTree = "<group>"; };
 		8444A7232A9649D300F3C1D6 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		8444A7252A964A5E00F3C1D6 /* GlobalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalViewModel.swift; sourceTree = "<group>"; };
+		8444A7282A97D94300F3C1D6 /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
+		8444A7362A97DCC500F3C1D6 /* MenuBarButtonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButtonService.swift; sourceTree = "<group>"; };
+		8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshot.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebITAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				8444A6802A8AA26400F3C1D6 /* MenuBarButton.swift */,
+				8444A7362A97DCC500F3C1D6 /* MenuBarButtonService.swift */,
 			);
 			path = MenuBarButton;
 			sourceTree = "<group>";
@@ -341,6 +348,37 @@
 			path = States;
 			sourceTree = "<group>";
 		};
+		8444A7272A97D94300F3C1D6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8444A7282A97D94300F3C1D6 /* ConstantsExtended.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8444A72A2A97DAD000F3C1D6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8444A72D2A97DAD000F3C1D6 /* Remote */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8444A72D2A97DAD000F3C1D6 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Remote;
+			sourceTree = "<group>";
+		};
+		8444A7462A98E15700F3C1D6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		84AE46222A84FA3600783806 = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +437,9 @@
 		84BE9B592A8A9F8A00822D2C /* iWebITSysTray */ = {
 			isa = PBXGroup;
 			children = (
+				8444A7462A98E15700F3C1D6 /* Utils */,
+				8444A7272A97D94300F3C1D6 /* Common */,
+				8444A72A2A97DAD000F3C1D6 /* Services */,
 				8444A67F2A8AA24400F3C1D6 /* MenuBarButton */,
 				84BE9B5A2A8A9F8A00822D2C /* iWebITSysTrayApp.swift */,
 				84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */,
@@ -564,9 +605,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8444A6CD2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
+				8444A7372A97DCC500F3C1D6 /* MenuBarButtonService.swift in Sources */,
+				8444A7482A98E1CB00F3C1D6 /* TakeScreenshot.swift in Sources */,
 				8444A6D32A913AFD00F3C1D6 /* Constants.swift in Sources */,
 				8444A6C42A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
 				8444A6D02A9113D500F3C1D6 /* StringExtension.swift in Sources */,
+				8444A7292A97D94300F3C1D6 /* ConstantsExtended.swift in Sources */,
 				8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */,
 				8444A6C92A910A4B00F3C1D6 /* iWebITError.swift in Sources */,
 				8444A6812A8AA26400F3C1D6 /* MenuBarButton.swift in Sources */,
@@ -768,6 +812,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -798,6 +843,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
