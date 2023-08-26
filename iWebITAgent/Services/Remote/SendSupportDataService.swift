@@ -25,5 +25,3 @@ class SendSupportDataService {
             
     }
 }
-
-//formEncoded: "Nome=\(nome)&DeviceSupport=\(message)&DeviceSupportDate=\(formatter.string(from: Date()))".data(using: .utf8)!

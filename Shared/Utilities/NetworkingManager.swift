@@ -60,6 +60,23 @@ class NetworkingManager {
         }
     }
     
+    static func send(url: String, multipart: MultipartRequest) async throws {
+        let url = URL(string: url)!
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+        request.setValue(multipart.httpContentTypeHeadeValue, forHTTPHeaderField: "Content-Type")
+        request.httpBody = multipart.httpBody
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let _ = try handleResponse(data: data, response: response)
+        } catch {
+            throw error
+        }
+    }
+    
     static func handleResponse(data: Data?, response: URLResponse?) throws -> Data {
         guard
             let data = data,

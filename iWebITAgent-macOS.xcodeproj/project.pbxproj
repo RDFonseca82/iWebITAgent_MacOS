@@ -56,6 +56,15 @@
 		8444A7292A97D94300F3C1D6 /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7282A97D94300F3C1D6 /* ConstantsExtended.swift */; };
 		8444A7372A97DCC500F3C1D6 /* MenuBarButtonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7362A97DCC500F3C1D6 /* MenuBarButtonService.swift */; };
 		8444A7482A98E1CB00F3C1D6 /* TakeScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */; };
+		8444A7492A992B9300F3C1D6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B452A893A9E00822D2C /* Logger.swift */; };
+		8444A74A2A992B9600F3C1D6 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
+		8444A74B2A992B9900F3C1D6 /* RunShellScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6D42A92A0DE00F3C1D6 /* RunShellScript.swift */; };
+		8444A74D2A992D0D00F3C1D6 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */; };
+		8444A74F2A992E4400F3C1D6 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74E2A992E4400F3C1D6 /* DataExtension.swift */; };
+		8444A7502A992E4400F3C1D6 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74E2A992E4400F3C1D6 /* DataExtension.swift */; };
+		8444A7522A9A24F000F3C1D6 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */; };
+		8444A7552A9A275800F3C1D6 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */; };
+		8444A7572A9A29BB00F3C1D6 /* SendScreenshotDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
@@ -112,6 +121,11 @@
 		8444A7282A97D94300F3C1D6 /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
 		8444A7362A97DCC500F3C1D6 /* MenuBarButtonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButtonService.swift; sourceTree = "<group>"; };
 		8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshot.swift; sourceTree = "<group>"; };
+		8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
+		8444A74E2A992E4400F3C1D6 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetDeviceDataService.swift; path = iWebITSysTray/Services/Remote/GetDeviceDataService.swift; sourceTree = SOURCE_ROOT; };
+		8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
+		8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendScreenshotDataService.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebITAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -269,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				8444A6C02A8FFFCC00F3C1D6 /* Common */,
+				84BE9B422A893A9E00822D2C /* Utilities */,
 				8444A6BF2A8FFFC500F3C1D6 /* Models */,
 				8444A6CA2A9112EC00F3C1D6 /* Extensions */,
 			);
@@ -307,6 +322,7 @@
 			children = (
 				8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */,
 				8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */,
+				8444A74E2A992E4400F3C1D6 /* DataExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -367,6 +383,9 @@
 		8444A72D2A97DAD000F3C1D6 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				8444A7532A9A273A00F3C1D6 /* DTOs */,
+				8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */,
+				8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -377,6 +396,14 @@
 				8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		8444A7532A9A273A00F3C1D6 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */,
+			);
+			path = DTOs;
 			sourceTree = "<group>";
 		};
 		84AE46222A84FA3600783806 = {
@@ -403,7 +430,6 @@
 			isa = PBXGroup;
 			children = (
 				84BE9B3B2A893A9300822D2C /* Common */,
-				84BE9B422A893A9E00822D2C /* Utilities */,
 				8444A6862A8CF8E700F3C1D6 /* Services */,
 				8444A6892A8CFA7B00F3C1D6 /* Models */,
 				8444A68C2A8D04B700F3C1D6 /* Core */,
@@ -430,6 +456,7 @@
 				84BE9B452A893A9E00822D2C /* Logger.swift */,
 				84BE9B462A893A9E00822D2C /* NetworkingManager.swift */,
 				8444A6D42A92A0DE00F3C1D6 /* RunShellScript.swift */,
+				8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -437,8 +464,8 @@
 		84BE9B592A8A9F8A00822D2C /* iWebITSysTray */ = {
 			isa = PBXGroup;
 			children = (
-				8444A7462A98E15700F3C1D6 /* Utils */,
 				8444A7272A97D94300F3C1D6 /* Common */,
+				8444A7462A98E15700F3C1D6 /* Utils */,
 				8444A72A2A97DAD000F3C1D6 /* Services */,
 				8444A67F2A8AA24400F3C1D6 /* MenuBarButton */,
 				84BE9B5A2A8A9F8A00822D2C /* iWebITSysTrayApp.swift */,
@@ -579,6 +606,7 @@
 				84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */,
 				8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */,
 				8444A6DC2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift in Sources */,
+				8444A74F2A992E4400F3C1D6 /* DataExtension.swift in Sources */,
 				8444A7222A96347C00F3C1D6 /* MaxLengthBinding.swift in Sources */,
 				8444A7112A94F0AB00F3C1D6 /* iWebITRepository.swift in Sources */,
 				8444A7132A94F1C500F3C1D6 /* Support.swift in Sources */,
@@ -605,16 +633,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				8444A6CD2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
+				8444A74B2A992B9900F3C1D6 /* RunShellScript.swift in Sources */,
 				8444A7372A97DCC500F3C1D6 /* MenuBarButtonService.swift in Sources */,
 				8444A7482A98E1CB00F3C1D6 /* TakeScreenshot.swift in Sources */,
+				8444A7522A9A24F000F3C1D6 /* GetDeviceDataService.swift in Sources */,
+				8444A74A2A992B9600F3C1D6 /* NetworkingManager.swift in Sources */,
 				8444A6D32A913AFD00F3C1D6 /* Constants.swift in Sources */,
 				8444A6C42A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
+				8444A7502A992E4400F3C1D6 /* DataExtension.swift in Sources */,
+				8444A7552A9A275800F3C1D6 /* DeviceDTO.swift in Sources */,
 				8444A6D02A9113D500F3C1D6 /* StringExtension.swift in Sources */,
 				8444A7292A97D94300F3C1D6 /* ConstantsExtended.swift in Sources */,
 				8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */,
+				8444A7572A9A29BB00F3C1D6 /* SendScreenshotDataService.swift in Sources */,
 				8444A6C92A910A4B00F3C1D6 /* iWebITError.swift in Sources */,
 				8444A6812A8AA26400F3C1D6 /* MenuBarButton.swift in Sources */,
+				8444A74D2A992D0D00F3C1D6 /* MultipartRequest.swift in Sources */,
 				84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */,
+				8444A7492A992B9300F3C1D6 /* Logger.swift in Sources */,
 				8444A6C82A90026700F3C1D6 /* AppInfo.swift in Sources */,
 				84BE9B5B2A8A9F8A00822D2C /* iWebITSysTrayApp.swift in Sources */,
 			);

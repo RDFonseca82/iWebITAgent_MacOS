@@ -9,13 +9,13 @@ import SwiftUI
 import AVFoundation
 
 
-func TakeScreensShots(folderName: String){
+func takeScreenShot() -> NSImage? {
     
     var displayCount: UInt32 = 0;
     var result = CGGetActiveDisplayList(0, nil, &displayCount)
     if (result != CGError.success) {
         print("error: \(result)")
-        return
+        return nil
     }
     let allocated = Int(displayCount)
     let activeDisplays = UnsafeMutablePointer<CGDirectDisplayID>.allocate(capacity: allocated)
@@ -23,7 +23,7 @@ func TakeScreensShots(folderName: String){
     
     if (result != CGError.success) {
         print("error: \(result)")
-        return
+        return nil
     }
     
     var displaysShots: [NSImage] = []
@@ -35,27 +35,20 @@ func TakeScreensShots(folderName: String){
         displaysShots.append(NSImage(data: jpegData)!)
     }
     
-    var finalImageData: NSImage = NSImage()
+    var finalImage: NSImage = NSImage()
     
     for image in displaysShots {
-        finalImageData = joinImages(image1: finalImageData, image2: image)
+        finalImage = joinImages(image1: finalImage, image2: image)
     }
     
-    
-    let unixTimestamp = CreateTimeStamp()
-    let fileUrl = FilesManager.shared.getApplicationSupportDirectory()!.appendingPathComponent("\(unixTimestamp).jpg")
+    let fileUrl = FilesManager.shared.getApplicationSupportDirectory()!.appendingPathComponent("sct.jpg")
     
     do {
-        try convertImageToData(image: finalImageData)!.write(to: fileUrl)
+        try convertImageToData(image: finalImage)!.write(to: fileUrl)
     }
     catch {print("error: \(error)")}
     
-    
-}
-
-func CreateTimeStamp() -> Int32
-{
-    return Int32(Date().timeIntervalSince1970)
+    return finalImage
 }
 
 func joinImages(image1: NSImage, image2: NSImage) -> NSImage {

@@ -37,7 +37,17 @@ class MenuBarButtonService {
     }
     
     func checkforSct() {
-        print("HEY")
-        TakeScreensShots(folderName: "~/Desktop/")
+        Task {
+            do {
+                let deviceInfo = try await GetDevicetDataService.shared.getDevice()
+                if deviceInfo.windowsPrintScreen == 1 {
+                    if let screenshot = takeScreenShot() {
+                        try await SendScreenshotDataService.shared.sendScreenshot(screenshot: screenshot)
+                    }
+                }
+            } catch {
+                print("ERROR SENDING SCREENSHOT: \(error)")
+            }
+        }
     }
 }
