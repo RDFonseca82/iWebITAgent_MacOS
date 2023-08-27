@@ -9,9 +9,9 @@ import Foundation
 
 
 extension String {
-    func toJsonObject() throws -> [String: Any] {
+    func toJsonObject() throws -> [String: String] {
         guard let jsonData = self.data(using: .utf8) else { throw iWebITError.decodingError }
-        return try JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
+        return try JSONSerialization.jsonObject(with: jsonData) as! [String: String]
     }
     func isBlank() -> Bool {
         return self.trimmingCharacters(in: [" "]) == ""

@@ -17,16 +17,16 @@ struct AppInfo: Codable {
     static var agentversion: String
     
     @AppInfoProperty("fullsync")
-    static var fullsync: Bool
+    static var fullsync: String
     
     @AppInfoProperty("devicelocation")
-    static var devicelocation: Bool
+    static var devicelocation: String
     
     @AppInfoProperty("reboot")
-    static var reboot: Bool
+    static var reboot: String
     
     @AppInfoProperty("shutdown")
-    static var shutdown: Bool
+    static var shutdown: String
     
     @AppInfoProperty("timesync")
     static var timesync: String
@@ -40,21 +40,37 @@ struct AppInfo: Codable {
     @AppInfoProperty("nexttimealive")
     static var nexttimealive: String
     
+    @AppInfoProperty("firstrun")
+    static var firstrun: String
+    
+    @AppInfoProperty("allprepared")
+    static var allprepared: String
+    
+    @AppInfoProperty("net")
+    static var net: String
+    
+    @AppInfoProperty("manualupdate")
+    static var manualupdate: String
+    
     @AppInfoProperty("dolog")
-    static var dolog: Bool
+    static var dolog: String
+    
+    static func isLoggedIn() -> Bool {
+        return idsync.isNotBlank() && idsync != "IDSYNC" && idsync != "?"
+    }
 }
 
 @propertyWrapper
-struct AppInfoProperty<T> {
+struct AppInfoProperty {
     private let key: String
 
     init(_ key: String) {
         self.key = key
     }
 
-    var wrappedValue: T {
+    var wrappedValue: String {
         get {
-            AppInfoManager.shared.getValue(key: key) as! T
+            AppInfoManager.shared.getValue(key: key)
         }
         set {
             AppInfoManager.shared.setValue(key: key, value: newValue)

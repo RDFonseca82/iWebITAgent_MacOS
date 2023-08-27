@@ -7,12 +7,13 @@ class MenuBarButton {
     let service: MenuBarButtonService
     
     init() {
-        self.statusItem = NSStatusBar.system
+        statusItem = NSStatusBar.system
             .statusItem(withLength: CGFloat(NSStatusItem.squareLength))
+        statusItem.isVisible = true
         
-        self.service = MenuBarButtonService(statusItem: self.statusItem)
+        service = MenuBarButtonService(statusItem: statusItem)
                 
-        guard let button = self.statusItem.button else {
+        guard let button = statusItem.button else {
             return
         }
         
@@ -28,10 +29,14 @@ class MenuBarButton {
     @objc
     func showMenu(_ sender: AnyObject?) {
         let menu = NSMenu()
-        addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
-        addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
-        menu.addItem(NSMenuItem.separator())
-        addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
+        if AppInfo.isLoggedIn() {
+            addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
+            addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
+            menu.addItem(NSMenuItem.separator())
+            addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
+        } else {
+            addItem("Iniciar sessão no agente", action:  #selector(showLogin), key: "", to: menu)
+        }
         showStatusItemMenu(menu)
     }
     
@@ -51,6 +56,15 @@ class MenuBarButton {
     }
     
     // MARK: - Actions
+    
+    @objc
+    func showLogin() {
+        let workspace = NSWorkspace.shared
+        
+        if let deepLinkUrl = URL(string: "iwebit://login") {
+            workspace.open(deepLinkUrl)
+        }
+    }
     
     @objc
     func showAbout() {

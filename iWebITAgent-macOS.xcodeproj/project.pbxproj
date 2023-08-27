@@ -65,6 +65,22 @@
 		8444A7522A9A24F000F3C1D6 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */; };
 		8444A7552A9A275800F3C1D6 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */; };
 		8444A7572A9A29BB00F3C1D6 /* SendScreenshotDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */; };
+		8444A7592A9A54A500F3C1D6 /* ServiceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */; };
+		8444A7612A9A603200F3C1D6 /* service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7602A9A603200F3C1D6 /* service.swift */; };
+		8444A7652A9A668E00F3C1D6 /* AppInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C22A90007200F3C1D6 /* AppInfoManager.swift */; };
+		8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6C52A90025300F3C1D6 /* FilesManager.swift */; };
+		8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
+		8444A7682A9A668E00F3C1D6 /* RunShellScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6D42A92A0DE00F3C1D6 /* RunShellScript.swift */; };
+		8444A7692A9A668E00F3C1D6 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CB2A91130300F3C1D6 /* DictionaryExtension.swift */; };
+		8444A76A2A9A668E00F3C1D6 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */; };
+		8444A76B2A9A668E00F3C1D6 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
+		8444A76C2A9A668E00F3C1D6 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74E2A992E4400F3C1D6 /* DataExtension.swift */; };
+		8444A76D2A9A668E00F3C1D6 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */; };
+		8444A76E2A9A668E00F3C1D6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B452A893A9E00822D2C /* Logger.swift */; };
+		8444A76F2A9A668E00F3C1D6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6D12A913AFD00F3C1D6 /* Constants.swift */; };
+		8444A7702A9A668E00F3C1D6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A68A2A8CFA9800F3C1D6 /* AppInfo.swift */; };
+		8444A7712A9BA32500F3C1D6 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */; };
+		8444A7752A9BAD2100F3C1D6 /* ImageManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
@@ -76,6 +92,18 @@
 		84BE9B5F2A8A9F8B00822D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */; };
 		84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8444A75C2A9A603200F3C1D6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8444A6802A8AA26400F3C1D6 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
@@ -126,6 +154,10 @@
 		8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetDeviceDataService.swift; path = iWebITSysTray/Services/Remote/GetDeviceDataService.swift; sourceTree = SOURCE_ROOT; };
 		8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
 		8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendScreenshotDataService.swift; sourceTree = "<group>"; };
+		8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceStatus.swift; sourceTree = "<group>"; };
+		8444A75E2A9A603200F3C1D6 /* iWebITService */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iWebITService; sourceTree = BUILT_PRODUCTS_DIR; };
+		8444A7602A9A603200F3C1D6 /* service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = service.swift; sourceTree = "<group>"; };
+		8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulation.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebITAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebITAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -143,6 +175,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8444A75B2A9A603200F3C1D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84AE46282A84FA3600783806 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -394,6 +433,8 @@
 			isa = PBXGroup;
 			children = (
 				8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */,
+				8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */,
+				8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -406,12 +447,21 @@
 			path = DTOs;
 			sourceTree = "<group>";
 		};
+		8444A75F2A9A603200F3C1D6 /* iWebITService */ = {
+			isa = PBXGroup;
+			children = (
+				8444A7602A9A603200F3C1D6 /* service.swift */,
+			);
+			path = iWebITService;
+			sourceTree = "<group>";
+		};
 		84AE46222A84FA3600783806 = {
 			isa = PBXGroup;
 			children = (
 				8444A6BE2A8FFFB900F3C1D6 /* Shared */,
 				84AE462D2A84FA3600783806 /* iWebITAgent */,
 				84BE9B592A8A9F8A00822D2C /* iWebITSysTray */,
+				8444A75F2A9A603200F3C1D6 /* iWebITService */,
 				84AE462C2A84FA3600783806 /* Products */,
 				8444A6B72A8FA51E00F3C1D6 /* Frameworks */,
 			);
@@ -422,6 +472,7 @@
 			children = (
 				84AE462B2A84FA3600783806 /* iWebITAgent.app */,
 				84BE9B582A8A9F8A00822D2C /* iWebITSysTray.app */,
+				8444A75E2A9A603200F3C1D6 /* iWebITService */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -480,6 +531,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8444A75D2A9A603200F3C1D6 /* iWebITService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8444A7622A9A603200F3C1D6 /* Build configuration list for PBXNativeTarget "iWebITService" */;
+			buildPhases = (
+				8444A75A2A9A603200F3C1D6 /* Sources */,
+				8444A75B2A9A603200F3C1D6 /* Frameworks */,
+				8444A75C2A9A603200F3C1D6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iWebITService;
+			productName = iWebITService;
+			productReference = 8444A75E2A9A603200F3C1D6 /* iWebITService */;
+			productType = "com.apple.product-type.tool";
+		};
 		84AE462A2A84FA3600783806 /* iWebITAgent */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84AE463A2A84FA3700783806 /* Build configuration list for PBXNativeTarget "iWebITAgent" */;
@@ -527,6 +595,9 @@
 				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
+					8444A75D2A9A603200F3C1D6 = {
+						CreatedOnToolsVersion = 14.1;
+					};
 					84AE462A2A84FA3600783806 = {
 						CreatedOnToolsVersion = 14.1;
 					};
@@ -553,6 +624,7 @@
 			targets = (
 				84AE462A2A84FA3600783806 /* iWebITAgent */,
 				84BE9B572A8A9F8A00822D2C /* iWebITSysTray */,
+				8444A75D2A9A603200F3C1D6 /* iWebITService */,
 			);
 		};
 /* End PBXProject section */
@@ -577,6 +649,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8444A75A2A9A603200F3C1D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8444A7682A9A668E00F3C1D6 /* RunShellScript.swift in Sources */,
+				8444A76E2A9A668E00F3C1D6 /* Logger.swift in Sources */,
+				8444A76A2A9A668E00F3C1D6 /* StringExtension.swift in Sources */,
+				8444A7612A9A603200F3C1D6 /* service.swift in Sources */,
+				8444A7652A9A668E00F3C1D6 /* AppInfoManager.swift in Sources */,
+				8444A7692A9A668E00F3C1D6 /* DictionaryExtension.swift in Sources */,
+				8444A76B2A9A668E00F3C1D6 /* NetworkingManager.swift in Sources */,
+				8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */,
+				8444A76C2A9A668E00F3C1D6 /* DataExtension.swift in Sources */,
+				8444A76D2A9A668E00F3C1D6 /* MultipartRequest.swift in Sources */,
+				8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */,
+				8444A7702A9A668E00F3C1D6 /* AppInfo.swift in Sources */,
+				8444A76F2A9A668E00F3C1D6 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84AE46272A84FA3600783806 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +696,7 @@
 				8444A70C2A94EE2700F3C1D6 /* GetSupportDataService.swift in Sources */,
 				84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */,
 				84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */,
+				8444A7712A9BA32500F3C1D6 /* MultipartRequest.swift in Sources */,
 				8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */,
 				8444A6DC2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift in Sources */,
 				8444A74F2A992E4400F3C1D6 /* DataExtension.swift in Sources */,
@@ -647,9 +740,11 @@
 				8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */,
 				8444A7572A9A29BB00F3C1D6 /* SendScreenshotDataService.swift in Sources */,
 				8444A6C92A910A4B00F3C1D6 /* iWebITError.swift in Sources */,
+				8444A7592A9A54A500F3C1D6 /* ServiceStatus.swift in Sources */,
 				8444A6812A8AA26400F3C1D6 /* MenuBarButton.swift in Sources */,
 				8444A74D2A992D0D00F3C1D6 /* MultipartRequest.swift in Sources */,
 				84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */,
+				8444A7752A9BAD2100F3C1D6 /* ImageManipulation.swift in Sources */,
 				8444A7492A992B9300F3C1D6 /* Logger.swift in Sources */,
 				8444A6C82A90026700F3C1D6 /* AppInfo.swift in Sources */,
 				84BE9B5B2A8A9F8A00822D2C /* iWebITSysTrayApp.swift in Sources */,
@@ -659,6 +754,30 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		8444A7632A9A603200F3C1D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R8VHDNRMJJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8444A7642A9A603200F3C1D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R8VHDNRMJJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		84AE46382A84FA3700783806 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -848,7 +967,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -879,7 +997,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -897,6 +1014,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8444A7622A9A603200F3C1D6 /* Build configuration list for PBXNativeTarget "iWebITService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8444A7632A9A603200F3C1D6 /* Debug */,
+				8444A7642A9A603200F3C1D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		84AE46262A84FA3600783806 /* Build configuration list for PBXProject "iWebITAgent-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

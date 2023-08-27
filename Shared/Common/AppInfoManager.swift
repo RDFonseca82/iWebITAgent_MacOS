@@ -18,7 +18,7 @@ class AppInfoManager {
         createAppInfoFileIfNeeded()
     }
     
-    func getValue(key: String) -> Any {
+    func getValue(key: String) -> String {
         do {
             guard let jsonString = filesManager.loadFile(filename: appInfoFileName) else { throw iWebITError.loadingContentError }
             return try jsonString.toJsonObject()[key] ?? "?"
@@ -28,7 +28,7 @@ class AppInfoManager {
         }
     }
     
-    func setValue(key: String, value: Any) {
+    func setValue(key: String, value: String) {
         do {
             var data = try getDecodedAppInfo()
             data[key] = value
@@ -72,8 +72,6 @@ extension AppInfoManager {
           "nexttimealive": "01/01/1900 00:00:00",
           "firstrun": "1",
           "allprepared": "0",
-          "mssqlserver": "0",
-          "servicerunning": "0",
           "net": "0",
           "manualupdate": "0",
           "dolog": "0"
