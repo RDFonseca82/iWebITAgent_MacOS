@@ -30,7 +30,7 @@ class MenuBarButtonService {
         
         Timer.publish(every: 15, on: .main, in: .common)
             .autoconnect()
-            .sink { [weak self] _ in self?.checkforSct()}
+            .sink { [weak self] _ in self?.checkforSct(); self?.checkforSct()}
             .store(in: &cancellables)
         
         Timer.publish(every: 60, on: .main, in: .common)
@@ -41,23 +41,38 @@ class MenuBarButtonService {
     }
     
     func setIconBasedOnStatus() {
+        guard let button = statusItem.button else { return }
         let hasNet = AppInfo.net == "1"
         let serviceRunnin = isServiceRunning()
+        let filesManager = FilesManager.shared
         
-        if !AppInfo.isLoggedIn() && iconState != .inactive {
+        if !AppInfo.isLoggedIn() {
+            if iconState != .inactive {
+                button.image = NSImage(named: "iwebit_inactive")
+                iconState = .inactive
+            }
+            forceUpdateIcon = false
             return
         }
         
-        
         if (!hasNet || !serviceRunnin) && (iconState != .down || forceUpdateIcon) {
+            button.image = filesManager.loadImage(filename: "logo-off.jpg") ?? NSImage(named: "iwebit_down")
+            forceUpdateIcon = false
             
         } else if hasNet && serviceRunnin && (iconState != .up || forceUpdateIcon) {
-            
+            button.image = filesManager.loadImage(filename: "logo-on.jpg") ?? NSImage(named: "iwebit_up")
+            forceUpdateIcon = false
         }
     }
     
     func checkForNewIcon() {
+        guard let currentImage = statusItem.button?.image, iconState == .inactive && !forceUpdateIcon else { return }
         
+        let newImage = FilesManager.shared.loadImage(filename: iconState == .up ? "logo-on.jpg" : "logo-off.jpg")
+        
+        if currentImage.isEqual(to: newImage) {
+            forceUpdateIcon = true
+        }
     }
     
     func checkforSct() {

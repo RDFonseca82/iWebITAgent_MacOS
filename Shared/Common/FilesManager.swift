@@ -5,7 +5,7 @@
 //  Created by Admin on 18/08/2023.
 //
 
-import Foundation
+import SwiftUI
 
 
 class FilesManager {
@@ -47,6 +47,29 @@ class FilesManager {
             } catch {
                 print("Error loading file: \(error)")
             }
+        }
+        return nil
+    }
+    
+    func saveImage(filename: String, content: NSImage) {
+        if let appDirectory = getApplicationSupportDirectory() {
+            let filePath = appDirectory.appendingPathComponent(filename)
+            do {
+                let imageData = content.dataRepresentation()!
+                try imageData.write(to: filePath)
+            } catch {
+                print("Error saving file: \(error)")
+            }
+        }
+    }
+    
+    func loadImage(filename: String) -> NSImage? {
+        if let appDirectory = getApplicationSupportDirectory() {
+            let filePath = appDirectory.appendingPathComponent(filename)
+            do {
+                let imageData = try Data(contentsOf: filePath)
+                return NSImage(data: imageData)
+            } catch { }
         }
         return nil
     }

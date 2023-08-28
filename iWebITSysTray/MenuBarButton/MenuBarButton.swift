@@ -17,7 +17,6 @@ class MenuBarButton {
             return
         }
         
-        button.image = NSImage(named: "iwebit_inactive")
         button.imagePosition = NSControl.ImagePosition.imageOnly
         button.target = self
         button.action = #selector(showMenu(_:))
@@ -29,6 +28,7 @@ class MenuBarButton {
     @objc
     func showMenu(_ sender: AnyObject?) {
         let menu = NSMenu()
+        service.setIconBasedOnStatus()
         if AppInfo.isLoggedIn() {
             addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
             addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)

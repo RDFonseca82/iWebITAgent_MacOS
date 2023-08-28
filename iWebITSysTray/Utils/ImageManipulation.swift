@@ -22,8 +22,8 @@ func joinImages(image1: NSImage, image2: NSImage) -> NSImage {
 }
 
 extension NSImage {
-    func areEqual(_ image2: NSImage) -> Bool {
-        if let data1 = self.dataRepresentation(), let data2 = image2.dataRepresentation() {
+    func isEqual(to image2: NSImage?) -> Bool {
+        if let data1 = self.dataRepresentation(), let data2 = image2?.dataRepresentation() {
             return data1 == data2
         }
         return false

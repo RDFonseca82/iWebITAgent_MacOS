@@ -16,7 +16,7 @@ class SendScreenshotDataService {
         do {
             var multipart = MultipartRequest()
             multipart.add(key: "uniqueId", value: AppInfo.uniqueid)
-            multipart.add(key: "File", fileName: "sct.jpg", fileMimeType: "image/jpg", fileData: convertImageToData(image: screenshot)!)
+            multipart.add(key: "File", fileName: "sct.jpg", fileMimeType: "image/jpg", fileData: screenshot.dataRepresentation()!)
             
             try await NetworkingManager.send(url: Constants.postScreenshotUrl+"?UniqueId=\(AppInfo.uniqueid)", multipart: multipart)
         } catch {
