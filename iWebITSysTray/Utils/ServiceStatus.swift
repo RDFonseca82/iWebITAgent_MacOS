@@ -9,11 +9,19 @@ import SwiftUI
 
 
 func isServiceRunning() -> Bool {
-    let workspace = NSWorkspace.shared
-    let apps = workspace.runningApplications
-    let serviceApps = apps.filter { app in
-        return app.bundleIdentifier == "com.rdfonseca.iWebITService"
+    var isRunning = false
+    let process = Process()
+    process.launchPath = "/bin/ps"
+    process.arguments = ["axc", "-o", "comm"]
+    let pipe = Pipe()
+    process.standardOutput = pipe
+    process.launch()
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    if let output = String(data: data, encoding: .utf8) {
+        if output.contains("iWebITService") {
+            isRunning = true
+        }
     }
-    
-    return !serviceApps.isEmpty
+    process.waitUntilExit()
+    return isRunning
 }

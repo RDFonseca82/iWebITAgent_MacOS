@@ -8,5 +8,8 @@
 import Foundation
 
 struct Constants {
+    static let getDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_api.php"
+    static let createOrSendDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_windows.php"
+    
     static let LOG_TAG = "IWEBIT"
 }

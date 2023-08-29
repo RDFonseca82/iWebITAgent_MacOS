@@ -92,6 +92,8 @@
 		84BE9B5B2A8A9F8A00822D2C /* iWebITSysTrayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B5A2A8A9F8A00822D2C /* iWebITSysTrayApp.swift */; };
 		84BE9B5F2A8A9F8B00822D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */; };
 		84BE9B692A8A9FBF00822D2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */; };
+		84CCA67B2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */; };
+		84CCA67C2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -174,6 +176,7 @@
 		84BE9B5E2A8A9F8B00822D2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84BE9B632A8A9F8B00822D2C /* iWebITSysTray.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITSysTray.entitlements; sourceTree = "<group>"; };
 		84BE9B672A8A9FBC00822D2C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		84CCA67D2A9E19AA008A4CF2 /* iWebITService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITService.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -436,7 +439,6 @@
 			children = (
 				8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */,
 				8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */,
-				8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */,
 				8444A7762A9BD82900F3C1D6 /* NotificationUtils.swift */,
 			);
 			path = Utils;
@@ -453,6 +455,7 @@
 		8444A75F2A9A603200F3C1D6 /* iWebITService */ = {
 			isa = PBXGroup;
 			children = (
+				84CCA67D2A9E19AA008A4CF2 /* iWebITService.entitlements */,
 				8444A7602A9A603200F3C1D6 /* service.swift */,
 			);
 			path = iWebITService;
@@ -511,6 +514,7 @@
 				84BE9B462A893A9E00822D2C /* NetworkingManager.swift */,
 				8444A6D42A92A0DE00F3C1D6 /* RunShellScript.swift */,
 				8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */,
+				8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -664,6 +668,7 @@
 				8444A7692A9A668E00F3C1D6 /* DictionaryExtension.swift in Sources */,
 				8444A76B2A9A668E00F3C1D6 /* NetworkingManager.swift in Sources */,
 				8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */,
+				84CCA67B2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
 				8444A76C2A9A668E00F3C1D6 /* DataExtension.swift in Sources */,
 				8444A76D2A9A668E00F3C1D6 /* MultipartRequest.swift in Sources */,
 				8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */,
@@ -718,6 +723,7 @@
 				8444A6D82A937F2000F3C1D6 /* NavBar.swift in Sources */,
 				8444A7092A94E86A00F3C1D6 /* SuporteScreen.swift in Sources */,
 				8444A6A92A8E7BBC00F3C1D6 /* LoginViewModel.swift in Sources */,
+				84CCA67C2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
 				8444A6E02A93E7DE00F3C1D6 /* HomeViewModel.swift in Sources */,
 				8444A71B2A9619BE00F3C1D6 /* HomeState.swift in Sources */,
 				8444A68B2A8CFA9800F3C1D6 /* AppInfo.swift in Sources */,
@@ -761,6 +767,7 @@
 		8444A7632A9A603200F3C1D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -773,6 +780,7 @@
 		8444A7642A9A603200F3C1D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -972,6 +980,9 @@
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1002,6 +1013,9 @@
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
