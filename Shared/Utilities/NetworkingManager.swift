@@ -43,14 +43,14 @@ class NetworkingManager {
         }
     }
     
-    static func send(url: String, formEncoded: Data? = nil) async throws {
+    static func send(url: String, jsonData: [String:Any]) async throws {
         let url = URL(string: url)!
         
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = formEncoded
+        request.httpBody = formURLEncoded(from: jsonData)
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -85,5 +85,15 @@ class NetworkingManager {
             throw URLError(.badServerResponse)
         }
         return data
+    }
+    
+    static func formURLEncoded(from parameters: [String: Any]) -> Data {
+        var components: [String] = []
+        for (key, value) in parameters {
+            let encodedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let encodedValue = "\(value)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            components.append("\(encodedKey)=\(encodedValue)")
+        }
+        return components.joined(separator: "&").data(using: .utf8)!
     }
 }

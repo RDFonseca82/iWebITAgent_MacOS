@@ -17,7 +17,11 @@ class SendSupportDataService {
             
             let _ = try await NetworkingManager.send(
                 url: Constants.postSupportUrl+"?UniqueID=\(AppInfo.uniqueid)",
-                formEncoded: "Nome=\(nome)&DeviceSupport=\(message)&DeviceSupportDate=\(formatter.string(from: Date()))".data(using: .utf8)!
+                jsonData: [
+                    "Nome": nome,
+                    "DeviceSupport": message,
+                    "DeviceSupportDate": formatter.string(from: Date())
+                ]
             )
         } catch {
             throw iWebITError.httpError

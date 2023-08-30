@@ -10,7 +10,9 @@ import UserNotifications
 
 func requestAuthorization(completionHandler: @escaping (_ granted: Bool, _ error: Error?) -> ()) {
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-        completionHandler(success, error)
+        DispatchQueue.main.async {
+            completionHandler(success, error)
+        }
     }
 }
 

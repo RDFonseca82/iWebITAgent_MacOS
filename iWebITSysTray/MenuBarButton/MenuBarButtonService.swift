@@ -18,19 +18,25 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     private var iconState = IconState.none
     private var forceUpdateIcon: Bool = false
     private var lastLocation: LocationPoint = LocationPoint(latitude: 0, longitude: 0)
+    private var syncingLocation = false
     
     private var cancellables: [AnyCancellable] = []
     
     init(statusItem: NSStatusItem) {
         self.statusItem = statusItem
         super.init()
-        print(CLLocationManager.locationServicesEnabled())
+        
         if (CLLocationManager.locationServicesEnabled()) {
             locationManager = CLLocationManager()
             locationManager!.delegate = self
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
             locationManager!.requestLocation()
         }
+        
+//        let hasScreenAccess = CGPreflightScreenCaptureAccess();
+//        if !hasScreenAccess {
+//            CGRequestScreenCaptureAccess()
+//        }
         
         setIconBasedOnStatus()
         
@@ -119,11 +125,14 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     func sendLocation(newLocation: LocationPoint) {
         Task {
             do {
-                
+                try await SyncLocationDataService.shared.syncLocation(coordinate: newLocation)
                 
                 lastLocation = newLocation
             } catch {
                 
+            }
+            await MainActor.run {
+                syncingLocation = false
             }
         }
     }
@@ -131,7 +140,8 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coordinates = locations.last!.coordinate
         let newLocation = LocationPoint(latitude: coordinates.latitude, longitude: coordinates.longitude)
-        if newLocation != lastLocation {
+        if newLocation != lastLocation && !syncingLocation {
+            syncingLocation = true
             sendLocation(newLocation: newLocation)
             
             print("NEW LOCATION: \(coordinates.latitude) \(coordinates.longitude)")
@@ -139,7 +149,9 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("FAILED: \(error)")
+        if !syncingLocation {
+            print("FAILED: \(error)")
+        }
     }
     
     enum IconState {

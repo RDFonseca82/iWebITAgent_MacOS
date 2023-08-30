@@ -9,8 +9,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         menuBarButton = MenuBarButton()
         
         UNUserNotificationCenter.current().delegate = self
-        requestAuthorization { _, _ in
-            
+        requestAuthorization { granted, _ in
+//            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
+//                NSWorkspace.shared.open(url)
+//            }
         }
     }
     
