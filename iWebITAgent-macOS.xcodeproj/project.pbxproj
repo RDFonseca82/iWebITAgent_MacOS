@@ -83,6 +83,7 @@
 		8444A7752A9BAD2100F3C1D6 /* ImageManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */; };
 		8444A7772A9BD82900F3C1D6 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7762A9BD82900F3C1D6 /* NotificationUtils.swift */; };
 		8465CA722AA0D0E100E339CD /* ServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8465CA712AA0D0E100E339CD /* ServiceUtils.swift */; };
+		84A6E50B2AA10D6D00DF580A /* BatteryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
@@ -177,6 +178,7 @@
 		8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulation.swift; sourceTree = "<group>"; };
 		8444A7762A9BD82900F3C1D6 /* NotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		8465CA712AA0D0E100E339CD /* ServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceUtils.swift; sourceTree = "<group>"; };
+		84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryUtil.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
 		84AE46322A84FA3700783806 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 			children = (
 				84CCA6932A9FBC7C008A4CF2 /* CreateUniqueId.swift */,
 				8465CA712AA0D0E100E339CD /* ServiceUtils.swift */,
+				84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -733,6 +736,7 @@
 				8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */,
 				84CCA67B2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
 				8444A76C2A9A668E00F3C1D6 /* DataExtension.swift in Sources */,
+				84A6E50B2AA10D6D00DF580A /* BatteryUtil.swift in Sources */,
 				84CCA6A22AA0AA44008A4CF2 /* AutoUpdate.swift in Sources */,
 				8444A76D2A9A668E00F3C1D6 /* MultipartRequest.swift in Sources */,
 				8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */,

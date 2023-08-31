@@ -7,7 +7,7 @@
 
 import Foundation
 
-func shell(_ cmd: String) -> String {
+@discardableResult func shell(_ cmd: String) -> String {
     let pipe = Pipe()
     let process = Process()
     process.launchPath = "/bin/sh"

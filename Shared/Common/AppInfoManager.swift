@@ -63,6 +63,7 @@ extension AppInfoManager {
           "companyname": "?",
           "agentversion": "AGENTVERSION",
           "fullsync": "0",
+          "forcefullsync": "0",
           "devicelocation": "0",
           "reboot": "0",
           "shutdown": "0",

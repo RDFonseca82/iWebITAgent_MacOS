@@ -19,6 +19,9 @@ struct AppInfo: Codable {
     @AppInfoProperty("fullsync")
     static var fullsync: String
     
+    @AppInfoProperty("forcefullsync")
+    static var forcefullsync: String
+    
     @AppInfoProperty("devicelocation")
     static var devicelocation: String
     

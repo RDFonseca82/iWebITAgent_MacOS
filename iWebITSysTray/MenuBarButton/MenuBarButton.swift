@@ -86,6 +86,7 @@ class MenuBarButton {
 
     @objc
     func forceSync() {
+        AppInfo.forcefullsync = "1"
         let alert = NSAlert()
         alert.messageText = "Agente iWebIT"
         alert.informativeText = "O serviço irá realizar uma sincronização completa."

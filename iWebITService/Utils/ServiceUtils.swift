@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import IOKit.ps
 
 extension FileManager {
 
@@ -39,3 +39,12 @@ extension Task where Success == Never, Failure == Never {
         try await sleep(nanoseconds: UInt64(seconds*1_000_000_000))
     }
 }
+
+extension String {
+    func toDate(pattern: String = "dd/MM/yyyy HH:mm:ss") -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
+        return dateFormatter.date(from: self) ?? Date(timeIntervalSinceReferenceDate: 0)
+    }
+}
+
