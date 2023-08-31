@@ -29,7 +29,7 @@ class Resource {
     }
 }
 
-class Success: Resource {
+class RSuccess: Resource {
     override init(data: Data) {
         super.init(data: data)
         

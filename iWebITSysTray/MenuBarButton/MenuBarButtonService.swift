@@ -30,7 +30,6 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
             locationManager = CLLocationManager()
             locationManager!.delegate = self
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager!.requestLocation()
         }
         
 //        let hasScreenAccess = CGPreflightScreenCaptureAccess();

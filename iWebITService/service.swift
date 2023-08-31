@@ -10,10 +10,9 @@ import Foundation
 @main
 struct Service {
     static func main() async throws {
-        AppInfo.companyname = "0"
-        while(true) {
-            AppInfo.companyname = String((Int(AppInfo.companyname) ?? 0)+1)
-            try await Task.sleep(nanoseconds: 1_000_000_000)
-        }
+        Constants.shared.LOG_FILE = Constants.shared.LOG_FILE.appendingPathComponent("log_service.log")
+        Constants.shared.OLD_LOG_FILE = Constants.shared.OLD_LOG_FILE.appendingPathComponent("old_log_service.log")
+        
+        await mainLoop()
     }
 }

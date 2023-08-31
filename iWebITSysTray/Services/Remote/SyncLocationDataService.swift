@@ -23,9 +23,8 @@ class SyncLocationDataService {
             "LastConnectDate": formatter.string(from: Date()),
             "AgentVersion": AppInfo.agentversion,
         ]
-        log("HEYEYEY SENDING LOCATION: ")
+        
         let jsonString = String(data: try JSONSerialization.data(withJSONObject: data), encoding: .utf8)!
-        log(jsonString)
         
         let _ = try await NetworkingManager.send(
             url: Constants.createOrSendDeviceInfoUrl,

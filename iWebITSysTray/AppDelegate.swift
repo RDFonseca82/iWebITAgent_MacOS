@@ -6,9 +6,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var menuBarButton: MenuBarButton?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        Constants.shared.LOG_FILE = Constants.shared.LOG_FILE.appendingPathComponent("log_systray.log")
+        Constants.shared.OLD_LOG_FILE = Constants.shared.OLD_LOG_FILE.appendingPathComponent("old_log_systray.log")
+        
         menuBarButton = MenuBarButton()
         
         UNUserNotificationCenter.current().delegate = self
+        
         requestAuthorization { granted, _ in
 //            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
 //                NSWorkspace.shared.open(url)
