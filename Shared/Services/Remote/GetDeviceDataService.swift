@@ -9,8 +9,8 @@ import Foundation
 import Combine
 
 
-class GetDevicetDataService {
-    static let shared = GetDevicetDataService()
+class GetDeviceDataService {
+    static let shared = GetDeviceDataService()
     
     func getDevice() async throws -> DeviceDTO {
         var data: Data
@@ -21,7 +21,7 @@ class GetDevicetDataService {
             throw iWebITError.httpError
         }
         
-        let jsonString = String(decoding: data, as: UTF8.self)
+        let jsonString = String(data: data, encoding: .utf8)!
         
         guard let dtoData = (try? JSONDecoder().decode(DeviceDTO.self, from: jsonString.data(using: .utf8)!)) else {
             throw iWebITError.decodingError

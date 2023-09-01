@@ -96,7 +96,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     func the15sstep() {
         Task {
             do {
-                let deviceInfo = try await GetDevicetDataService.shared.getDevice()
+                let deviceInfo = try await GetDeviceDataService.shared.getDevice()
                 
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)

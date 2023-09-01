@@ -35,12 +35,6 @@ extension FileManager {
 
 }
 
-extension Task where Success == Never, Failure == Never {
-    static func sleep(seconds: Int) async throws {
-        try await sleep(nanoseconds: UInt64(seconds*1_000_000_000))
-    }
-}
-
 func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
     let alert = NSAlert()
     alert.messageText = title

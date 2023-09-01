@@ -62,8 +62,6 @@
 		8444A74D2A992D0D00F3C1D6 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */; };
 		8444A74F2A992E4400F3C1D6 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74E2A992E4400F3C1D6 /* DataExtension.swift */; };
 		8444A7502A992E4400F3C1D6 /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A74E2A992E4400F3C1D6 /* DataExtension.swift */; };
-		8444A7522A9A24F000F3C1D6 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */; };
-		8444A7552A9A275800F3C1D6 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */; };
 		8444A7572A9A29BB00F3C1D6 /* SendScreenshotDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */; };
 		8444A7592A9A54A500F3C1D6 /* ServiceStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */; };
 		8444A7612A9A603200F3C1D6 /* service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7602A9A603200F3C1D6 /* service.swift */; };
@@ -90,6 +88,12 @@
 		84BB23BF2AA1FBF4007EDEF2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23BE2AA1FBF4007EDEF2 /* DateExtension.swift */; };
 		84BB23C02AA1FC06007EDEF2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23BE2AA1FBF4007EDEF2 /* DateExtension.swift */; };
 		84BB23C12AA1FC07007EDEF2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23BE2AA1FBF4007EDEF2 /* DateExtension.swift */; };
+		84BB23C32AA227AF007EDEF2 /* TaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C22AA227AF007EDEF2 /* TaskExtension.swift */; };
+		84BB23C42AA22807007EDEF2 /* TaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C22AA227AF007EDEF2 /* TaskExtension.swift */; };
+		84BB23CA2AA22943007EDEF2 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */; };
+		84BB23CB2AA22946007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */; };
+		84BB23CC2AA22979007EDEF2 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */; };
+		84BB23CD2AA2297B007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
 		84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
 		84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
@@ -173,8 +177,6 @@
 		8444A7472A98E1CB00F3C1D6 /* TakeScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshot.swift; sourceTree = "<group>"; };
 		8444A74C2A992D0D00F3C1D6 /* MultipartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
 		8444A74E2A992E4400F3C1D6 /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
-		8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetDeviceDataService.swift; path = iWebITSysTray/Services/Remote/GetDeviceDataService.swift; sourceTree = SOURCE_ROOT; };
-		8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
 		8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendScreenshotDataService.swift; sourceTree = "<group>"; };
 		8444A7582A9A54A500F3C1D6 /* ServiceStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceStatus.swift; sourceTree = "<group>"; };
 		8444A75E2A9A603200F3C1D6 /* iWebITService */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iWebITService; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +191,9 @@
 		84AE46372A84FA3700783806 /* iWebITAgent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iWebITAgent.entitlements; sourceTree = "<group>"; };
 		84BB23BC2AA1F59A007EDEF2 /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
 		84BB23BE2AA1FBF4007EDEF2 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		84BB23C22AA227AF007EDEF2 /* TaskExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskExtension.swift; sourceTree = "<group>"; };
+		84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
+		84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDeviceDataService.swift; sourceTree = "<group>"; };
 		84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
 		84BE9B3E2A893A9300822D2C /* iWebITError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iWebITError.swift; sourceTree = "<group>"; };
 		84BE9B452A893A9E00822D2C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -363,6 +368,7 @@
 			children = (
 				8444A6C02A8FFFCC00F3C1D6 /* Common */,
 				84BE9B422A893A9E00822D2C /* Utilities */,
+				84BB23C52AA2293A007EDEF2 /* Services */,
 				8444A6BF2A8FFFC500F3C1D6 /* Models */,
 				8444A6CA2A9112EC00F3C1D6 /* Extensions */,
 			);
@@ -403,6 +409,7 @@
 				8444A6CE2A9113D500F3C1D6 /* StringExtension.swift */,
 				8444A74E2A992E4400F3C1D6 /* DataExtension.swift */,
 				84BB23BE2AA1FBF4007EDEF2 /* DateExtension.swift */,
+				84BB23C22AA227AF007EDEF2 /* TaskExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -464,7 +471,6 @@
 			isa = PBXGroup;
 			children = (
 				8444A7532A9A273A00F3C1D6 /* DTOs */,
-				8444A7512A9A24F000F3C1D6 /* GetDeviceDataService.swift */,
 				8444A7562A9A29BB00F3C1D6 /* SendScreenshotDataService.swift */,
 				84CCA6902A9F7FE3008A4CF2 /* SyncLocationDataService.swift */,
 			);
@@ -484,7 +490,6 @@
 		8444A7532A9A273A00F3C1D6 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
-				8444A7542A9A275800F3C1D6 /* DeviceDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -545,6 +550,31 @@
 				84BB23BC2AA1F59A007EDEF2 /* ConstantsExtended.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		84BB23C52AA2293A007EDEF2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84BB23C62AA2293A007EDEF2 /* Remote */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		84BB23C62AA2293A007EDEF2 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				84BB23C72AA2293A007EDEF2 /* DTOs */,
+				84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */,
+			);
+			path = Remote;
+			sourceTree = "<group>";
+		};
+		84BB23C72AA2293A007EDEF2 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */,
+			);
+			path = DTOs;
 			sourceTree = "<group>";
 		};
 		84BE9B3B2A893A9300822D2C /* Common */ = {
@@ -751,8 +781,10 @@
 				84CCA6942A9FBC7C008A4CF2 /* CreateUniqueId.swift in Sources */,
 				84CCA6882A9F5444008A4CF2 /* Utils.swift in Sources */,
 				84BB23BF2AA1FBF4007EDEF2 /* DateExtension.swift in Sources */,
+				84BB23CB2AA22946007EDEF2 /* GetDeviceDataService.swift in Sources */,
 				8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */,
 				84CCA67B2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
+				84BB23C32AA227AF007EDEF2 /* TaskExtension.swift in Sources */,
 				8444A76C2A9A668E00F3C1D6 /* DataExtension.swift in Sources */,
 				84A6E50B2AA10D6D00DF580A /* BatteryUtil.swift in Sources */,
 				84CCA6A22AA0AA44008A4CF2 /* AutoUpdate.swift in Sources */,
@@ -760,6 +792,7 @@
 				8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */,
 				8444A7702A9A668E00F3C1D6 /* AppInfo.swift in Sources */,
 				84CCA6842A9E6EBF008A4CF2 /* PrepareSync.swift in Sources */,
+				84BB23CA2AA22943007EDEF2 /* DeviceDTO.swift in Sources */,
 				8444A76F2A9A668E00F3C1D6 /* Constants.swift in Sources */,
 				84CCA6982A9FCEED008A4CF2 /* ManageUserInfo.swift in Sources */,
 				84CCA68F2A9F5A32008A4CF2 /* Resource.swift in Sources */,
@@ -827,17 +860,18 @@
 				8444A6CD2A91130300F3C1D6 /* DictionaryExtension.swift in Sources */,
 				84BB23C02AA1FC06007EDEF2 /* DateExtension.swift in Sources */,
 				8444A74B2A992B9900F3C1D6 /* RunShellScript.swift in Sources */,
+				84BB23C42AA22807007EDEF2 /* TaskExtension.swift in Sources */,
 				8444A7372A97DCC500F3C1D6 /* MenuBarButtonService.swift in Sources */,
 				8444A7482A98E1CB00F3C1D6 /* TakeScreenshot.swift in Sources */,
-				8444A7522A9A24F000F3C1D6 /* GetDeviceDataService.swift in Sources */,
 				84CCA6912A9F7FE3008A4CF2 /* SyncLocationDataService.swift in Sources */,
 				84CCA6872A9F5444008A4CF2 /* Utils.swift in Sources */,
+				84BB23CD2AA2297B007EDEF2 /* GetDeviceDataService.swift in Sources */,
 				8444A7772A9BD82900F3C1D6 /* NotificationUtils.swift in Sources */,
+				84BB23CC2AA22979007EDEF2 /* DeviceDTO.swift in Sources */,
 				8444A74A2A992B9600F3C1D6 /* NetworkingManager.swift in Sources */,
 				8444A6D32A913AFD00F3C1D6 /* Constants.swift in Sources */,
 				8444A6C42A90007200F3C1D6 /* AppInfoManager.swift in Sources */,
 				8444A7502A992E4400F3C1D6 /* DataExtension.swift in Sources */,
-				8444A7552A9A275800F3C1D6 /* DeviceDTO.swift in Sources */,
 				8444A6D02A9113D500F3C1D6 /* StringExtension.swift in Sources */,
 				8444A7292A97D94300F3C1D6 /* ConstantsExtended.swift in Sources */,
 				8444A6C72A90025300F3C1D6 /* FilesManager.swift in Sources */,

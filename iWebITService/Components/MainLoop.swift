@@ -21,7 +21,7 @@ func mainLoop() async {
         AppInfo.firstrun = "0"
     }
     
-    await prepareAndSendSync("1")
+//    await prepareAndSendSync("1")
 //    updateDeviceInfo()
 //    updateTimers("timesync")
 //    updateTimers("timealive")
