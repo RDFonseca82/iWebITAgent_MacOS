@@ -94,6 +94,8 @@
 		84BB23CB2AA22946007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */; };
 		84BB23CC2AA22979007EDEF2 /* DeviceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */; };
 		84BB23CD2AA2297B007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */; };
+		84BB23D12AA231EB007EDEF2 /* CompanyDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23D02AA231EB007EDEF2 /* CompanyDTO.swift */; };
+		84BB23D32AA2326A007EDEF2 /* GetCompanyDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23D22AA2326A007EDEF2 /* GetCompanyDataService.swift */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
 		84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
 		84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
@@ -194,6 +196,8 @@
 		84BB23C22AA227AF007EDEF2 /* TaskExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskExtension.swift; sourceTree = "<group>"; };
 		84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDTO.swift; sourceTree = "<group>"; };
 		84BB23C92AA2293A007EDEF2 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDeviceDataService.swift; sourceTree = "<group>"; };
+		84BB23D02AA231EB007EDEF2 /* CompanyDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyDTO.swift; sourceTree = "<group>"; };
+		84BB23D22AA2326A007EDEF2 /* GetCompanyDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetCompanyDataService.swift; path = iWebITService/Services/GetCompanyDataService.swift; sourceTree = SOURCE_ROOT; };
 		84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
 		84BE9B3E2A893A9300822D2C /* iWebITError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iWebITError.swift; sourceTree = "<group>"; };
 		84BE9B452A893A9E00822D2C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -499,6 +503,7 @@
 			children = (
 				84BB23BB2AA1F59A007EDEF2 /* Common */,
 				84CCA6922A9FBC40008A4CF2 /* Utils */,
+				84BB23CE2AA231D6007EDEF2 /* Services */,
 				84CCA6952A9FCEB4008A4CF2 /* Components */,
 				84CCA67D2A9E19AA008A4CF2 /* iWebITService.entitlements */,
 				8444A7602A9A603200F3C1D6 /* service.swift */,
@@ -573,6 +578,23 @@
 			isa = PBXGroup;
 			children = (
 				84BB23C82AA2293A007EDEF2 /* DeviceDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		84BB23CE2AA231D6007EDEF2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84BB23CF2AA231DE007EDEF2 /* DTOs */,
+				84BB23D22AA2326A007EDEF2 /* GetCompanyDataService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		84BB23CF2AA231DE007EDEF2 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				84BB23D02AA231EB007EDEF2 /* CompanyDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -769,6 +791,7 @@
 				84CCA6A02AA0A9FA008A4CF2 /* SynchronizeFiles.swift in Sources */,
 				8444A76E2A9A668E00F3C1D6 /* Logger.swift in Sources */,
 				84CCA6A42AA0AA4D008A4CF2 /* UninstallApps.swift in Sources */,
+				84BB23D32AA2326A007EDEF2 /* GetCompanyDataService.swift in Sources */,
 				84BB23BD2AA1F59A007EDEF2 /* ConstantsExtended.swift in Sources */,
 				84CCA69E2AA0A9E6008A4CF2 /* SecondaryLoop.swift in Sources */,
 				8465CA722AA0D0E100E339CD /* ServiceUtils.swift in Sources */,
@@ -796,6 +819,7 @@
 				8444A76F2A9A668E00F3C1D6 /* Constants.swift in Sources */,
 				84CCA6982A9FCEED008A4CF2 /* ManageUserInfo.swift in Sources */,
 				84CCA68F2A9F5A32008A4CF2 /* Resource.swift in Sources */,
+				84BB23D12AA231EB007EDEF2 /* CompanyDTO.swift in Sources */,
 				84CCA69C2AA0A9A8008A4CF2 /* MainLoop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

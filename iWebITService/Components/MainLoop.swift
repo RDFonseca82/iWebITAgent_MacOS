@@ -13,7 +13,7 @@ func mainLoop() async {
     
 //    resetRebootAndShutdownFlags()
     
-//    updateCompanyInfo(firstTime: true)
+    await updateCompanyInfo(onInit: true)
     
 //    synchronizeFiles()
     
@@ -22,10 +22,10 @@ func mainLoop() async {
     }
     
 //    await prepareAndSendSync("1")
-//    updateDeviceInfo()
+    await updateDeviceInfo()
 //    updateTimers("timesync")
 //    updateTimers("timealive")
-//    updateCompanyInfo(firstTime: false)
+    await updateCompanyInfo(onInit: false)
 //    checkAppsToUninstall()
     
     if AppInfo.allprepared != "1" {
@@ -50,8 +50,8 @@ func mainLoop() async {
             
 //            updateTimers("timealive")
             
-//            updateDeviceInfo()
-//            updateCompanyInfo(firstTime: false)
+            await updateDeviceInfo()
+            await updateCompanyInfo(onInit: false)
 //            checkAppsToUninstall()
         }
         

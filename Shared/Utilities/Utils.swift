@@ -29,7 +29,7 @@ func doUntilAsync(_ action: @escaping () async throws -> Bool,_ interval: Int, c
     while repeatAction {
         do {
             repeatAction = try await action()
-        } catch { }
+        } catch { print("\(error)") }
 
         if !repeatAction {
             return
