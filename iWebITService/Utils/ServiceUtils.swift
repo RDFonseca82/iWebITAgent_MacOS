@@ -7,6 +7,7 @@
 
 import Foundation
 import IOKit.ps
+import AppKit
 
 extension FileManager {
 
@@ -40,11 +41,12 @@ extension Task where Success == Never, Failure == Never {
     }
 }
 
-extension String {
-    func toDate(pattern: String = "dd/MM/yyyy HH:mm:ss") -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
-        return dateFormatter.date(from: self) ?? Date(timeIntervalSinceReferenceDate: 0)
-    }
+func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
+    let alert = NSAlert()
+    alert.messageText = title
+    alert.informativeText = text
+    alert.addButton(withTitle: "Ok")
+    alert.alertStyle = alertStyle
+    alert.runModal()
 }
 

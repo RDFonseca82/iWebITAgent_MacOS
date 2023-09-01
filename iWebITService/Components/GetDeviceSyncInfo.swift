@@ -8,7 +8,7 @@
 import Foundation
 
 
-func getDeviceSyncInfo() {
+func getDeviceSyncInfo(_ varsList: [String]) -> [String: Any] {
     let jsonData = shell("system_profiler -json SPApplicationsDataType SPEthernetDataType SPHardwareDataType SPMemoryDataType SPNetworkDataType SPNetworkLocationDataType SPPowerDataType SPSerialATADataType SPSoftwareDataType SPStorageDataType 2>/dev/null").data(using: .utf8)
     
     do {
@@ -16,9 +16,10 @@ func getDeviceSyncInfo() {
             throw iWebITError.decodingError
         }
         
-        print(jsonObject["SPPowerDataType"]!)
+        return jsonObject
     } catch {
-        print("Error parsing JSON: \(error)")
+        log("Error parsing JSON: \(error)", important: true)
     }
+    return [:]
 }
 

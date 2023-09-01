@@ -26,4 +26,9 @@ extension String {
         let data = self.data(using: String.Encoding.utf8)!
         try data.append(fileURL: fileURL)
     }
+    func toDate(pattern: String = "dd/MM/yyyy HH:mm:ss") -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
+        return dateFormatter.date(from: self) ?? Date(timeIntervalSinceReferenceDate: 0)
+    }
 }

@@ -32,6 +32,5 @@ public extension Data {
             try write(to: fileURL, options: .atomic)
             
         }
-        
     }
 }
