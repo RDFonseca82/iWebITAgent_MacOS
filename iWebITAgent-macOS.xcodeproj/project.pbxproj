@@ -111,7 +111,6 @@
 		84CCA68E2A9F5A32008A4CF2 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA68D2A9F5A32008A4CF2 /* Resource.swift */; };
 		84CCA68F2A9F5A32008A4CF2 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA68D2A9F5A32008A4CF2 /* Resource.swift */; };
 		84CCA6912A9F7FE3008A4CF2 /* SyncLocationDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6902A9F7FE3008A4CF2 /* SyncLocationDataService.swift */; };
-		84CCA6942A9FBC7C008A4CF2 /* CreateUniqueId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6932A9FBC7C008A4CF2 /* CreateUniqueId.swift */; };
 		84CCA6982A9FCEED008A4CF2 /* ManageUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6972A9FCEED008A4CF2 /* ManageUserInfo.swift */; };
 		84CCA69A2AA0A7E3008A4CF2 /* GetDeviceSyncInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6992AA0A7E3008A4CF2 /* GetDeviceSyncInfo.swift */; };
 		84CCA69C2AA0A9A8008A4CF2 /* MainLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA69B2AA0A9A8008A4CF2 /* MainLoop.swift */; };
@@ -213,7 +212,6 @@
 		84CCA6852A9F5444008A4CF2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		84CCA68D2A9F5A32008A4CF2 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		84CCA6902A9F7FE3008A4CF2 /* SyncLocationDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncLocationDataService.swift; path = iWebITSysTray/Services/Remote/SyncLocationDataService.swift; sourceTree = SOURCE_ROOT; };
-		84CCA6932A9FBC7C008A4CF2 /* CreateUniqueId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUniqueId.swift; sourceTree = "<group>"; };
 		84CCA6972A9FCEED008A4CF2 /* ManageUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageUserInfo.swift; sourceTree = "<group>"; };
 		84CCA6992AA0A7E3008A4CF2 /* GetDeviceSyncInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDeviceSyncInfo.swift; sourceTree = "<group>"; };
 		84CCA69B2AA0A9A8008A4CF2 /* MainLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLoop.swift; sourceTree = "<group>"; };
@@ -640,7 +638,6 @@
 		84CCA6922A9FBC40008A4CF2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				84CCA6932A9FBC7C008A4CF2 /* CreateUniqueId.swift */,
 				8465CA712AA0D0E100E339CD /* ServiceUtils.swift */,
 				84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */,
 			);
@@ -801,7 +798,6 @@
 				8444A7652A9A668E00F3C1D6 /* AppInfoManager.swift in Sources */,
 				8444A7692A9A668E00F3C1D6 /* DictionaryExtension.swift in Sources */,
 				8444A76B2A9A668E00F3C1D6 /* NetworkingManager.swift in Sources */,
-				84CCA6942A9FBC7C008A4CF2 /* CreateUniqueId.swift in Sources */,
 				84CCA6882A9F5444008A4CF2 /* Utils.swift in Sources */,
 				84BB23BF2AA1FBF4007EDEF2 /* DateExtension.swift in Sources */,
 				84BB23CB2AA22946007EDEF2 /* GetDeviceDataService.swift in Sources */,

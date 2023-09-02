@@ -61,7 +61,7 @@ extension AppInfoManager {
           "idsync": "IDSYNC",
           "idcompany": "?",
           "companyname": "?",
-          "agentversion": "AGENTVERSION",
+          "agentversion": "\(Constants.AGENT_VERSION)",
           "fullsync": "0",
           "forcefullsync": "0",
           "devicelocation": "0",

@@ -11,11 +11,13 @@ import Foundation
 func mainLoop() async {
     log("==> STARTING MAIN LOOP <==")
     
-//    resetRebootAndShutdownFlags()
+    await waitForLogIn()
+    
+    await resetRebootAndShutdownFlags()
     
     await updateCompanyInfo(onInit: true)
     
-//    synchronizeFiles()
+//    await synchronizeFiles()
     
     if AppInfo.firstrun == "1" {
         AppInfo.firstrun = "0"
@@ -23,10 +25,10 @@ func mainLoop() async {
     
 //    await prepareAndSendSync("1")
     await updateDeviceInfo()
-//    updateTimers("timesync")
-//    updateTimers("timealive")
+    updateTimers("timesync")
+    updateTimers("timealive")
     await updateCompanyInfo(onInit: false)
-//    checkAppsToUninstall()
+//    await checkAppsToUninstall()
     
     if AppInfo.allprepared != "1" {
         AppInfo.allprepared = "1"
@@ -38,21 +40,21 @@ func mainLoop() async {
         
         if Date().timeIntervalSince(AppInfo.nexttimesync.toDate()) > 0 {
             log("INSIDE FULL SYNC")
-//            prepareAndSendSync("1")
+//            await prepareAndSendSync("1")
             
-//            updateTimers("timesync")
-//            updateTimers("timealive")
+            updateTimers("timesync")
+            updateTimers("timealive")
         }
         
         if Date().timeIntervalSince(AppInfo.nexttimealive.toDate()) > 0 {
             log("INSIDE MIN SYNC")
-//            prepareAndSendSync("2")
+//            await prepareAndSendSync("2")
             
-//            updateTimers("timealive")
+            updateTimers("timealive")
             
             await updateDeviceInfo()
             await updateCompanyInfo(onInit: false)
-//            checkAppsToUninstall()
+//            await checkAppsToUninstall()
         }
         
         if sixtyLoopClock == 60 {

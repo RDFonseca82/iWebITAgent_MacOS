@@ -8,10 +8,11 @@
 import Foundation
 
 
-func updateDeviceInfo() async {
-    log("UPDATING DEVICE INFO", important: true)
+func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line) async {
+    log("UPDATING DEVICE INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
     await doUntilAsync({
+        ensureUserLoggedIn()
         let deviceInfo = try await GetDeviceDataService.shared.getDevice()
         
         AppInfo.fullsync = String(deviceInfo.fullSync ?? 0)
@@ -25,10 +26,11 @@ func updateDeviceInfo() async {
     }, 60)
 }
 
-func updateCompanyInfo(onInit: Bool) async {
-    log("UPDATING COMPANY INFO", important: true)
+func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineNum: Int = #line) async {
+    log("UPDATING COMPANY INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
     await doUntilAsync({
+        ensureUserLoggedIn()
         let companyInfo = try await GetCompanyDataService.shared.getCompany()
         
         if onInit {
@@ -53,5 +55,34 @@ func updateCompanyInfo(onInit: Bool) async {
         
         return false
     }, 60)
+}
+
+func updateTimers(_ timeType: String) {
+    let timeString = timeType == "timesync" ? AppInfo.timesync : AppInfo.timealive
+    let timeValue = Int(timeString) ?? (timeType == "timesync" ? 120 : 5)
+    
+    let timeDelta = TimeInterval(timeValue) * 60
+    let futureDateString = Date(timeIntervalSinceNow: timeDelta).toString()
+    
+    if timeType == "timesync" {
+        AppInfo.nexttimesync = futureDateString
+    } else {
+        AppInfo.nexttimealive = futureDateString
+    }
+}
+
+func resetRebootAndShutdownFlags() async {
+    if AppInfo.reboot == "1" {
+        await prepareAndSendSync(extraData: [
+            "OperatingSystem_Reboot": "0"
+        ])
+        AppInfo.reboot = "0"
+    }
+    if AppInfo.shutdown == "1" {
+        await prepareAndSendSync(extraData: [
+            "OperatingSystem_ShutDown": "0"
+        ])
+        AppInfo.shutdown = "0"
+    }
 }
 

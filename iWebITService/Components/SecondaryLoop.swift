@@ -14,12 +14,12 @@ func secondaryLoop() {
     log("** Checking For FULLSYNC Request **")
     
     if AppInfo.forcefullsync == "1" || AppInfo.fullsync == "1" {
-//        prepareAndSendSync("1")
+//        await prepareAndSendSync("1")
         AppInfo.forcefullsync = "0"
         AppInfo.fullsync = "0"
         
-//        updateTimers("timesync")
-//        updateTimers("timealive")
+        updateTimers("timesync")
+        updateTimers("timealive")
     }
     
 //    log("** Checking For MANUAL UPDATE **")
@@ -32,15 +32,18 @@ func secondaryLoop() {
     log("** Checking For REBOOT **")
     
     if AppInfo.reboot == "1" {
-        shell("sudo shutdown -r now")
+        log("!!! RESTARTING IN 1 MINUTE !!!")
+        alert(title: "Reinício pendente", text: "O sistema irá reiniciar em 1 minuto.")
+        shell("sudo shutdown -r +1")
     }
     
     log("** Checking For SHUTDOWN **")
     
     if AppInfo.shutdown == "1" {
-        shell("sudo shutdown -h now")
+        log("!!! SHUTTING DOWN IN 1 MINUTE !!!")
+        alert(title: "Encerramento pendente", text: "O sistema irá encerrar em 1 minuto.")
+        shell("sudo shutdown -h +1")
     }
-    
     
     log("====>    END    <====")
     

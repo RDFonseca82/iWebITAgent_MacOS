@@ -6,8 +6,47 @@
 //
 
 import Foundation
-import IOKit.ps
 import AppKit
+import CommonCrypto
+
+func createUniqueId(value: String) -> String {
+    if let valueData = value.data(using: .utf8) {
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        valueData.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(valueData.count), &hash)
+            
+        }
+        return hash.map { String(format: "%02hhx", $0) }.joined()
+        
+    }
+    return ""
+}
+
+func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
+    DispatchQueue.main.async {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = text
+        alert.addButton(withTitle: "Ok")
+        alert.alertStyle = alertStyle
+        alert.runModal()
+    }
+}
+
+func waitForLogIn() async {
+    while !AppInfo.isLoggedIn() {
+        log("NO IDSYNC SPECIFIED, WAITING 120s")
+        try? await Task.sleep(seconds: 120)
+    }
+}
+
+func ensureUserLoggedIn() {
+    if !AppInfo.isLoggedIn() {
+        log("!!! ROLLBACK TO SERVICE START: USER NOT LOGGED IN !!!")
+        fatalError("USER NOT LOGGED IN")
+    }
+}
+
 
 extension FileManager {
 
@@ -33,14 +72,5 @@ extension FileManager {
         return formatter.string(fromByteCount: bytes)
     }
 
-}
-
-func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
-    let alert = NSAlert()
-    alert.messageText = title
-    alert.informativeText = text
-    alert.addButton(withTitle: "Ok")
-    alert.alertStyle = alertStyle
-    alert.runModal()
 }
 

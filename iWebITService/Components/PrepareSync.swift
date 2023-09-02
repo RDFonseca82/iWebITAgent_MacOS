@@ -11,6 +11,7 @@ let fullSyncVars = [""]
 let minSyncVars = [""]
 
 func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = nil) async {
+    ensureUserLoggedIn()
     var data = [String: Any]()
     if typeSync == "1" {
         log("DOING FULL SYNC")

@@ -14,15 +14,6 @@ struct iWebITAgent: App {
     @StateObject var globalVm = GlobalViewModel()
     
     var body: some Scene {
-        WindowGroup("Ocorrências") {
-            HomeWindow()
-                .defaultWindowSize(minWidth: 600, minHeight: 580)
-                .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
-                .environmentObject(globalVm)
-        }
-        .handlesExternalEvents(matching: ["support"])
-        .windowStyle(HiddenTitleBarWindowStyle())
-        
         WindowGroup("Login") {
             LoginWindow()
                 .frame(width: 650, height: 300)
@@ -31,6 +22,15 @@ struct iWebITAgent: App {
         .handlesExternalEvents(matching: ["login"])
         .windowStyle(HiddenTitleBarWindowStyle())
         .iwebitCommands()
+        
+        WindowGroup("Ocorrências") {
+            HomeWindow()
+                .defaultWindowSize(minWidth: 600, minHeight: 580)
+                .handlesExternalEvents(preferring: ["support"], allowing: ["support"])
+                .environmentObject(globalVm)
+        }
+        .handlesExternalEvents(matching: ["support"])
+        .windowStyle(HiddenTitleBarWindowStyle())
         
         WindowGroup {
             SupportDetailWindow()
