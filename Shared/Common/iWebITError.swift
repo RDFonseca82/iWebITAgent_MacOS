@@ -19,6 +19,8 @@ enum iWebITError: Error {
     case loadingContentError
     
     case generalError
+    
+    case incompleteOperation
 }
 
 extension iWebITError: CustomStringConvertible {
@@ -27,7 +29,7 @@ extension iWebITError: CustomStringConvertible {
         case .none:
             return ""
         case .invalidCredentials:
-            return "Email ou palavra-passe incorretos. Por favor, verifique-os e tente novamente."
+            return "O IdSync inserido não existe. Por favor, verifique-o e tente novamente."
         case .httpError:
             return "Sem acesso à internet."
         case .decodingError:
@@ -36,6 +38,8 @@ extension iWebITError: CustomStringConvertible {
             return "Erro ao carregar informação."
         case .generalError:
             return "Oops, ocorreu um erro inesperado."
+        case .incompleteOperation:
+            return "Não foi possível concluir a operação."
         }
     }
 }

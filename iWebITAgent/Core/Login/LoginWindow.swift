@@ -43,7 +43,9 @@ struct LoginWindow: View {
                     Spacer()
                     
                     Button {
-                        loginVm.login()
+                        Task {
+                            await loginVm.login(loginWindow: window!)
+                        }
                     } label: {
                         Text("Entrar")
                             .defaultButtonView()

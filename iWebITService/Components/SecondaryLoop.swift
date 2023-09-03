@@ -8,7 +8,7 @@
 import Foundation
 
 
-func secondaryLoop() {
+func secondaryLoop() async {
     log("====> 2nd  LOOP <====")
     
     log("** Checking For FULLSYNC Request **")
@@ -34,7 +34,8 @@ func secondaryLoop() {
     if AppInfo.reboot == "1" {
         log("!!! RESTARTING IN 1 MINUTE !!!")
         alert(title: "Reinício pendente", text: "O sistema irá reiniciar em 1 minuto.")
-        shell("sudo shutdown -r +1")
+        try? await Task.sleep(seconds: 60)
+        shell("sudo shutdown -r now")
     }
     
     log("** Checking For SHUTDOWN **")
@@ -42,7 +43,8 @@ func secondaryLoop() {
     if AppInfo.shutdown == "1" {
         log("!!! SHUTTING DOWN IN 1 MINUTE !!!")
         alert(title: "Encerramento pendente", text: "O sistema irá encerrar em 1 minuto.")
-        shell("sudo shutdown -h +1")
+        try? await Task.sleep(seconds: 60)
+        shell("sudo shutdown -h now")
     }
     
     log("====>    END    <====")

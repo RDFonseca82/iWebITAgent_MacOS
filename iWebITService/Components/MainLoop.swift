@@ -60,7 +60,7 @@ func mainLoop() async {
         if sixtyLoopClock == 60 {
             sixtyLoopClock = 0
             
-            secondaryLoop()
+            await secondaryLoop()
         }
         
         log("IM ALIVE", printOnly: true)
