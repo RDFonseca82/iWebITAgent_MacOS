@@ -18,13 +18,13 @@ extension View {
     func fillMaxSize() -> some View {
         return self.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    func width(_ width: CGFloat) -> some View {
+    func width(_ width: CGFloat?) -> some View {
         return self.frame(width: width)
     }
-    func height(_ height: CGFloat) -> some View {
+    func height(_ height: CGFloat?) -> some View {
         return self.frame(height: height)
     }
-    func size(_ width: CGFloat, _ height: CGFloat) -> some View {
+    func size(_ width: CGFloat?, _ height: CGFloat?) -> some View {
         return self.frame(width: width, height: height)
     }
     func size(_ size: CGFloat) -> some View {

@@ -13,6 +13,7 @@ struct LoginWindow: View {
     @Environment(\.openURL) var openURL
     
     @StateObject var loginVm = LoginViewModel()
+    @StateObject var toastVm = SnackbarViewModel()
     
     var body: some View {
         HStack {
@@ -30,6 +31,7 @@ struct LoginWindow: View {
                 
                 CustomTextField(placeholder: "IDSync", text: $loginVm.idSync)
                     .padding(.bottom, 10)
+                    .disabled(loginVm.state.isLoading)
                 
                 HStack {
                     Button {
@@ -43,15 +45,32 @@ struct LoginWindow: View {
                     Spacer()
                     
                     Button {
+                        if loginVm.idSync.isBlank() {
+                            toastVm.showSnackbar(
+                                text: "Por favor, insira o IDSync para prosseguir.",
+                                timeMillis: 8000
+                            )
+                            return
+                        }
                         Task {
                             await loginVm.login(loginWindow: window!)
                         }
                     } label: {
-                        Text("Entrar")
-                            .defaultButtonView()
-                            .hoverEffect()
+                        HStack {
+                            if loginVm.state.isLoading {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                                    .controlSize(.small)
+                                    .offset(x: -8)
+                            }
+                            
+                            Text("Entrar")
+                        }
+                        .defaultButtonView()
+                        .hoverEffect()
                     }
                     .buttonStyle(.plain)
+                    .disabled(loginVm.state.isLoading)
 
                 }
             }
@@ -59,5 +78,39 @@ struct LoginWindow: View {
             .padding(.horizontal, 30)
         }
         .background(WindowAccessor(window: $window, shouldCenter: true))
+        .overlay(
+            ZStack {
+                if toastVm.showing {
+                    Toast(vm: toastVm)
+                        .offset(y: 50)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            },
+            alignment: .bottomLeading
+        )
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if AppInfo.isLoggedIn() {
+                    if let window = window {
+                        let workspace = NSWorkspace.shared
+                        
+                        if let deepLinkUrl = URL(string: "iwebit://support") {
+                            workspace.open(deepLinkUrl)
+                        }
+                        window.close()
+                    }
+                }
+            }
+        }
+        .onChange(of: loginVm.state.error) { newError in
+            if newError != .none {
+                toastVm.showSnackbar(
+                    text: newError.description,
+                    timeMillis: 8000
+                )
+            } else {
+                toastVm.close()
+            }
+        }
     }
 }

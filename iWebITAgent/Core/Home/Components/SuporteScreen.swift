@@ -113,6 +113,7 @@ struct SuporteScreen: View {
             }
             .buttonStyle(.plain)
             .disabled(homeVm.state.isLoadingSend)
+            
             Spacer()
         }
         .fillMaxSize()

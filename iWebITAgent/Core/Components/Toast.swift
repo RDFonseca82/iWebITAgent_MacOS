@@ -17,10 +17,8 @@ struct Toast: View {
         HStack {
             Text(vm.text)
                 .padding(10)
-            Spacer()
+                .frame(minWidth: 300, minHeight: 50, alignment: .leading)
         }
-        .frame(minHeight: 50)
-        .width(300)
         .foregroundColor(.theme.background)
         .background(Color(white: colorScheme == .dark ? 0.6 : 0.3))
         .clipShape(RoundedRectangle(cornerRadius: 10))

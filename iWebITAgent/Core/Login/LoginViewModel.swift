@@ -30,13 +30,13 @@ class LoginViewModel: ObservableObject {
             
             while AppInfo.allprepared != "1" {
                 if count >= 120 {
+                    AppInfo.idsync = ""
                     throw iWebITError.incompleteOperation
                 }
                 
                 try? await Task.sleep(seconds: 5)
                 count += 5
             }
-            
             
             await MainActor.run {
                 state = LoginState(error: .none, isLoading: false)

@@ -29,7 +29,7 @@ extension iWebITError: CustomStringConvertible {
         case .none:
             return ""
         case .invalidCredentials:
-            return "O IdSync inserido não existe. Por favor, verifique-o e tente novamente."
+            return "O IDSync inserido não se encontra associado a nenhuma empresa."
         case .httpError:
             return "Sem acesso à internet."
         case .decodingError:
