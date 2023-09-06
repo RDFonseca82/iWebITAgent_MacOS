@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import Combine
 
 
 class GetDeviceDataService {
     static let shared = GetDeviceDataService()
     
-    func getDevice() async throws -> DeviceDTO {
+    func getDevice() throws -> DeviceDTO {
         var data: Data
         
         do {
-            data = try await NetworkingManager.download(url: Constants.getDeviceInfoUrl, parameters: ["UniqueID": AppInfo.uniqueid])
+            data = try NetworkingManager.download(url: Constants.getDeviceInfoUrl, parameters: ["UniqueID": AppInfo.uniqueid])
         } catch {
             throw iWebITError.httpError
         }

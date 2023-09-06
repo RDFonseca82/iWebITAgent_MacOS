@@ -33,10 +33,10 @@ func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
     }
 }
 
-func waitForLogIn() async {
+func waitForLogIn() {
     while !AppInfo.isLoggedIn() {
         log("NO IDSYNC SPECIFIED, WAITING 120s")
-        try? await Task.sleep(seconds: 120)
+        Thread.sleep(forTimeInterval: TimeInterval(120))
     }
 }
 

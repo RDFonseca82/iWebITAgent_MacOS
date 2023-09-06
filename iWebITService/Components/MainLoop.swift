@@ -8,27 +8,27 @@
 import Foundation
 
 
-func mainLoop() async {
+func mainLoop() {
     log("==> STARTING MAIN LOOP <==")
     
-    await waitForLogIn()
+    waitForLogIn()
     
-    await resetRebootAndShutdownFlags()
+    resetRebootAndShutdownFlags()
     
-    await updateCompanyInfo(onInit: true)
+    updateCompanyInfo(onInit: true)
     
-//    await synchronizeFiles()
+    synchronizeFiles()
     
     if AppInfo.firstrun == "1" {
         AppInfo.firstrun = "0"
     }
     
-//    await prepareAndSendSync("1")
-    await updateDeviceInfo()
+//    prepareAndSendSync("1")
+    updateDeviceInfo()
     updateTimers("timesync")
     updateTimers("timealive")
-    await updateCompanyInfo(onInit: false)
-//    await checkAppsToUninstall()
+    updateCompanyInfo(onInit: false)
+//    checkAppsToUninstall()
     
     if AppInfo.allprepared != "1" {
         AppInfo.allprepared = "1"
@@ -52,19 +52,19 @@ func mainLoop() async {
             
             updateTimers("timealive")
             
-            await updateDeviceInfo()
-            await updateCompanyInfo(onInit: false)
+            updateDeviceInfo()
+            updateCompanyInfo(onInit: false)
 //            await checkAppsToUninstall()
         }
         
         if sixtyLoopClock == 60 {
             sixtyLoopClock = 0
             
-            await secondaryLoop()
+            secondaryLoop()
         }
         
         log("IM ALIVE", printOnly: true)
-        try? await Task.sleep(seconds: 5)
+        Thread.sleep(forTimeInterval: TimeInterval(5))
         
         sixtyLoopClock += 5
         

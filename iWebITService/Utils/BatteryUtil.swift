@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import IOKit.ps
 
 
 public class InternalBattery {

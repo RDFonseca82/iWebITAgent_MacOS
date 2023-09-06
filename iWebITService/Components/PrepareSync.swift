@@ -10,7 +10,7 @@ import Foundation
 let fullSyncVars = [""]
 let minSyncVars = [""]
 
-func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = nil) async {
+func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = nil) {
     ensureUserLoggedIn()
     var data = [String: Any]()
     if typeSync == "1" {
@@ -51,8 +51,8 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     }
     
     log("PREPARED TO SEND DATA")
-    await doUntilAsync({
-        try await NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, jsonData: ["json": String(data: jsonData, encoding: .utf8)!])
+    doUntil({
+        try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, jsonData: ["json": String(data: jsonData, encoding: .utf8)!])
         return false
     }, 60)
     

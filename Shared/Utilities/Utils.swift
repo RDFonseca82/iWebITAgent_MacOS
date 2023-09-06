@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-func doUntil(_ action: @escaping () throws -> Bool,_ interval: Int, callerName: String = #function, callerLineNum: Int = #line) {
+func doUntil(_ action: () throws -> Bool,_ interval: Int, callerName: String = #function, callerLineNum: Int = #line) {
     var repeatAction = true
 
     while repeatAction {
         do {
             repeatAction = try action()
-        } catch { }
+        } catch { print("\(error)") }
 
         if !repeatAction {
             return
@@ -23,24 +23,8 @@ func doUntil(_ action: @escaping () throws -> Bool,_ interval: Int, callerName: 
         Thread.sleep(forTimeInterval: TimeInterval(interval))
     }
 }
-func doUntilAsync(_ action: @escaping () async throws -> Bool,_ interval: Int, callerName: String = #function, callerLineNum: Int = #line) async {
-    var repeatAction = true
 
-    while repeatAction {
-        do {
-            repeatAction = try await action()
-        } catch { print("\(error)") }
-
-        if !repeatAction {
-            return
-        }
-
-        log("RETRYING IN \(interval)s", important: true, callerName: callerName, callerLineNum: callerLineNum)
-        try? await Task.sleep(seconds: interval)
-    }
-}
-
-func doUntilWithReturn(action: @escaping () throws -> Resource, interval: Int) -> Resource {
+func doUntilWithReturn<T>(_ action: () throws -> T,_ interval: Int) -> T {
 
     while true {
         do {

@@ -8,12 +8,12 @@
 import Foundation
 
 
-func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line) async {
+func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line) {
     log("UPDATING DEVICE INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
-    await doUntilAsync({
+    doUntil({
         ensureUserLoggedIn()
-        let deviceInfo = try await GetDeviceDataService.shared.getDevice()
+        let deviceInfo = try GetDeviceDataService.shared.getDevice()
         
         AppInfo.fullsync = String(deviceInfo.fullSync ?? 0)
         AppInfo.devicelocation = String(deviceInfo.deviceLocation ?? 0)
@@ -26,12 +26,12 @@ func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line
     }, 60)
 }
 
-func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineNum: Int = #line) async {
+func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineNum: Int = #line) {
     log("UPDATING COMPANY INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
-    await doUntilAsync({
+    doUntil({
         ensureUserLoggedIn()
-        let companyInfo = try await GetCompanyDataService.shared.getCompany()
+        let companyInfo = try GetCompanyDataService.shared.getCompany()
         
         if onInit {
             let idCompany = companyInfo.idCompany!
@@ -50,7 +50,29 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
             
             log("GENERATED UNIQUE ID: \(uniqueId)")
         } else {
+            AppInfo.idcompany = companyInfo.idCompany!
+            AppInfo.companyname = companyInfo.company!
             
+            let newVersion = companyInfo.agentVersion!.split(separator: ".").compactMap { Int($0) }
+            let currentVersion = AppInfo.agentversion.split(separator: ".").compactMap { Int($0) }
+
+            let minLength = min(newVersion.count, currentVersion.count)
+            var newVersionAvailable = false
+
+            for i in 0..<minLength {
+                if newVersion[i] > currentVersion[i] {
+                    newVersionAvailable = true
+                    break
+                } else if newVersion[i] < currentVersion[i] {
+                    break
+
+                }
+            }
+            
+            if newVersionAvailable {
+                
+//                updateToNewVersion(false)
+            }
         }
         
         return false
@@ -71,15 +93,15 @@ func updateTimers(_ timeType: String) {
     }
 }
 
-func resetRebootAndShutdownFlags() async {
+func resetRebootAndShutdownFlags()  {
     if AppInfo.reboot == "1" {
-        await prepareAndSendSync(extraData: [
+        prepareAndSendSync(extraData: [
             "OperatingSystem_Reboot": "0"
         ])
         AppInfo.reboot = "0"
     }
     if AppInfo.shutdown == "1" {
-        await prepareAndSendSync(extraData: [
+        prepareAndSendSync(extraData: [
             "OperatingSystem_ShutDown": "0"
         ])
         AppInfo.shutdown = "0"

@@ -33,4 +33,13 @@ struct CompanyDTO: Codable {
         case agentVersion = "AgentVersion"
         case agentDownload = "AgentDownload"
     }
+    
+    func getFileSyncCorrespondingLink(corresponding: FileSyncJsonCorresponding) -> String? {
+        switch corresponding {
+        case .logoOn:
+            return logoOnline
+        case .logoOff:
+            return logoOffline
+        }
+    }
 }

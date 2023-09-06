@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct Service {
-    static func main() async throws {
+    static func main() throws {
         Constants.shared.LOG_FILE = Constants.shared.LOG_FILE.appendingPathComponent("log_service.log")
         Constants.shared.OLD_LOG_FILE = Constants.shared.OLD_LOG_FILE.appendingPathComponent("old_log_service.log")
-        await mainLoop()
+        synchronizeFiles()
+//        mainLoop()
     }
 }
