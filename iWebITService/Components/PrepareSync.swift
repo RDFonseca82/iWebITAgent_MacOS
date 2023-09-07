@@ -15,7 +15,7 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     var data = [String: Any]()
     if typeSync == "1" {
         log("DOING FULL SYNC")
-//        data = getDeviceSyncInfo(fullSyncVars)
+        data = getDeviceSyncInfo(fullSyncVars)
         
     } else if typeSync == "2" {
         log("DOING MIN SYNC")

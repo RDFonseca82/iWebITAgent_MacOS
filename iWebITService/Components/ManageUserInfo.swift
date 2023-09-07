@@ -70,7 +70,6 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
             }
             
             if newVersionAvailable {
-                
 //                updateToNewVersion(false)
             }
         }
