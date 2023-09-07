@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#Configuration Variables and Parameters
+# Exports
 
-#Parameters
 export LC_CTYPE=C
 export LANG=C
 
+# Parameters
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 TARGET_DIRECTORY="$SCRIPTPATH/target"
 PRODUCT=${1}
@@ -28,7 +28,7 @@ function printUsage() {
 
 }
 
-#Argument validation
+# Argument validation
 if [[ "$1" == "-h" ||  "$1" == "--help" ]]; then
     printUsage
     exit 1
@@ -50,6 +50,7 @@ else
     exit 1
 fi
 
+# Functions
 go_to_dir() {
     pushd $1 >/dev/null 2>&1
 }
@@ -161,13 +162,6 @@ function createInstaller() {
     log_info "Application installer generation process started.(3 Steps)"
     buildPackage
     buildProduct ${PRODUCT}-macos-installer-x64-${VERSION}.pkg
-#    while true; do
-#        read -p "Do you wish to sign the installer (You should have Apple Developer Certificate) [y/N]?" answer
-#        [[ $answer == "y" || $answer == "Y" ]] && FLAG=true && break
-#        [[ $answer == "n" || $answer == "N" || $answer == "" ]] && log_info "Skipped signing process." && FLAG=false && break
-#        echo "Please answer with 'y' or 'n'"
-#    done
-#    [[ $FLAG == "true" ]] && signProduct ${PRODUCT}-macos-installer-x64-${VERSION}.pkg
     log_info "Application installer generation steps finished."
 }
 
