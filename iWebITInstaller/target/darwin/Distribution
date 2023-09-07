@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<installer-script minSpecVersion="1.000000">
+    <title>iWebITAgent</title>
+    <!-- <background mime-type="image/png" file="banner.png" scaling="proportional"/>
+    <background-darkAqua mime-type="image/png" file="banner.png" scaling="proportional"/> -->
+    <welcome file="welcome.html" mime-type="text/html" />
+    <conclusion file="conclusion.html" mime-type="text/html" />
+    <options customize="never" allow-external-scripts="no"/>
+    <domains enable_localSystem="true" />
+    <installation-check script="installCheck();"/>
+    <script>
+function installCheck() {
+    if(!(system.compareVersions(system.version.ProductVersion, '10.6.0') >= 0)) {
+        my.result.title = 'Unable to install';
+        my.result.message = 'iWebITAgent requires Mac OS X 10.6 or later.';
+        my.result.type = 'Fatal';
+        return false;
+    }
+    if(system.files.fileExistsAtPath('/Library/Application Support/iWebITAgent')) {
+        my.result.title = 'Previous Installation Detected';
+        my.result.message = 'A previous installation of iWebITAgent exists at /Library/Application Support/iWebITAgent. This installer will remove the previous installation prior to installing. Please back up any data before proceeding.';
+        my.result.type = 'Warning';
+        return false;
+    }
+    return true;
+}
+    </script>
+    <choices-outline>
+        <line choice="iWebITAgent"/>
+    </choices-outline>
+    <choice id="iWebITAgent" title="iWebITAgent">
+        <pkg-ref id="iWebITAgent.pkg"/>
+    </choice>
+    <pkg-ref id="iWebITAgent.pkg" auth="Root">iWebITAgent.pkg</pkg-ref>
+</installer-script>

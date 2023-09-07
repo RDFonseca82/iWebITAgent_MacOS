@@ -207,7 +207,7 @@
 		84BB23DC2AA8AE52007EDEF2 /* FileSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSync.swift; sourceTree = "<group>"; };
 		84BB23DE2AA8BA10007EDEF2 /* NetworkingManagerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManagerExt.swift; sourceTree = "<group>"; };
 		84BB23E12AA8CC38007EDEF2 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetDeviceDataService.swift; path = iWebITService/Services/GetDeviceDataService.swift; sourceTree = SOURCE_ROOT; };
-		84BB24342AAA0A4E007EDEF2 /* build-macos-x64.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-macos-x64.sh"; sourceTree = "<group>"; };
+		84BB24342AAA0A4E007EDEF2 /* build-installer.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-installer.sh"; sourceTree = "<group>"; };
 		84BB243A2AAA0A4E007EDEF2 /* build-macos-x64.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-macos-x64.sh"; sourceTree = "<group>"; };
 		84BB243B2AAA0A4E007EDEF2 /* uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = uninstall.sh; sourceTree = "<group>"; };
 		84BB243E2AAA0A4E007EDEF2 /* conclusion.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = conclusion.html; sourceTree = "<group>"; };
@@ -649,7 +649,7 @@
 		84BB24332AAA0A4E007EDEF2 /* iWebITInstaller */ = {
 			isa = PBXGroup;
 			children = (
-				84BB24342AAA0A4E007EDEF2 /* build-macos-x64.sh */,
+				84BB24342AAA0A4E007EDEF2 /* build-installer.sh */,
 				84BB24352AAA0A4E007EDEF2 /* target */,
 				84BB24492AAA0A4E007EDEF2 /* darwin */,
 				84BB24522AAA0A4E007EDEF2 /* application */,
