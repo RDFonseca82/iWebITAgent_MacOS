@@ -1,0 +1,12 @@
+name: Build iWebIT Agent MacOS
+
+on: push
+
+jobs:
+    build:
+        runs-on: macos-latest
+
+        steps:
+
+        - name: Checkout iWebIT Agent Repository
+          uses: actions/checkout@v2

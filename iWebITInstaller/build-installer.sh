@@ -107,7 +107,7 @@ copyBuildDirectory() {
     rm -rf "${TARGET_DIRECTORY}/darwinpkg"
     mkdir -p "${TARGET_DIRECTORY}/darwinpkg"
 
-    #Copy product to /Library/Application Support/Product
+    # Copy product to /Library/Application Support/Product
     mkdir -p "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
     cp -a "$SCRIPTPATH"/application/. "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
     chmod -R 755 "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"

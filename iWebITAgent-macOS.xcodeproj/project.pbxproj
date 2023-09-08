@@ -40,7 +40,6 @@
 		8444A6DC2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6DB2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift */; };
 		8444A6DE2A93AC0000F3C1D6 /* OpenWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6DD2A93AC0000F3C1D6 /* OpenWindow.swift */; };
 		8444A6E02A93E7DE00F3C1D6 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A6DF2A93E7DE00F3C1D6 /* HomeViewModel.swift */; };
-		8444A7012A93EE9F00F3C1D6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 8444A7002A93EE9F00F3C1D6 /* SwiftUIIntrospect */; };
 		8444A7052A94CC9900F3C1D6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7042A94CC9900F3C1D6 /* MessageView.swift */; };
 		8444A7072A94CD7E00F3C1D6 /* FormatDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7062A94CD7E00F3C1D6 /* FormatDate.swift */; };
 		8444A7092A94E86A00F3C1D6 /* SuporteScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7082A94E86A00F3C1D6 /* SuporteScreen.swift */; };
@@ -101,6 +100,7 @@
 		84BB23DF2AA8BA10007EDEF2 /* NetworkingManagerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23DE2AA8BA10007EDEF2 /* NetworkingManagerExt.swift */; };
 		84BB23E02AA8BB93007EDEF2 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
 		84BB23E22AA8CC38007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23E12AA8CC38007EDEF2 /* GetDeviceDataService.swift */; };
+		84BB24562AAA1C97007EDEF2 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
 		84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
 		84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
@@ -207,24 +207,6 @@
 		84BB23DC2AA8AE52007EDEF2 /* FileSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSync.swift; sourceTree = "<group>"; };
 		84BB23DE2AA8BA10007EDEF2 /* NetworkingManagerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManagerExt.swift; sourceTree = "<group>"; };
 		84BB23E12AA8CC38007EDEF2 /* GetDeviceDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetDeviceDataService.swift; path = iWebITService/Services/GetDeviceDataService.swift; sourceTree = SOURCE_ROOT; };
-		84BB24342AAA0A4E007EDEF2 /* build-installer.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-installer.sh"; sourceTree = "<group>"; };
-		84BB243A2AAA0A4E007EDEF2 /* build-macos-x64.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-macos-x64.sh"; sourceTree = "<group>"; };
-		84BB243B2AAA0A4E007EDEF2 /* uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = uninstall.sh; sourceTree = "<group>"; };
-		84BB243E2AAA0A4E007EDEF2 /* conclusion.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = conclusion.html; sourceTree = "<group>"; };
-		84BB243F2AAA0A4E007EDEF2 /* uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = uninstall.sh; sourceTree = "<group>"; };
-		84BB24402AAA0A4E007EDEF2 /* welcome.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = welcome.html; sourceTree = "<group>"; };
-		84BB24412AAA0A4E007EDEF2 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		84BB24422AAA0A4E007EDEF2 /* Distribution */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Distribution; sourceTree = "<group>"; };
-		84BB24442AAA0A4E007EDEF2 /* postinstall */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = postinstall; sourceTree = "<group>"; };
-		84BB24462AAA0A4E007EDEF2 /* iWebITAgent.pkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = iWebITAgent.pkg; sourceTree = "<group>"; };
-		84BB24482AAA0A4E007EDEF2 /* iWebITAgent-macos-installer-x64-2.4.7.0.pkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iWebITAgent-macos-installer-x64-2.4.7.0.pkg"; sourceTree = "<group>"; };
-		84BB244B2AAA0A4E007EDEF2 /* conclusion.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = conclusion.html; sourceTree = "<group>"; };
-		84BB244C2AAA0A4E007EDEF2 /* uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = uninstall.sh; sourceTree = "<group>"; };
-		84BB244D2AAA0A4E007EDEF2 /* welcome.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = welcome.html; sourceTree = "<group>"; };
-		84BB244E2AAA0A4E007EDEF2 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		84BB244F2AAA0A4E007EDEF2 /* Distribution */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Distribution; sourceTree = "<group>"; };
-		84BB24512AAA0A4E007EDEF2 /* postinstall */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = postinstall; sourceTree = "<group>"; };
-		84BB24532AAA0A4E007EDEF2 /* build-macos-x64.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-macos-x64.sh"; sourceTree = "<group>"; };
 		84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantsExtended.swift; sourceTree = "<group>"; };
 		84BE9B3E2A893A9300822D2C /* iWebITError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iWebITError.swift; sourceTree = "<group>"; };
 		84BE9B452A893A9E00822D2C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -261,7 +243,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8444A7012A93EE9F00F3C1D6 /* SwiftUIIntrospect in Frameworks */,
+				84BB24562AAA1C97007EDEF2 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +530,6 @@
 				84AE462D2A84FA3600783806 /* iWebITAgent */,
 				84BE9B592A8A9F8A00822D2C /* iWebITSysTray */,
 				8444A75F2A9A603200F3C1D6 /* iWebITService */,
-				84BB24332AAA0A4E007EDEF2 /* iWebITInstaller */,
 				84AE462C2A84FA3600783806 /* Products */,
 				8444A6B72A8FA51E00F3C1D6 /* Frameworks */,
 			);
@@ -644,143 +625,6 @@
 				84BB23DC2AA8AE52007EDEF2 /* FileSync.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		84BB24332AAA0A4E007EDEF2 /* iWebITInstaller */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24342AAA0A4E007EDEF2 /* build-installer.sh */,
-				84BB24352AAA0A4E007EDEF2 /* target */,
-				84BB24492AAA0A4E007EDEF2 /* darwin */,
-				84BB24522AAA0A4E007EDEF2 /* application */,
-			);
-			path = iWebITInstaller;
-			sourceTree = "<group>";
-		};
-		84BB24352AAA0A4E007EDEF2 /* target */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24362AAA0A4E007EDEF2 /* darwinpkg */,
-				84BB243C2AAA0A4E007EDEF2 /* darwin */,
-				84BB24452AAA0A4E007EDEF2 /* package */,
-				84BB24472AAA0A4E007EDEF2 /* pkg */,
-			);
-			path = target;
-			sourceTree = "<group>";
-		};
-		84BB24362AAA0A4E007EDEF2 /* darwinpkg */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24372AAA0A4E007EDEF2 /* Library */,
-			);
-			path = darwinpkg;
-			sourceTree = "<group>";
-		};
-		84BB24372AAA0A4E007EDEF2 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24382AAA0A4E007EDEF2 /* Application Support */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		84BB24382AAA0A4E007EDEF2 /* Application Support */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24392AAA0A4E007EDEF2 /* iWebITAgent */,
-			);
-			path = "Application Support";
-			sourceTree = "<group>";
-		};
-		84BB24392AAA0A4E007EDEF2 /* iWebITAgent */ = {
-			isa = PBXGroup;
-			children = (
-				84BB243A2AAA0A4E007EDEF2 /* build-macos-x64.sh */,
-				84BB243B2AAA0A4E007EDEF2 /* uninstall.sh */,
-			);
-			path = iWebITAgent;
-			sourceTree = "<group>";
-		};
-		84BB243C2AAA0A4E007EDEF2 /* darwin */ = {
-			isa = PBXGroup;
-			children = (
-				84BB243D2AAA0A4E007EDEF2 /* Resources */,
-				84BB24422AAA0A4E007EDEF2 /* Distribution */,
-				84BB24432AAA0A4E007EDEF2 /* scripts */,
-			);
-			path = darwin;
-			sourceTree = "<group>";
-		};
-		84BB243D2AAA0A4E007EDEF2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				84BB243E2AAA0A4E007EDEF2 /* conclusion.html */,
-				84BB243F2AAA0A4E007EDEF2 /* uninstall.sh */,
-				84BB24402AAA0A4E007EDEF2 /* welcome.html */,
-				84BB24412AAA0A4E007EDEF2 /* LICENSE.txt */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		84BB24432AAA0A4E007EDEF2 /* scripts */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24442AAA0A4E007EDEF2 /* postinstall */,
-			);
-			path = scripts;
-			sourceTree = "<group>";
-		};
-		84BB24452AAA0A4E007EDEF2 /* package */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24462AAA0A4E007EDEF2 /* iWebITAgent.pkg */,
-			);
-			path = package;
-			sourceTree = "<group>";
-		};
-		84BB24472AAA0A4E007EDEF2 /* pkg */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24482AAA0A4E007EDEF2 /* iWebITAgent-macos-installer-x64-2.4.7.0.pkg */,
-			);
-			path = pkg;
-			sourceTree = "<group>";
-		};
-		84BB24492AAA0A4E007EDEF2 /* darwin */ = {
-			isa = PBXGroup;
-			children = (
-				84BB244A2AAA0A4E007EDEF2 /* Resources */,
-				84BB244F2AAA0A4E007EDEF2 /* Distribution */,
-				84BB24502AAA0A4E007EDEF2 /* scripts */,
-			);
-			path = darwin;
-			sourceTree = "<group>";
-		};
-		84BB244A2AAA0A4E007EDEF2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				84BB244B2AAA0A4E007EDEF2 /* conclusion.html */,
-				84BB244C2AAA0A4E007EDEF2 /* uninstall.sh */,
-				84BB244D2AAA0A4E007EDEF2 /* welcome.html */,
-				84BB244E2AAA0A4E007EDEF2 /* LICENSE.txt */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		84BB24502AAA0A4E007EDEF2 /* scripts */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24512AAA0A4E007EDEF2 /* postinstall */,
-			);
-			path = scripts;
-			sourceTree = "<group>";
-		};
-		84BB24522AAA0A4E007EDEF2 /* application */ = {
-			isa = PBXGroup;
-			children = (
-				84BB24532AAA0A4E007EDEF2 /* build-macos-x64.sh */,
-			);
-			path = application;
 			sourceTree = "<group>";
 		};
 		84BE9B3B2A893A9300822D2C /* Common */ = {
@@ -880,7 +724,7 @@
 			);
 			name = iWebIT;
 			packageProductDependencies = (
-				8444A7002A93EE9F00F3C1D6 /* SwiftUIIntrospect */,
+				84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */,
 			);
 			productName = "iWebITAgent-macOS";
 			productReference = 84AE462B2A84FA3600783806 /* iWebIT.app */;
@@ -934,7 +778,7 @@
 			);
 			mainGroup = 84AE46222A84FA3600783806;
 			packageReferences = (
-				8444A6FF2A93EE9F00F3C1D6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 84AE462C2A84FA3600783806 /* Products */;
 			projectDirPath = "";
@@ -1258,7 +1102,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITAgent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebIT;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1266,7 +1111,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITAgent;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1288,7 +1133,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITAgent/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebIT;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1296,7 +1142,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITAgent;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1318,6 +1164,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
@@ -1351,6 +1199,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iWebITSysTray/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iWebITAgent;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
@@ -1411,20 +1261,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8444A6FF2A93EE9F00F3C1D6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+		84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
 			requirement = {
-				branch = master;
+				branch = main;
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8444A7002A93EE9F00F3C1D6 /* SwiftUIIntrospect */ = {
+		84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8444A6FF2A93EE9F00F3C1D6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			package = 84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
