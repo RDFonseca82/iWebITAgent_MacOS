@@ -1,24 +1,26 @@
 #!/bin/bash
 
-#Custermize this for your application
-#APPLICATION_FILE_PATH=bin/wso2server.sh
+PRODUCT_DIR="__PRODUCT_DIR__"
+# mv -f "/Library/Application Support/iWebITAgent/iWebIT" "/Library/Application Support/iWebITAgent/iWebIT.app"
+# mv -f "/Library/Application Support/iWebITAgent/iWebITAgent" "/Library/Application Support/iWebITAgent/iWebITAgent.app"
+osascript -e 'display alert "Post Installation __PRODUCT_DIR__"'
 
-#Parameters
-#PRODUCT_HOME=__PRODUCT_DIR__
+# sudo launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
-#echo "Post installation process started"
+mv -f "${PRODUCT_DIR}/iWebIT" "${PRODUCT_DIR}/iWebIT.app"
+mv -f "${PRODUCT_DIR}/iWebITAgent" "${PRODUCT_DIR}/iWebITAgent.app"
 
-#Change permissions in home directory
-#echo "Change permissions in product home"
-#cd ${PRODUCT_HOME}
-#chmod -R 755 .
-#[ -d /usr/local/bin ] || mkdir /usr/local/bin
+mv -f "${PRODUCT_DIR}/com.rdfonseca.iWebITSysTray.plist" "/Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist"
+mv -f "${PRODUCT_DIR}/com.rdfonseca.iWebITService.plist" "/Library/LaunchDaemons/com.rdfonseca.iWebITService.plist"
+chown root "/Library/LaunchDaemons/com.rdfonseca.iWebITService.plist"
 
-#Add application shortcut to /usr/local/bin
-#rm -f /usr/local/bin/__PRODUCT__-__VERSION__
-#ln -s ${PRODUCT_HOME}/${APPLICATION_FILE_PATH} /usr/local/bin/__PRODUCT__-__VERSION__
-#echo "Post installation process finished"
+mkdir "${PRODUCT_DIR}/Logs"
+chmod -R 777 "${PRODUCT_DIR}/Logs"
 
-osascript -e 'display alert "HELLO world"'
+launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
-sudo launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
+su - logname
+
+launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist
+
+exit 0

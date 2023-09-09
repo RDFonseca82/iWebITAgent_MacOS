@@ -9,7 +9,7 @@ export LANG=C
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 TARGET_DIRECTORY="$SCRIPTPATH/target"
 PRODUCT="iWebITAgent"
-VERSION="2.4.7.0"
+VERSION="2.4.8.0"
 PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 DATE=`date +%Y-%m-%d`
 TIME=`date +%H:%M:%S`
@@ -94,6 +94,8 @@ copyBuildDirectory() {
     mkdir -p "${TARGET_DIRECTORY}/darwinpkg"
     cp -a "$SCRIPTPATH"/application/. "${TARGET_DIRECTORY}/darwinpkg/"
     chmod -R 777 "${TARGET_DIRECTORY}/darwinpkg"
+    
+    cp -a "$SCRIPTPATH"/payload/. "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
 
     rm -rf "${TARGET_DIRECTORY}/package"
     mkdir -p "${TARGET_DIRECTORY}/package"
@@ -141,16 +143,6 @@ function createUninstaller(){
     cp "$SCRIPTPATH/darwin/Resources/uninstall.sh" "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
 }
 
-#Pre-requisites
-command -v mvn -v >/dev/null 2>&1 || {
-    log_warn "Apache Maven was not found. Please install Maven first."
-    # exit 1
-}
-command -v ballerina >/dev/null 2>&1 || {
-    log_warn "Ballerina was not found. Please install ballerina first."
-    # exit 1
-}
-
 #Main script
 log_info "\033[1;97mInstaller generating process started.\033[m"
 
@@ -160,9 +152,7 @@ createUninstaller
 setPlaceholderValue
 createInstaller
 
-#rm -rf "./iWebITInstaller/application"
-#mkdir -p "./iWebITInstaller/application/Library/Application Support/iWebITAgent"
-
+rm -rf "./iWebITInstaller/application"
 
 log_info "\033[1;97mInstaller generating process finished.\033[m"
 exit 0
