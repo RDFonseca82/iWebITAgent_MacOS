@@ -8,41 +8,24 @@ export LANG=C
 # Parameters
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 TARGET_DIRECTORY="$SCRIPTPATH/target"
-PRODUCT=${1}
-VERSION=${2}
+PRODUCT="iWebITAgent"
+VERSION="2.4.7.0"
 PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 DATE=`date +%Y-%m-%d`
 TIME=`date +%H:%M:%S`
 LOG_PREFIX="\033[97m[$DATE $TIME]\033[0m"
 
-
-function printUsage() {
-  echo -e "\033[1mUsage:\033[0m"
-  echo "$0 [APPLICATION_NAME] [APPLICATION_VERSION]"
-  echo
-  echo -e "\033[1mOptions:\033[0m"
-  echo "  -h (--help)"
-  echo
-  echo -e "\033[1mExample::\033[0m"
-  echo "$0 wso2am 2.6.0"
-
-}
-
 # Argument validation
-if [[ "$1" == "-h" ||  "$1" == "--help" ]]; then
-    printUsage
-    exit 1
-fi
-if [ -z "$1" ]; then
+if [ -z "${PRODUCT}" ]; then
     echo "Please enter a valid application name for your application"
     echo
     printUsage
     exit 1
 else
-    echo -e "\033[92m|>\033[m \033[96mApplication Name :\033[m    $1"
+    echo -e "\033[92m >\033[m \033[96mApplication Name :\033[m    ${PRODUCT}"
 fi
-if [[ "$2" =~ [0-9]+.[0-9]+.[0-9]+ ]]; then
-    echo -e "\033[92m|>\033[m \033[96mApplication Version :\033[m $2"
+if [[ "${VERSION}" =~ [0-9]+.[0-9]+.[0-9]+ ]]; then
+    echo -e "\033[92m >\033[m \033[96mApplication Version :\033[m ${VERSION}"
 else
     echo "Please enter a valid version for your application (format [0-9].[0-9].[0-9])"
     echo
@@ -108,9 +91,9 @@ copyBuildDirectory() {
     mkdir -p "${TARGET_DIRECTORY}/darwinpkg"
 
     # Copy product to /Library/Application Support/Product
-    mkdir -p "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
-    cp -a "$SCRIPTPATH"/application/. "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
-    chmod -R 755 "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
+    mkdir -p "${TARGET_DIRECTORY}/darwinpkg"
+    cp -a "$SCRIPTPATH"/application/. "${TARGET_DIRECTORY}/darwinpkg/"
+    chmod -R 777 "${TARGET_DIRECTORY}/darwinpkg"
 
     rm -rf "${TARGET_DIRECTORY}/package"
     mkdir -p "${TARGET_DIRECTORY}/package"
@@ -126,11 +109,13 @@ function setPlaceholderValue() {
     find "${TARGET_DIRECTORY}" -type f -exec sed -i '' -e 's/__PRODUCT__/'${PRODUCT}'/g' {} \;
     find "${TARGET_DIRECTORY}" -type f -exec sed -i '' -e "s/__PRODUCT_DIR__/${PRODUCT_DIR//\//\\/}/g" {} \;
     find "${TARGET_DIRECTORY}" -type f -name "*.DS_Store" -delete
+    find "${TARGET_DIRECTORY}" -type f -name "*.gitkeep" -delete
 }
 
 function buildPackage() {
     log_info "Application installer package building started.(1/3)"
     pkgbuild --identifier "com.rdfonseca.${PRODUCT}" \
+    --ownership preserve \
     --version "${VERSION}" \
     --scripts "${TARGET_DIRECTORY}/darwin/scripts" \
     --root "${TARGET_DIRECTORY}/darwinpkg" \
@@ -143,19 +128,6 @@ function buildProduct() {
     --resources "${TARGET_DIRECTORY}/darwin/Resources" \
     --package-path "${TARGET_DIRECTORY}/package" \
     "${TARGET_DIRECTORY}/pkg/$1" > /dev/null 2>&1
-}
-
-function signProduct() {
-    log_info "Application installer signing process started.(3/3)"
-    mkdir -pv "${TARGET_DIRECTORY}/pkg-signed"
-    chmod -R 755 "${TARGET_DIRECTORY}/pkg-signed"
-
-    read -p "Please enter the Apple Developer Installer Certificate ID:" APPLE_DEVELOPER_CERTIFICATE_ID
-    productsign --sign "Developer ID Installer: ${APPLE_DEVELOPER_CERTIFICATE_ID}" \
-    "${TARGET_DIRECTORY}/pkg/$1" \
-    "${TARGET_DIRECTORY}/pkg-signed/$1"
-
-    pkgutil --check-signature "${TARGET_DIRECTORY}/pkg-signed/$1"
 }
 
 function createInstaller() {
@@ -180,7 +152,7 @@ command -v ballerina >/dev/null 2>&1 || {
 }
 
 #Main script
-log_info "Installer generating process started."
+log_info "\033[1;97mInstaller generating process started.\033[m"
 
 copyDarwinDirectory
 copyBuildDirectory
@@ -188,5 +160,9 @@ createUninstaller
 setPlaceholderValue
 createInstaller
 
-log_info "Installer generating process finished"
+#rm -rf "./iWebITInstaller/application"
+#mkdir -p "./iWebITInstaller/application/Library/Application Support/iWebITAgent"
+
+
+log_info "\033[1;97mInstaller generating process finished.\033[m"
 exit 0
