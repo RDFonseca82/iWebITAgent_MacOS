@@ -1,11 +1,6 @@
 #!/bin/bash
 
 PRODUCT_DIR="__PRODUCT_DIR__"
-# mv -f "/Library/Application Support/iWebITAgent/iWebIT" "/Library/Application Support/iWebITAgent/iWebIT.app"
-# mv -f "/Library/Application Support/iWebITAgent/iWebITAgent" "/Library/Application Support/iWebITAgent/iWebITAgent.app"
-osascript -e 'display alert "Post Installation __PRODUCT_DIR__"'
-
-# sudo launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
 mv -f "${PRODUCT_DIR}/iWebIT" "${PRODUCT_DIR}/iWebIT.app"
 mv -f "${PRODUCT_DIR}/iWebITAgent" "${PRODUCT_DIR}/iWebITAgent.app"
@@ -19,8 +14,6 @@ chmod -R 777 "${PRODUCT_DIR}/Logs"
 
 launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
-su - logname
-
-launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist
+su - $(basename $HOME) -c 'launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist'
 
 exit 0
