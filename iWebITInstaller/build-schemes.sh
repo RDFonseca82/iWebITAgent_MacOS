@@ -1,3 +1,10 @@
+#!/bin/bash
+
+# Exports
+
+export LC_CTYPE=C
+export LANG=C
+
 # ./iWebITInstaller/build-schemes.sh && ./iWebITInstaller/build-installer.sh
 
 XCODEPROJ_PATH="./tmp/src/iWebITAgent-macOS.xcodeproj"
@@ -18,6 +25,11 @@ cp -rf "./iWebITService" "./tmp/src/iWebITService"
 cp -rf "./iWebITSysTray" "./tmp/src/iWebITSysTray"
 cp -rf "./Shared" "./tmp/src/Shared"
 
+find "./tmp/src/" -type f -exec sed -i '' -e 's/__VERSION__/'${VERSION}'/g' {} \;
+find "./tmp/src/" -type f -exec sed -i '' -e 's/__PRODUCT__/'${PRODUCT}'/g' {} \;
+find "./tmp/src/" -type f -exec sed -i '' -e "s/__PRODUCT_DIR__/${PRODUCT_DIR//\//\\/}/g" {} \;
+
+exit 0
 # Build Schemes
 
 rm -rf "./iWebITInstaller/application"
