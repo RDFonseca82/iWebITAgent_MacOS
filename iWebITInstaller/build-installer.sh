@@ -8,9 +8,6 @@ export LANG=C
 # Parameters
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 TARGET_DIRECTORY="$SCRIPTPATH/target"
-PRODUCT="iWebITAgent"
-VERSION="2.4.8.0"
-PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 DATE=`date +%Y-%m-%d`
 TIME=`date +%H:%M:%S`
 LOG_PREFIX="\033[97m[$DATE $TIME]\033[0m"
