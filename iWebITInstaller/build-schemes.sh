@@ -2,7 +2,7 @@
 
 XCODEPROJ_PATH="./tmp/src/iWebITAgent-macOS.xcodeproj"
 #XCODEOUTPUT_DIR="/Users/admin/Library/Developer/Xcode/DerivedData/iWebITAgent-macOS-azcpqqwvzksalbehsqrsclupepig/Build/Products/Release"
-XCODEOUTPUT_DIR="./tmp/derived"
+XCODEOUTPUT_DIR="./tmp/derived/Build/Products/Release"
 APP_DIRECTORY="./iWebITInstaller/application"
 TARGET_DIRECTORY="Library/Application Support/iWebITAgent"
 
