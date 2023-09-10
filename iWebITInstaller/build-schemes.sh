@@ -29,7 +29,6 @@ find "./tmp/src/" -type f -exec sed -i '' -e 's/__VERSION__/'${VERSION}'/g' {} \
 find "./tmp/src/" -type f -exec sed -i '' -e 's/__PRODUCT__/'${PRODUCT}'/g' {} \;
 find "./tmp/src/" -type f -exec sed -i '' -e "s/__PRODUCT_DIR__/${PRODUCT_DIR//\//\\/}/g" {} \;
 
-exit 0
 # Build Schemes
 
 rm -rf "./iWebITInstaller/application"

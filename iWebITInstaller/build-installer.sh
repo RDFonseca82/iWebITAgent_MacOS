@@ -92,7 +92,7 @@ copyBuildDirectory() {
     cp -a "$SCRIPTPATH"/application/. "${TARGET_DIRECTORY}/darwinpkg/"
     chmod -R 777 "${TARGET_DIRECTORY}/darwinpkg"
     
-    cp -a "$SCRIPTPATH"/payload/. "${TARGET_DIRECTORY}/darwinpkg/${PRODUCT_DIR}"
+    cp -a "$SCRIPTPATH"/payload/. "${TARGET_DIRECTORY}/darwinpkg${PRODUCT_DIR}"
 
     rm -rf "${TARGET_DIRECTORY}/package"
     mkdir -p "${TARGET_DIRECTORY}/package"
