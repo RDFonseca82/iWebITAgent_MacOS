@@ -153,6 +153,7 @@ setPlaceholderValue
 createInstaller
 
 rm -rf "./iWebITInstaller/application"
+rm -rf "./tmp"
 
 log_info "\033[1;97mInstaller generating process finished.\033[m"
 exit 0

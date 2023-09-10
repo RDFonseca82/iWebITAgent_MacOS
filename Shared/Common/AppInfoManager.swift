@@ -16,6 +16,7 @@ class AppInfoManager {
     
     init() {
         createAppInfoFileIfNeeded()
+        syncAgentVersion()
     }
     
     func getValue(key: String) -> String {
@@ -49,6 +50,12 @@ class AppInfoManager {
             try filesManager.createFileIfNeeded(filename: appInfoFileName, content: initialAppInfo)
         } catch {
             print("ERRO1: \(error)")
+        }
+    }
+    
+    private func syncAgentVersion() {
+        if AppInfo.agentversion != Constants.AGENT_VERSION {
+            AppInfo.agentversion = Constants.AGENT_VERSION
         }
     }
 }

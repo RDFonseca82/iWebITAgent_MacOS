@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PRODUCT_DIR="__PRODUCT_DIR__"
+
+launchctl unload /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
+
+su - $(basename $HOME) -c 'launchctl unload /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist'
+
+killall iWebIT
+
+rm -rf "${PRODUCT_DIR}/iWebIT.app"
+rm -rf "${PRODUCT_DIR}/iWebITAgent.app"
+
+exit 0

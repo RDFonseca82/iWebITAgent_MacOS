@@ -1,9 +1,27 @@
 # ./iWebITInstaller/build-schemes.sh && ./iWebITInstaller/build-installer.sh
 
-XCODEPROJ_PATH="./iWebITAgent-macOS.xcodeproj"
-XCODEOUTPUT_DIR="/Users/admin/Library/Developer/Xcode/DerivedData/iWebITAgent-macOS-azcpqqwvzksalbehsqrsclupepig/Build/Products/Release"
+XCODEPROJ_PATH="./tmp/src/iWebITAgent-macOS.xcodeproj"
+#XCODEOUTPUT_DIR="/Users/admin/Library/Developer/Xcode/DerivedData/iWebITAgent-macOS-azcpqqwvzksalbehsqrsclupepig/Build/Products/Release"
+XCODEOUTPUT_DIR="./tmp/derived"
 APP_DIRECTORY="./iWebITInstaller/application"
 TARGET_DIRECTORY="Library/Application Support/iWebITAgent"
+
+# Move Project to ./tmp/src
+
+rm -rf "./tmp"
+mkdir -p "./tmp/src"
+mkdir -p "./tmp/derived"
+
+cp -rf "./iWebITAgent" "./tmp/src/iWebITAgent"
+cp -rf "./iWebITAgent-macOS.xcodeproj" "${XCODEPROJ_PATH}"
+cp -rf "./iWebITService" "./tmp/src/iWebITService"
+cp -rf "./iWebITSysTray" "./tmp/src/iWebITSysTray"
+cp -rf "./Shared" "./tmp/src/Shared"
+
+# Build Schemes
+
+rm -rf "./iWebITInstaller/application"
+mkdir -p "./iWebITInstaller/application/${TARGET_DIRECTORY}"
 
 SCHEMES=(
     "iWebIT" 
@@ -21,16 +39,12 @@ MOVE_TO=(
     "${TARGET_DIRECTORY}/iWebITService"
     )
 
-#xcodebuild clean -project $XCODEPROJ_PATH
-#rm -r "~/Library/Developer/Xcode/DerivedData"
-rm -rf "./iWebITInstaller/application"
-mkdir -p "./iWebITInstaller/application/${TARGET_DIRECTORY}"
-
 for ((i=0; i<${#SCHEMES[@]}; i++)); do
     xcodebuild build -project $XCODEPROJ_PATH \
                      -scheme ${SCHEMES[i]} \
                      -destination 'platform=macOS' \
-                     -configuration Release
+                     -configuration Release \
+                     -derivedDataPath "./tmp/derived"
     mv -f "${XCODEOUTPUT_DIR}/${OUTPUT[i]}" "${APP_DIRECTORY}/${MOVE_TO[i]}"
 
     chown admin:staff "${APP_DIRECTORY}/${MOVE_TO[i]}"
