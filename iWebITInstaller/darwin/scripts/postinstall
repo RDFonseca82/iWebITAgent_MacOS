@@ -16,4 +16,6 @@ launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
 su - $(basename $HOME) -c 'launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist'
 
+open "${PRODUCT_DIR}/iWebIT.app"
+
 exit 0

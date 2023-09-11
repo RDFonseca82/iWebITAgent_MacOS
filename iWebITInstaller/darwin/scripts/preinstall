@@ -1,10 +1,5 @@
 #!/bin/bash
 
-osascript -e 'display alert "HEYEEYY" & do shell script "echo $0"'
-osascript -e 'display alert "HEYEEYY" & do shell script "echo $1"'
-osascript -e 'display alert "HEYEEYY" & do shell script "echo $2"'
-osascript -e 'display alert "HEYEEYY412414 " & do shell script "echo $MY_VAR"'
-
 PRODUCT_DIR="__PRODUCT_DIR__"
 
 launchctl unload /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
