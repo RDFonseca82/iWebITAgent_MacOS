@@ -37,13 +37,12 @@ extension NetworkingManager {
                 throw error
             }
             
-            return try handleResponse(data: data, response: response)
+            return try handleResponseS(data: data, response: response)
         } catch {
+            AppInfo.net = "0"
             throw error
         }
     }
-    
-    
     
     static func send(url: String, jsonData: [String:Any]) throws {
         let url = URL(string: url)!
@@ -73,11 +72,23 @@ extension NetworkingManager {
             if let error = error {
                 throw error
             }
-            let sortedData = try handleResponse(data: data, response: response)
+            let sortedData = try handleResponseS(data: data, response: response)
             
             print(String(data: sortedData, encoding: .utf8) ?? "NULL")
         } catch {
+            AppInfo.net = "0"
             throw error
         }
+    }
+    
+    static func handleResponseS(data: Data?, response: URLResponse?) throws -> Data {
+        guard
+            let data = data,
+            let response = response as? HTTPURLResponse,
+              response.statusCode >= 200 && response.statusCode < 300 else {
+            throw URLError(.badServerResponse)
+        }
+        AppInfo.net = "1"
+        return data
     }
 }

@@ -50,7 +50,8 @@ log_info "Application uninstalling process started"
 log_info "Stopping any iWebIT instances running"
 killall iWebIT
 
-launchctl unload $SERVICE_PLIST
+launchctl unload $SERVICE_PLIST 2>&1 > /dev/null
+killall iWebITService
 if [ $? -eq 0 ]
 then
   log_info "[1/4] Successfully unloaded service"
@@ -66,7 +67,8 @@ else
   log_error "[1/4] Could not delete service" >&2
 fi
 
-su - $(basename $HOME) -c 'launchctl unload "${AGENT_PLIST}"'
+su - $(basename $HOME) -c 'launchctl unload "${AGENT_PLIST}"' 2>&1 > /dev/null
+killall iWebITAgent
 if [ $? -eq 0 ]
 then
   log_info "[2/4] Successfully unloaded agent"
