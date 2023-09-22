@@ -79,6 +79,8 @@
 		8444A7752A9BAD2100F3C1D6 /* ImageManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */; };
 		8444A7772A9BD82900F3C1D6 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8444A7762A9BD82900F3C1D6 /* NotificationUtils.swift */; };
 		8465CA722AA0D0E100E339CD /* ServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8465CA712AA0D0E100E339CD /* ServiceUtils.swift */; };
+		8465FD122ABDE396000EE616 /* MemoryUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8465FD112ABDE396000EE616 /* MemoryUsage.swift */; };
+		8465FD142ABDE42E000EE616 /* ProcessExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8465FD132ABDE42E000EE616 /* ProcessExtension.swift */; };
 		84A6E50B2AA10D6D00DF580A /* BatteryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */; };
 		84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */; };
 		84AE46332A84FA3700783806 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84AE46322A84FA3700783806 /* Assets.xcassets */; };
@@ -100,7 +102,6 @@
 		84BB23DF2AA8BA10007EDEF2 /* NetworkingManagerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23DE2AA8BA10007EDEF2 /* NetworkingManagerExt.swift */; };
 		84BB23E02AA8BB93007EDEF2 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
 		84BB23E22AA8CC38007EDEF2 /* GetDeviceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BB23E12AA8CC38007EDEF2 /* GetDeviceDataService.swift */; };
-		84BB24562AAA1C97007EDEF2 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */; };
 		84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3C2A893A9300822D2C /* ConstantsExtended.swift */; };
 		84BE9B412A893A9300822D2C /* iWebITError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B3E2A893A9300822D2C /* iWebITError.swift */; };
 		84BE9B4B2A893A9E00822D2C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B462A893A9E00822D2C /* NetworkingManager.swift */; };
@@ -190,6 +191,8 @@
 		8444A7742A9BAD2100F3C1D6 /* ImageManipulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulation.swift; sourceTree = "<group>"; };
 		8444A7762A9BD82900F3C1D6 /* NotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		8465CA712AA0D0E100E339CD /* ServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceUtils.swift; sourceTree = "<group>"; };
+		8465FD112ABDE396000EE616 /* MemoryUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUsage.swift; sourceTree = "<group>"; };
+		8465FD132ABDE42E000EE616 /* ProcessExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessExtension.swift; sourceTree = "<group>"; };
 		84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryUtil.swift; sourceTree = "<group>"; };
 		84AE462B2A84FA3600783806 /* iWebIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iWebIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AE462E2A84FA3600783806 /* iWebITAgentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iWebITAgentApp.swift; sourceTree = "<group>"; };
@@ -243,7 +246,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84BB24562AAA1C97007EDEF2 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,11 +518,20 @@
 				84CCA6922A9FBC40008A4CF2 /* Utils */,
 				84BB23CE2AA231D6007EDEF2 /* Services */,
 				84BB23DB2AA8AE36007EDEF2 /* Models */,
+				8495981A2ABB33C8008536F1 /* Extensions */,
 				84CCA6952A9FCEB4008A4CF2 /* Components */,
 				84CCA67D2A9E19AA008A4CF2 /* iWebITService.entitlements */,
 				8444A7602A9A603200F3C1D6 /* service.swift */,
 			);
 			path = iWebITService;
+			sourceTree = "<group>";
+		};
+		8495981A2ABB33C8008536F1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8465FD132ABDE42E000EE616 /* ProcessExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		84AE46222A84FA3600783806 = {
@@ -671,6 +682,7 @@
 				8465CA712AA0D0E100E339CD /* ServiceUtils.swift */,
 				84A6E50A2AA10D6D00DF580A /* BatteryUtil.swift */,
 				84BB23DE2AA8BA10007EDEF2 /* NetworkingManagerExt.swift */,
+				8465FD112ABDE396000EE616 /* MemoryUsage.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -724,7 +736,6 @@
 			);
 			name = iWebIT;
 			packageProductDependencies = (
-				84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */,
 			);
 			productName = "iWebITAgent-macOS";
 			productReference = 84AE462B2A84FA3600783806 /* iWebIT.app */;
@@ -759,6 +770,7 @@
 				TargetAttributes = {
 					8444A75D2A9A603200F3C1D6 = {
 						CreatedOnToolsVersion = 14.1;
+						LastSwiftMigration = 1410;
 					};
 					84AE462A2A84FA3600783806 = {
 						CreatedOnToolsVersion = 14.1;
@@ -778,7 +790,6 @@
 			);
 			mainGroup = 84AE46222A84FA3600783806;
 			packageReferences = (
-				84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 84AE462C2A84FA3600783806 /* Products */;
 			projectDirPath = "";
@@ -841,6 +852,7 @@
 				84BB23DD2AA8AE52007EDEF2 /* FileSync.swift in Sources */,
 				8444A7662A9A668E00F3C1D6 /* FilesManager.swift in Sources */,
 				8444A7702A9A668E00F3C1D6 /* AppInfo.swift in Sources */,
+				8465FD122ABDE396000EE616 /* MemoryUsage.swift in Sources */,
 				84CCA6842A9E6EBF008A4CF2 /* PrepareSync.swift in Sources */,
 				84BB23CA2AA22943007EDEF2 /* DeviceDTO.swift in Sources */,
 				84BB23DF2AA8BA10007EDEF2 /* NetworkingManagerExt.swift in Sources */,
@@ -848,6 +860,7 @@
 				8444A76F2A9A668E00F3C1D6 /* Constants.swift in Sources */,
 				84CCA6982A9FCEED008A4CF2 /* ManageUserInfo.swift in Sources */,
 				84CCA68F2A9F5A32008A4CF2 /* Resource.swift in Sources */,
+				8465FD142ABDE42E000EE616 /* ProcessExtension.swift in Sources */,
 				84BB23D12AA231EB007EDEF2 /* CompanyDTO.swift in Sources */,
 				84CCA69C2AA0A9A8008A4CF2 /* MainLoop.swift in Sources */,
 			);
@@ -951,12 +964,23 @@
 		8444A7632A9A603200F3C1D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_MODULE = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -964,12 +988,22 @@
 		8444A7642A9A603200F3C1D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iWebITService/iWebITService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_MODULE = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1259,25 +1293,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		84BB24552AAA1C97007EDEF2 /* SwiftUIIntrospect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 84BB24542AAA1C97007EDEF2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = SwiftUIIntrospect;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84AE46232A84FA3600783806 /* Project object */;
 }

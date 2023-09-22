@@ -31,4 +31,15 @@ extension String {
         dateFormatter.dateFormat = "dd/MM/yyyy HH:mm:ss"
         return dateFormatter.date(from: self) ?? Date(timeIntervalSinceReferenceDate: 0)
     }
+    func substring(from: Int, to: Character) -> String {
+        guard let startRange = range(of: "\(from)") else { return "" }
+        guard let endRange = range(of: "\(to)", options: .backwards) else { return "" }
+        let substring = self[startRange.upperBound..<endRange.lowerBound]
+        return String(substring)
+    }
+   
+    func substring(from: Int) -> String {
+        guard let startRange = range(of: "\(from)") else { return "" }
+        return String(self[startRange.upperBound...])
+    }
 }

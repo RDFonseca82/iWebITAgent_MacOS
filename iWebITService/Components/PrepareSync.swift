@@ -7,19 +7,17 @@
 
 import Foundation
 
-let fullSyncVars = [""]
-let minSyncVars = [""]
 
 func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = nil) {
     ensureUserLoggedIn()
     var data = [String: Any]()
     if typeSync == "1" {
         log("DOING FULL SYNC")
-        data = getDeviceSyncInfo(fullSyncVars)
+        data = prepareFullSyncData()
         
     } else if typeSync == "2" {
         log("DOING MIN SYNC")
-        data = getDeviceSyncInfo(minSyncVars)
+        data = prepareMinSyncData()
         
     } else {
         log("SENDING SWITCH VARIABLE")
@@ -38,6 +36,8 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     data["IDSync"] = AppInfo.idsync
     data["LastConnectDate"] = Date().toString()
     data["AgentVersion"] = AppInfo.agentversion
+    data["IdDeviceType"] = 62
+    data["AppleBattery"] = BatteryFinder().getInternalBattery()?.charge ?? 100.0
     
     guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .withoutEscapingSlashes) else {
         log("ERROR \(iWebITError.decodingError)", important: true)
