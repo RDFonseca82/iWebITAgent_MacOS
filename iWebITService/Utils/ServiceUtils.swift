@@ -9,6 +9,11 @@ import Foundation
 import AppKit
 import CommonCrypto
 
+typealias AnyDict = [String:Any]
+typealias AnyList = [Any]
+
+let gigabyteToByte: Int64 = 1024 * 1024 * 1024
+
 func createUniqueId(value: String) -> String {
     if let valueData = value.data(using: .utf8) {
         var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))

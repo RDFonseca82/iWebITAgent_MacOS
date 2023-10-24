@@ -23,7 +23,7 @@ func mainLoop() {
         AppInfo.firstrun = "0"
     }
     
-//    prepareAndSendSync("1")
+    prepareAndSendSync("1")
     updateDeviceInfo()
     updateTimers("timesync")
     updateTimers("timealive")
@@ -40,7 +40,7 @@ func mainLoop() {
         
         if Date().timeIntervalSince(AppInfo.nexttimesync.toDate()) > 0 {
             log("INSIDE FULL SYNC")
-//            await prepareAndSendSync("1")
+            prepareAndSendSync("1")
             
             updateTimers("timesync")
             updateTimers("timealive")
@@ -48,13 +48,13 @@ func mainLoop() {
         
         if Date().timeIntervalSince(AppInfo.nexttimealive.toDate()) > 0 {
             log("INSIDE MIN SYNC")
-//            await prepareAndSendSync("2")
+            prepareAndSendSync("2")
             
             updateTimers("timealive")
             
             updateDeviceInfo()
             updateCompanyInfo(onInit: false)
-//            await checkAppsToUninstall()
+//            checkAppsToUninstall()
         }
         
         if sixtyLoopClock == 60 {

@@ -7,29 +7,6 @@
 
 import Foundation
 
-typealias AnyDict = [String:Any]
-typealias AnyList = [Any]
-
-let fullSyncVars = [""]
-let minSyncVars = ["SPNetworkDataType"]
-
-func prepareFullSyncData() -> [String: Any] {
-    return [:]
-}
-
-func prepareMinSyncData() -> [String: Any] {
-//    let dInfo = getDeviceSyncInfo(minSyncVars)
-//    var data = [String: Any]()
-    
-    
-    return [:]
-}
-
-//data["DeviceHost"] = dInfo["SPNetworkDataType"][0]["ip_address"][0] as? String ?? ""
-//data["DeviceHost"] = ((dInfo["SPNetworkDataType"] as? AnyList)?
-//                      [0])
-//data["AppleMemoryTotal"] =
-//data["AppleMemoryUsed"] =
 
 //SPApplicationsDataType SPEthernetDataType SPHardwareDataType SPMemoryDataType SPNetworkDataType SPNetworkLocationDataType SPPowerDataType SPSerialATADataType SPSoftwareDataType SPStorageDataType
 

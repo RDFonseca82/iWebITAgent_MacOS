@@ -14,7 +14,7 @@ func secondaryLoop() {
     log("** Checking For FULLSYNC Request **")
     
     if AppInfo.forcefullsync == "1" || AppInfo.fullsync == "1" {
-//        await prepareAndSendSync("1")
+        prepareAndSendSync("1")
         AppInfo.forcefullsync = "0"
         AppInfo.fullsync = "0"
         

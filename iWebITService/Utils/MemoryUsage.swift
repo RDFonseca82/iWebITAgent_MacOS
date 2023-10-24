@@ -8,9 +8,7 @@
 import Foundation
 
 
-func getMemoryUsage() {
-    let f1 = 9.313225746154785e-10
-    
+func getMemoryUsage() -> Int {
     let pagesize = Int(shell("pagesize").replacingOccurrences(of: "\n", with: ""))
     
     let vm = shell("vm_stat")
@@ -28,6 +26,5 @@ func getMemoryUsage() {
     
     let appMemory = vmStats["Anonymous pages"]! - vmStats["Pages purgeable"]!
     
-    let memoryUsed = Double(appMemory + vmStats["Pages wired down"]! + vmStats["Pages occupied by compressor"]!) * f1
-    print("Memory Used:\t\t\(memoryUsed) GB")
+    return appMemory + vmStats["Pages wired down"]! + vmStats["Pages occupied by compressor"]!
 }
