@@ -74,7 +74,7 @@ extension NetworkingManager {
             }
             let sortedData = try handleResponseS(data: data, response: response)
             
-            print(String(data: sortedData, encoding: .utf8) ?? "NULL")
+            log(String(data: sortedData, encoding: .utf8) ?? "NULL", important: true)
         } catch {
             AppInfo.net = "0"
             throw error
