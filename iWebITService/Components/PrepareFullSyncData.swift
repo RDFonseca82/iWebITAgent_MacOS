@@ -73,15 +73,15 @@ func getSPHardwareDataType(_ spHardwareDataType: AnyList?) -> (bootRom: String, 
 }
 
 func getStorageData() -> (storageTotal: Int64, storageUsed: Int64) {
-    let storageTotal = FileManager.getFileSize(for: .systemSize)
-    var storageUsed: Int64? = nil
+//    let storageTotal = FileManager.getFileSize(for: .systemSize)
+//    var storageUsed: Int64? = nil
+//
+//    if let freeSpaceInBytes = FileManager.getFileSize(for: .systemFreeSize),
+//       let storageTotal = storageTotal {
+//        storageUsed = storageTotal - freeSpaceInBytes
+//    }
     
-    if let freeSpaceInBytes = FileManager.getFileSize(for: .systemFreeSize),
-       let storageTotal = storageTotal {
-        storageUsed = storageTotal - freeSpaceInBytes
-    }
-    
-    return (storageTotal ?? 0, storageUsed ?? 0)
+    return (FileManager.getTotalStorageCapacity() ?? 0, FileManager.getUsedStorageSpace() ?? 0)
 }
 
 func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:String]] {
@@ -94,7 +94,9 @@ func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:S
     
     let applications: [[String:String]] = info.map { app in
         let name = app["_name"] as? String ?? "None"
-        let date = (app["lastModified"] as? String ?? "1900-01-01T00:00:01Z").replacingOccurrences(of: "T", with: "").replacingOccurrences(of: "Z", with: "")
+        let date = (app["lastModified"] as? String ?? "1900-01-01T00:00:01Z")
+            .replacingOccurrences(of: "T", with: " ")
+            .replacingOccurrences(of: "Z", with: "")
         return ["name": name, "date": date]
     }
     

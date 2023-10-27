@@ -76,6 +76,32 @@ extension FileManager {
         formatter.includesUnit = false
         return formatter.string(fromByteCount: bytes)
     }
-
+    
+    static func getTotalStorageCapacity() -> Int64? {
+        do {
+            let attributes = try FileManager.default.attributesOfFileSystem(forPath: "/")
+            if let totalSize = attributes[.systemSize] as? Int64 {
+                return totalSize
+            }
+        } catch {
+            log("ERROR GETTING TOTAL STORAGE CAPACITY: \(error)")
+        }
+        return nil
+    }
+    
+    static func getUsedStorageSpace() -> Int64? {
+        do {
+            let attributes = try FileManager.default.attributesOfFileSystem(forPath: "/")
+            if let freeSize = attributes[.systemFreeSize] as? Int64 {
+                if let totalSize = attributes[.systemSize] as? Int64 {
+                    let usedSize = totalSize - freeSize
+                    return usedSize
+                }
+            }
+        } catch {
+            log("ERROR GETTING USED STORAGE SPACE: \(error)")
+        }
+        return nil
+    }
 }
 
