@@ -62,8 +62,6 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         let serviceRunnin = isServiceRunning()
         let filesManager = FilesManager.shared
         
-        print("\(AppInfo.isLoggedIn()) \(hasNet) \(serviceRunnin)")
-        
         if !AppInfo.isLoggedIn() {
             if iconState != .inactive {
                 button.image = NSImage(named: "iwebit_inactive")

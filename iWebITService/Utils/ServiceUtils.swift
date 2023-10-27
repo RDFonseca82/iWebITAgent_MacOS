@@ -40,8 +40,8 @@ func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
 
 func waitForLogIn() {
     while !AppInfo.isLoggedIn() {
-        log("NO IDSYNC SPECIFIED, WAITING 120s")
-        Thread.sleep(forTimeInterval: TimeInterval(120))
+        log("NO IDSYNC SPECIFIED, WAITING 30s")
+        Thread.sleep(forTimeInterval: TimeInterval(30))
     }
 }
 

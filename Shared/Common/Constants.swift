@@ -15,7 +15,7 @@ struct Constants {
     
     static let getDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_api.php"
     static let readCompanyInfoUrl = "http://agent.iwebit.app/scripts/script_api.php"
-    static let createOrSendDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_windows.php"
+    static let createOrSendDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_ios.php"
     
     var LOG_FILE = FilesManager.shared.getApplicationSupportDirectory()!
     var OLD_LOG_FILE = FilesManager.shared.getApplicationSupportDirectory()!

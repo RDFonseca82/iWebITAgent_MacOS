@@ -39,7 +39,7 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     data["AgentVersion"] = AppInfo.agentversion
     data["IdDeviceType"] = 62
     data["AppleBattery"] = BatteryFinder().getInternalBattery()?.charge ?? 100.0
-    data["AppleType"] = 1
+    data["AppleType"] = 1 // para ios é 2
     
     guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .withoutEscapingSlashes) else {
         log("ERROR \(iWebITError.decodingError)", important: true)

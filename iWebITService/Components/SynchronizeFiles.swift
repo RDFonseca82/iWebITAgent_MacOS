@@ -6,12 +6,21 @@
 //
 
 import Foundation
+import AppKit
 
 
 func synchronizeFiles() {
     var filesToSync = [
-        FileSyncModel(fileName: "logo-on.jpg", jsonCorresponding: .logoOn),
-        FileSyncModel(fileName: "logo-off.jpg", jsonCorresponding: .logoOff),
+        FileSyncModel(
+            fileName: "logo-on.jpg",
+            jsonCorresponding: .logoOn,
+            isImage: true,
+            size: CGSize(width: 18, height: 18)),
+        FileSyncModel(
+            fileName: "logo-off.jpg",
+            jsonCorresponding: .logoOff,
+            isImage: true,
+            size: CGSize(width: 18, height: 18)),
     ]
     
     getFileLinks(filesToSync: &filesToSync)
@@ -65,12 +74,22 @@ func saveFiles(filesToSync: [FileSyncModel]) {
     for fileToSync in filesToSync {
         log("SAVING: \(fileToSync.fileName)")
         
-        guard let fileData = fileToSync.fileData else {
+        guard var fileData = fileToSync.fileData else {
             log("FILE \(fileToSync.fileName) HAS NO DATA, SKIPING")
             continue
         }
         
-        if areFilesEqual(file: fileToSync) {
+        if fileToSync.isImage, let newSize = fileToSync.size {
+            if let image = NSImage(data: fileData),
+               let resizedData = image.resized(newSize: newSize).dataRepresentation() {
+                fileData = resizedData
+            }
+            else {
+                log("FAILED TO RESIZE IMAGE")
+            }
+        }
+        
+        if areFilesEqual(fileName: fileToSync.fileName, newData: fileData) {
             log("FILES ARE EQUAL, SKIPING")
             continue
         }
@@ -85,13 +104,13 @@ func saveFiles(filesToSync: [FileSyncModel]) {
     }
 }
 
-func areFilesEqual(file: FileSyncModel) -> Bool {
+func areFilesEqual(fileName: String, newData: Data) -> Bool {
     guard let appSupportFolder = FilesManager.shared.getApplicationSupportDirectory() else {
         log("APP SUPPORT DIR IS NULL", important: true)
         return false
     }
     
-    let fileUrl = appSupportFolder.appendingPathComponent(file.fileName)
+    let fileUrl = appSupportFolder.appendingPathComponent(fileName)
     
     if !FileManager.default.fileExists(atPath: fileUrl.path) {
         return false
@@ -101,8 +120,6 @@ func areFilesEqual(file: FileSyncModel) -> Bool {
         return false
     }
     
-    
-    let data2 = file.fileData!
-    
-    return data1 == data2
+    return data1 == newData
 }
+

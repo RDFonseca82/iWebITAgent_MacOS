@@ -11,6 +11,8 @@ import Foundation
 struct FileSyncModel {
     let fileName: String
     var jsonCorresponding: FileSyncJsonCorresponding
+    let isImage: Bool
+    var size: CGSize? = nil
     var link: String? = nil
     var fileData: Data? = nil
 }
