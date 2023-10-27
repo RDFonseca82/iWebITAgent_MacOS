@@ -54,7 +54,7 @@ class AppInfoManager {
     }
     
     private func syncAgentVersion() {
-        if getValue(key: "agentversion") != Constants.AGENT_VERSION {
+        if getValue(key: "agentversion") != Constants.AGENT_VERSION && Constants.AGENT_VERSION != "__VERSION__" && Constants.AGENT_VERSION != "" {
             setValue(key: "agentversion", value: Constants.AGENT_VERSION)
         }
     }
