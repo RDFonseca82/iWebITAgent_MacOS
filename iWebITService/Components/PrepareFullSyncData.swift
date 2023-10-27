@@ -32,10 +32,8 @@ func prepareFullSyncData() -> [String: Any] {
     data["AppleNProcessors"] = hardwareData.numProcessors
     data["AppleOsLoader"] = hardwareData.osLoader
     
-    let storageData = getStorageData()
-    
-    data["AppleStorage"] = storageData.storageTotal
-    data["AppleStorageUsed"] = storageData.storageUsed
+    data["AppleStorage"] = FileManager.getTotalStorageCapacity() ?? 0
+    data["AppleStorageUsed"] = FileManager.getUsedStorageSpace() ?? 0
     
     data["Aplications"] = getSPApplicationsDataType(dInfo["SPApplicationsDataType"] as? AnyList)
     
@@ -70,18 +68,6 @@ func getSPHardwareDataType(_ spHardwareDataType: AnyList?) -> (bootRom: String, 
     let osLoader = info["os_loader_version"] as? String ?? ""
     
     return (bootRom, cpuType, processorSpeed, appleModel, numProcessors, osLoader)
-}
-
-func getStorageData() -> (storageTotal: Int64, storageUsed: Int64) {
-//    let storageTotal = FileManager.getFileSize(for: .systemSize)
-//    var storageUsed: Int64? = nil
-//
-//    if let freeSpaceInBytes = FileManager.getFileSize(for: .systemFreeSize),
-//       let storageTotal = storageTotal {
-//        storageUsed = storageTotal - freeSpaceInBytes
-//    }
-    
-    return (FileManager.getTotalStorageCapacity() ?? 0, FileManager.getUsedStorageSpace() ?? 0)
 }
 
 func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:String]] {

@@ -50,8 +50,8 @@ extension NetworkingManager {
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = formURLEncoded(from: jsonData)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: jsonData, options: .fragmentsAllowed)
         
         do {
             var data: Data?
