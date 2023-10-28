@@ -1,4 +1,5 @@
 import AppKit
+import UserNotifications
 import SwiftUI
 
 class MenuBarButton {
@@ -27,17 +28,34 @@ class MenuBarButton {
     
     @objc
     func showMenu(_ sender: AnyObject?) {
-        let menu = NSMenu()
-        service.setIconBasedOnStatus()
-        if AppInfo.isLoggedIn() {
-            addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
-            addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
-            menu.addItem(NSMenuItem.separator())
-            addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
-        } else {
-            addItem("Iniciar sessão no agente", action:  #selector(showLogin), key: "", to: menu)
+        Task {
+            let menu = NSMenu()
+            await MainActor.run {
+                service.setIconBasedOnStatus()
+            }
+            if AppInfo.isLoggedIn() {
+                addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
+                addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
+                menu.addItem(NSMenuItem.separator())
+                addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
+            } else {
+                addItem("Iniciar sessão no agente", action:  #selector(showLogin), key: "", to: menu)
+            }
+            var notificationEnabled = false
+            UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+                notificationEnabled = settings.authorizationStatus == .authorized
+            }
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            if !notificationEnabled {
+                addItem("Permitir Notificações", action: #selector(showNotificationsPanel), key: "", imageNamed: "iwebit_normal", to: menu)
+            }
+            if !service.getLocationStatus() {
+                addItem("Permitir Localização", action: #selector(showSettingsLocationPanel), key: "", imageNamed: "iwebit_normal", to: menu)
+            }
+            await MainActor.run {
+                showStatusItemMenu(menu)
+            }
         }
-        showStatusItemMenu(menu)
     }
     
     private func showStatusItemMenu(_ menu: NSMenu) {
@@ -46,12 +64,15 @@ class MenuBarButton {
         statusItem.menu = nil
     }
     
-    private func addItem(_ title: String, action: Selector?, key: String, to menu: NSMenu) {
+    private func addItem(_ title: String, action: Selector?, key: String, imageNamed: String? = nil, to menu: NSMenu) {
         let item = NSMenuItem()
         item.title = title
         item.target = self
         item.action = action
         item.keyEquivalent = key
+        if let imageNamed = imageNamed {
+            item.image = NSImage(named: imageNamed)
+        }
         menu.addItem(item)
     }
     
@@ -81,6 +102,20 @@ class MenuBarButton {
         
         if let deepLinkUrl = URL(string: "iwebit://support") {
             workspace.open(deepLinkUrl)
+        }
+    }
+
+    @objc
+    func showNotificationsPanel() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
+                        NSWorkspace.shared.open(url)
+        }
+    }
+
+    @objc
+    func showSettingsLocationPanel() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
+            NSWorkspace.shared.open(url)
         }
     }
 

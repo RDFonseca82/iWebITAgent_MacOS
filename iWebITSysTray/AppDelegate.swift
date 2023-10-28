@@ -14,12 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         UNUserNotificationCenter.current().delegate = self
         
         requestAuthorization { granted, _ in
-//            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
-//                NSWorkspace.shared.open(url)
-//            }
-//            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
-//                NSWorkspace.shared.open(url)
-//            }
         }
     }
     

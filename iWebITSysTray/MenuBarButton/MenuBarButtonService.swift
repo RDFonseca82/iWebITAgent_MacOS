@@ -99,7 +99,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)
                 }
-                if deviceInfo.deviceLocation == 1 {
+                if deviceInfo.deviceLocation == 0 {
                     locationManager?.requestLocation()
                 }
                 
@@ -149,6 +149,11 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         if !syncingLocation {
             print("FAILED: \(error)")
         }
+    }
+    
+    func getLocationStatus() -> Bool {
+        print(CLLocationManager.locationServicesEnabled())
+        return CLLocationManager.locationServicesEnabled()
     }
     
     enum IconState {

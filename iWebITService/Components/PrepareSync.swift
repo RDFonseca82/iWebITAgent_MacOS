@@ -54,7 +54,7 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     
     log("PREPARED TO SEND DATA")
     doUntil({
-        try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, jsonData: ["json": String(data: jsonData, encoding: .utf8)!])
+        try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, data: ["json": String(data: jsonData, encoding: .utf8)!])
         return false
     }, 60)
     

@@ -20,6 +20,8 @@ class SyncLocationDataService {
             "IDSync": AppInfo.idsync,
             "LastConnectDate": Date().toString(),
             "AgentVersion": AppInfo.agentversion,
+            "AppleType": 1,
+            "IdDeviceType": 62,
         ]
         
         let jsonString = String(data: try JSONSerialization.data(withJSONObject: data), encoding: .utf8)!

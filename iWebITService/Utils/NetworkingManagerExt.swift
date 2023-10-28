@@ -44,14 +44,14 @@ extension NetworkingManager {
         }
     }
     
-    static func send(url: String, jsonData: [String:Any]) throws {
+    static func send(url: String, data: [String:Any]) throws {
         let url = URL(string: url)!
         
         var request = URLRequest(url: url)
         
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = formURLEncoded(from: jsonData)
+        request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = formURLEncoded(from: data)
         
         do {
             var data: Data?
