@@ -34,8 +34,8 @@ class LoginViewModel: ObservableObject {
                     throw iWebITError.incompleteOperation
                 }
                 
-                try? await Task.sleep(seconds: 1)
-                count += 1
+                try? await Task.sleep(seconds: 3)
+                count += 3
             }
             
             await MainActor.run {

@@ -32,10 +32,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
         }
         
-//        let hasScreenAccess = CGPreflightScreenCaptureAccess();
-//        if !hasScreenAccess {
-//            CGRequestScreenCaptureAccess()
-//        }
+        AppInfoManager.shared.syncAgentVersion()
         
         setIconBasedOnStatus()
         the15sstep()
