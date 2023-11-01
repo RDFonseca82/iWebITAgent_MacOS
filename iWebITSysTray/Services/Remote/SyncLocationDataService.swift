@@ -26,11 +26,13 @@ class SyncLocationDataService {
         
         let jsonString = String(data: try JSONSerialization.data(withJSONObject: data), encoding: .utf8)!
         
-        try await NetworkingManager.send(
-            url: Constants.createOrSendDeviceInfoUrl,
-            jsonData: [
-                "json": jsonString
-            ]
+        log(
+            try await NetworkingManager.send(
+                url: Constants.createOrSendDeviceInfoUrl,
+                jsonData: [
+                    "json": jsonString
+                ]
+            ), important: true
         )
     }
 }

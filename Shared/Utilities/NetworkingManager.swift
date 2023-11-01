@@ -43,7 +43,7 @@ class NetworkingManager {
         }
     }
     
-    static func send(url: String, jsonData: [String:Any]) async throws {
+    static func send(url: String, jsonData: [String:Any]) async throws -> String {
         let url = URL(string: url)!
         
         var request = URLRequest(url: url)
@@ -56,7 +56,7 @@ class NetworkingManager {
             let (data, response) = try await URLSession.shared.data(for: request)
             let sortedData = try handleResponse(data: data, response: response)
             
-            print(String(data: sortedData, encoding: .utf8) ?? "NULL")
+            return String(data: sortedData, encoding: .utf8) ?? "NULL"
         } catch {
             throw error
         }
