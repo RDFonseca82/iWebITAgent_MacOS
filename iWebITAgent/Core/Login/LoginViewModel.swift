@@ -29,13 +29,13 @@ class LoginViewModel: ObservableObject {
             AppInfo.idsync = idSync
             
             while AppInfo.allprepared != "1" {
-                if count >= 120 {
+                if count >= 180 {
                     AppInfo.idsync = ""
                     throw iWebITError.incompleteOperation
                 }
                 
-                try? await Task.sleep(seconds: 5)
-                count += 5
+                try? await Task.sleep(seconds: 1)
+                count += 1
             }
             
             await MainActor.run {
