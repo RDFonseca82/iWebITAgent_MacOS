@@ -38,6 +38,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
 //        }
         
         setIconBasedOnStatus()
+        the15sstep()
         
         Timer.publish(every: 5, on: .main, in: .common)
             .autoconnect()
@@ -99,7 +100,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)
                 }
-                if deviceInfo.deviceLocation == 0 {
+                if deviceInfo.deviceLocation == 1 {
                     locationManager?.requestLocation()
                 }
                 
@@ -147,7 +148,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if !syncingLocation {
-            print("FAILED: \(error)")
+            print("FAILED TO GET LOCATION: \(error)")
         }
     }
     
