@@ -32,8 +32,6 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
         }
         
-        AppInfoManager.shared.syncAgentVersion()
-        
         setIconBasedOnStatus()
         the15sstep()
         

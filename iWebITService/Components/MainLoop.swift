@@ -15,6 +15,9 @@ func mainLoop() {
     
     resetRebootAndShutdownFlags()
     
+    log("SYNCING VERSION (new/old): \(Constants.AGENT_VERSION) \(AppInfo.agentversion)")
+    AppInfoManager.shared.syncAgentVersion()
+    
     updateCompanyInfo(onInit: true)
     
     synchronizeFiles()
