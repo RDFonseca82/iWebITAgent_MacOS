@@ -16,7 +16,6 @@ class AppInfoManager {
     
     init() {
         createAppInfoFileIfNeeded()
-        syncAgentVersion()
     }
     
     func getValue(key: String) -> String {
@@ -53,7 +52,7 @@ class AppInfoManager {
         }
     }
     
-    private func syncAgentVersion() {
+    func syncAgentVersion() {
         if getValue(key: "agentversion") != Constants.AGENT_VERSION && Constants.AGENT_VERSION != "__VERSION__" && Constants.AGENT_VERSION != "" {
             setValue(key: "agentversion", value: Constants.AGENT_VERSION)
         }

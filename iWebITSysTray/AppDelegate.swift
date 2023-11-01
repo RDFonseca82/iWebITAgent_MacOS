@@ -8,7 +8,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func applicationDidFinishLaunching(_ notification: Notification) {
         Constants.shared.LOG_FILE = Constants.shared.LOG_FILE.appendingPathComponent("log_systray.log")
         Constants.shared.OLD_LOG_FILE = Constants.shared.OLD_LOG_FILE.appendingPathComponent("old_log_systray.log")
-        log(Constants.AGENT_VERSION)
         
         menuBarButton = MenuBarButton()
         
