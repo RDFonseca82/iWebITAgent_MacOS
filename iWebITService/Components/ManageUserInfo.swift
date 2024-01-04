@@ -53,7 +53,7 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
             AppInfo.idcompany = companyInfo.idCompany!
             AppInfo.companyname = companyInfo.company!
             
-            let newVersion = companyInfo.agentVersion!.split(separator: ".").compactMap { Int($0) }
+            let newVersion = companyInfo.appleAgentVersion!.split(separator: ".").compactMap { Int($0) }
             let currentVersion = AppInfo.agentversion.split(separator: ".").compactMap { Int($0) }
 
             let minLength = min(newVersion.count, currentVersion.count)
@@ -70,7 +70,7 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
             }
             
             if newVersionAvailable {
-//                updateToNewVersion(false)
+                updateToNewVersion(manual: false)
             }
         }
         

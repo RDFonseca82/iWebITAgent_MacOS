@@ -22,12 +22,12 @@ func secondaryLoop() {
         updateTimers("timealive")
     }
     
-//    log("** Checking For MANUAL UPDATE **")
-//
-//    if AppInfo.manualupdate == "1" {
-//        AppInfo.manualupdate = "0"
-//        updateToNewVersion(true)
-//    }
+    log("** Checking For MANUAL UPDATE **")
+
+    if AppInfo.manualupdate == "1" {
+        AppInfo.manualupdate = "0"
+        updateToNewVersion(manual: true)
+    }
     
     log("** Checking For REBOOT **")
     

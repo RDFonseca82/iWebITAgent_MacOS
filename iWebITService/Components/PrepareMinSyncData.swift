@@ -37,11 +37,20 @@ func getTotalMemory(_ spHardwareDataType: AnyList?) -> Int64 {
 func getDeviceHost(_ spNetworkDataType: AnyList?) -> String {
     guard
         let spNetworkDataType = spNetworkDataType,
-        spNetworkDataType.count > 0,
-        let info = spNetworkDataType[0] as? AnyDict,
-        let ipAdresses = info["ip_address"] as? AnyList,
-        ipAdresses.count > 0
+        spNetworkDataType.count > 0
     else { return "" }
     
-    return ipAdresses[0] as! String
+    var ipAddresses: AnyList = []
+    
+    for _adapter in spNetworkDataType {
+        guard let adapter = _adapter as? AnyDict else { continue }
+        
+        ipAddresses += adapter["ip_address"] as? [String] ?? []
+    }
+    
+    if ipAddresses.count == 0 {
+        return ""
+    }
+    
+    return ipAddresses[0] as! String
 }

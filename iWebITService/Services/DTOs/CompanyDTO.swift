@@ -16,6 +16,8 @@ struct CompanyDTO: Codable {
     let eventViewerLines, timeSync, timeAlive: Int?
     let agentVersion: String?
     let agentDownload: String?
+    let appleAgentVersion: String?
+    let appleAgentDownload: String?
     
     enum CodingKeys: String, CodingKey {
         case idSync = "IDSync"
@@ -32,6 +34,8 @@ struct CompanyDTO: Codable {
         case timeAlive = "TimeAlive"
         case agentVersion = "AgentVersion"
         case agentDownload = "AgentDownload"
+        case appleAgentVersion = "AppleAgentVersion"
+        case appleAgentDownload = "AppleAgentDownload"
     }
     
     func getFileSyncCorrespondingLink(corresponding: FileSyncJsonCorresponding) -> String? {

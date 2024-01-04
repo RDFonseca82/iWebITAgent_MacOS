@@ -29,7 +29,7 @@ func prepareFullSyncData() -> [String: Any] {
     data["AppleModel"] = hardwareData.appleModel
     data["AppleCpuType"] = hardwareData.cpuType
     data["AppleProcessorSpeed"] = hardwareData.processorSpeed
-    data["AppleNProcessors"] = hardwareData.numProcessors
+    data["AppleNProcessors"] = pickNumProcessors(hardwareData.numProcessors)
     data["AppleOsLoader"] = hardwareData.osLoader
     
     data["AppleStorage"] = FileManager.getTotalStorageCapacity() ?? 0
@@ -88,6 +88,19 @@ func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:S
     
     
     return applications
+}
+
+func pickNumProcessors(_ strNumProcessors: String) -> String {
+    if strNumProcessors.contains("proc") {
+        //proc 11:5:6
+        let numProcessors = String(strNumProcessors
+            .split(separator: " ")[1]
+            .split(separator: ":")[0])
+        
+        return numProcessors
+    } else {
+        return strNumProcessors
+    }
 }
 
 

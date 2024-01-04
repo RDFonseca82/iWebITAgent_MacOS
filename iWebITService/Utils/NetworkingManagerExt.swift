@@ -86,6 +86,11 @@ extension NetworkingManager {
             let data = data,
             let response = response as? HTTPURLResponse,
               response.statusCode >= 200 && response.statusCode < 300 else {
+            if let _response = response as? HTTPURLResponse {
+                log("RESPONSE STATUS CODE: \(_response.statusCode)", important: true)
+            } else {
+                log("ERROR CASTING HTTPURLResponse", important: true)
+            }
             throw URLError(.badServerResponse)
         }
         AppInfo.net = "1"

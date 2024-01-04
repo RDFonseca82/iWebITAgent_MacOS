@@ -34,7 +34,7 @@ func synchronizeFiles() {
 func getFileLinks(filesToSync: inout [FileSyncModel]) {
     log("GETTING NEEDED FILE LINKS")
     
-    doUntilWithReturn({
+    doUntil({
         ensureUserLoggedIn()
         let companyInfo = try GetCompanyDataService.shared.getCompany()
         
@@ -42,7 +42,7 @@ func getFileLinks(filesToSync: inout [FileSyncModel]) {
             filesToSync[i].link = companyInfo.getFileSyncCorrespondingLink(corresponding: filesToSync[i].jsonCorresponding)
         }
         
-        return
+        return false
     }, 60)
 }
 
@@ -55,10 +55,10 @@ func downloadFiles(filesToSync: inout [FileSyncModel]) {
         }
         
         log("DOWNLOADING: \(link)")
-        doUntilWithReturn({
+        doUntil({
             filesToSync[i].fileData = try NetworkingManager.download(url: link)
             
-            return
+            return false
         }, 60)
     }
 }
