@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 
 
 func updateToNewVersion(manual: Bool) {
@@ -18,7 +19,17 @@ func updateToNewVersion(manual: Bool) {
     
     let installerPath = appSupportFolder.appendingPathComponent("iWebITInstaller.pkg").path
     let installerLogPath = appSupportFolder.appendingPathComponent("install_log.log").path
+    let updateSignalPath = appSupportFolder.appendingPathComponent("UPDATE").path
     var installerFound = false
+    let fileManager = FileManager.default
+    
+    if fileManager.fileExists(atPath: installerPath) && !manual {
+        try? fileManager.removeItem(atPath: installerPath)
+    }
+    
+    if fileManager.fileExists(atPath: updateSignalPath) {
+        try? fileManager.removeItem(atPath: updateSignalPath)
+    }
     
     if !manual {
         doUntil({
@@ -55,7 +66,7 @@ func updateToNewVersion(manual: Bool) {
                 return true
             }
             
-            FileManager.default.createFile(atPath: installerPath, contents: installer)
+            fileManager.createFile(atPath: installerPath, contents: installer)
             
             log("DONE")
             
@@ -72,7 +83,16 @@ func updateToNewVersion(manual: Bool) {
     
     log("====> INSTALLING <====")
     
+    let workspace = NSWorkspace.shared
+    let apps = workspace.runningApplications.filter { (app) -> Bool in
+        return app.activationPolicy == .regular
+    }.map { $0.bundleIdentifier ?? "" }
+    
+    if apps.contains(Constants.BUNDLE_ID) {
+        fileManager.createFile(atPath: updateSignalPath, contents: nil)
+    }
+    
     let output = shell("sudo installer -pkg \"\(installerPath)\" -target / -verboseR").data(using: .utf8)
     
-    FileManager.default.createFile(atPath: installerLogPath, contents: output)
+    fileManager.createFile(atPath: installerLogPath, contents: output)
 }

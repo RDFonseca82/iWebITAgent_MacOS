@@ -69,10 +69,12 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         
         if (!hasNet || !serviceRunnin) && (iconState != .down || forceUpdateIcon) {
             button.image = filesManager.loadImage(filename: "logo-off.jpg") ?? NSImage(named: "iwebit_down")
+            iconState = .down
             forceUpdateIcon = false
             
         } else if hasNet && serviceRunnin && (iconState != .up || forceUpdateIcon) {
             button.image = filesManager.loadImage(filename: "logo-on.jpg") ?? NSImage(named: "iwebit_up")
+            iconState = .up
             forceUpdateIcon = false
         }
     }
@@ -88,6 +90,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     }
     
     func the15sstep() {
+        if !AppInfo.isLoggedIn() { return }
         Task {
             do {
                 let deviceInfo = try await GetDeviceDataService.shared.getDevice()
@@ -104,7 +107,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 }
                 
             } catch {
-                log("ERROR SENDING 15s step: \(error)")
+                log("ERROR IN LOOP: \(error)")
             }
         }
     }

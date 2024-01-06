@@ -12,6 +12,7 @@ struct Constants {
     
     static let AGENT_VERSION = "__VERSION__"
     static let PRODUCT_DIR = "__PRODUCT_DIR__"
+    static let BUNDLE_ID = "com.rdfonseca.iWebIT"
     
     static let getDeviceInfoUrl = "http://agent.iwebit.app/scripts/script_api.php"
     static let readCompanyInfoUrl = "http://agent.iwebit.app/scripts/script_api.php"

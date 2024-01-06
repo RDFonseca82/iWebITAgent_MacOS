@@ -55,7 +55,8 @@ for ((i=0; i<${#SCHEMES[@]}; i++)); do
                      -scheme ${SCHEMES[i]} \
                      -destination 'platform=macOS' \
                      -configuration Release \
-                     -derivedDataPath "./tmp/derived"
+                     -derivedDataPath "./tmp/derived" \
+                     -destination "generic/platform=macOS,name=Any Mac"
     mv -f "${XCODEOUTPUT_DIR}/${OUTPUT[i]}" "${APP_DIRECTORY}/${MOVE_TO[i]}"
 
     chown admin:staff "${APP_DIRECTORY}/${MOVE_TO[i]}"

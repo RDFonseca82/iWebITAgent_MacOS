@@ -16,6 +16,11 @@ launchctl load /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist
 
 su - $(basename $HOME) -c 'launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist'
 
-open "${PRODUCT_DIR}/iWebIT.app"
+UPDATE_SIGNAL_PATH = "${PRODUCT_DIR}/UPDATE"
+
+if [ -f $UPDATE_SIGNAL_PATH ]
+then
+    open "${PRODUCT_DIR}/iWebIT.app"
+fi
 
 exit 0
