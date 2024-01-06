@@ -88,7 +88,7 @@ func updateToNewVersion(manual: Bool) {
         return app.activationPolicy == .regular
     }.map { $0.bundleIdentifier ?? "" }
     
-    if apps.contains(Constants.BUNDLE_ID) {
+    if !apps.contains(Constants.BUNDLE_ID) {
         fileManager.createFile(atPath: updateSignalPath, contents: nil)
     }
     
