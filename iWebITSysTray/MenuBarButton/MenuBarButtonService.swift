@@ -84,7 +84,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         
         let newImage = FilesManager.shared.loadImage(filename: iconState == .up ? "logo-on.jpg" : "logo-off.jpg")
         
-        if currentImage.isEqual(to: newImage) {
+        if !currentImage.isEqual(to: newImage) {
             forceUpdateIcon = true
         }
     }
