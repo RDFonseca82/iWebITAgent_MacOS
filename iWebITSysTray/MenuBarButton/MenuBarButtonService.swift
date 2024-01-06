@@ -26,14 +26,14 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         self.statusItem = statusItem
         super.init()
         
+        setIconBasedOnStatus()
+        the15sstep()
+        
         if (CLLocationManager.locationServicesEnabled()) {
             locationManager = CLLocationManager()
             locationManager!.delegate = self
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
         }
-        
-        setIconBasedOnStatus()
-        the15sstep()
         
         Timer.publish(every: 5, on: .main, in: .common)
             .autoconnect()
