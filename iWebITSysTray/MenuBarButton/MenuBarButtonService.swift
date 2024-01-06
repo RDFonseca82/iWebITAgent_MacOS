@@ -80,7 +80,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     }
     
     func checkForNewIcon() {
-        guard let currentImage = statusItem.button?.image, iconState == .inactive && !forceUpdateIcon else { return }
+        guard let currentImage = statusItem.button?.image, !forceUpdateIcon else { return }
         
         let newImage = FilesManager.shared.loadImage(filename: iconState == .up ? "logo-on.jpg" : "logo-off.jpg")
         
