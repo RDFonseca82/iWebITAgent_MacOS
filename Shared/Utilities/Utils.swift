@@ -13,7 +13,7 @@ func doUntil(_ action: () throws -> Bool,_ interval: Int, callerName: String = #
     while repeatAction {
         do {
             repeatAction = try action()
-        } catch { print("\(error)") }
+        } catch { log("\(error)") }
 
         if !repeatAction {
             return

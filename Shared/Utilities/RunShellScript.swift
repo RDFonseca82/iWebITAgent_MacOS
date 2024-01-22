@@ -7,7 +7,7 @@
 
 import Foundation
 
-@discardableResult func shell(_ cmd: String) -> String {
+@discardableResult func shell(_ cmd: String) -> Data {
     let pipe = Pipe()
     let process = Process()
     process.launchPath = "/bin/sh"
@@ -15,5 +15,5 @@ import Foundation
     process.standardOutput = pipe
     let fileHandle = pipe.fileHandleForReading
     process.launch()
-    return String(data: fileHandle.readDataToEndOfFile(), encoding: .utf8) ?? ""
+    return fileHandle.readDataToEndOfFile()
 }

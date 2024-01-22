@@ -44,6 +44,43 @@ extension NetworkingManager {
         }
     }
     
+    static func send(url: String, jsonPayload: Data) throws {
+        let url = URL(string: url)!
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonPayload
+        
+        do {
+            var data: Data?
+            var response: URLResponse?
+            var error: Error?
+            
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            URLSession.shared.dataTask(with: request, completionHandler: {
+                data = $0
+                response = $1
+                error = $2
+                semaphore.signal()
+            }).resume()
+            
+            _ = semaphore.wait(timeout: .distantFuture)
+            
+            if let error = error {
+                throw error
+            }
+            let sortedData = try handleResponseS(data: data, response: response)
+            
+            log(String(data: sortedData, encoding: .utf8) ?? "NULL", important: true)
+        } catch {
+            AppInfo.net = "0"
+            throw error
+        }
+    }
+    
     static func send(url: String, data: [String:Any]) throws {
         let url = URL(string: url)!
         

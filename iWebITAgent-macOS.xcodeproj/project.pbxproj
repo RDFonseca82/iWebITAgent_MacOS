@@ -125,6 +125,8 @@
 		84CCA6A02AA0A9FA008A4CF2 /* SynchronizeFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA69F2AA0A9FA008A4CF2 /* SynchronizeFiles.swift */; };
 		84CCA6A22AA0AA44008A4CF2 /* AutoUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6A12AA0AA44008A4CF2 /* AutoUpdate.swift */; };
 		84CCA6A42AA0AA4D008A4CF2 /* UninstallApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6A32AA0AA4D008A4CF2 /* UninstallApps.swift */; };
+		84E452912B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E452902B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift */; };
+		84E452932B5E85010081E083 /* AppsToUninstallDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E452922B5E85010081E083 /* AppsToUninstallDTO.swift */; };
 		84E87F012AE9546900BC6898 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 84E87F002AE9546900BC6898 /* SwiftUIIntrospect */; };
 		84E87F032AEC00AF00BC6898 /* NSImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E87F022AEC00AF00BC6898 /* NSImageExt.swift */; };
 /* End PBXBuildFile section */
@@ -236,6 +238,8 @@
 		84CCA69F2AA0A9FA008A4CF2 /* SynchronizeFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizeFiles.swift; sourceTree = "<group>"; };
 		84CCA6A12AA0AA44008A4CF2 /* AutoUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoUpdate.swift; sourceTree = "<group>"; };
 		84CCA6A32AA0AA4D008A4CF2 /* UninstallApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallApps.swift; sourceTree = "<group>"; };
+		84E452902B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAppsToUninstallDataService.swift; sourceTree = "<group>"; };
+		84E452922B5E85010081E083 /* AppsToUninstallDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsToUninstallDTO.swift; sourceTree = "<group>"; };
 		84E87F022AEC00AF00BC6898 /* NSImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImageExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -616,6 +620,7 @@
 				84BB23CF2AA231DE007EDEF2 /* DTOs */,
 				84BB23D22AA2326A007EDEF2 /* GetCompanyDataService.swift */,
 				84BB23E12AA8CC38007EDEF2 /* GetDeviceDataService.swift */,
+				84E452902B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -624,6 +629,7 @@
 			isa = PBXGroup;
 			children = (
 				84BB23D02AA231EB007EDEF2 /* CompanyDTO.swift */,
+				84E452922B5E85010081E083 /* AppsToUninstallDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -845,6 +851,7 @@
 				84CCA69E2AA0A9E6008A4CF2 /* SecondaryLoop.swift in Sources */,
 				8465CA722AA0D0E100E339CD /* ServiceUtils.swift in Sources */,
 				8444A76A2A9A668E00F3C1D6 /* StringExtension.swift in Sources */,
+				84E452932B5E85010081E083 /* AppsToUninstallDTO.swift in Sources */,
 				84CCA69A2AA0A7E3008A4CF2 /* GetDeviceSyncInfo.swift in Sources */,
 				84E87F032AEC00AF00BC6898 /* NSImageExt.swift in Sources */,
 				8444A7612A9A603200F3C1D6 /* service.swift in Sources */,
@@ -854,6 +861,7 @@
 				84CCA6882A9F5444008A4CF2 /* Utils.swift in Sources */,
 				84BB23BF2AA1FBF4007EDEF2 /* DateExtension.swift in Sources */,
 				8444A7672A9A668E00F3C1D6 /* iWebITError.swift in Sources */,
+				84E452912B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift in Sources */,
 				8421A5142ABF0C32000D7CEF /* PrepareFullSyncData.swift in Sources */,
 				84CCA67B2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
 				84BB23C32AA227AF007EDEF2 /* TaskExtension.swift in Sources */,
@@ -1142,7 +1150,7 @@
 				CODE_SIGN_ENTITLEMENTS = iWebITAgent/iWebITAgent.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1156,7 +1164,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1173,7 +1181,7 @@
 				CODE_SIGN_ENTITLEMENTS = iWebITAgent/iWebITAgent.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1187,7 +1195,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1204,7 +1212,7 @@
 				CODE_SIGN_ENTITLEMENTS = iWebITSysTray/iWebITSysTray.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1222,7 +1230,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITSysTray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1239,7 +1247,7 @@
 				CODE_SIGN_ENTITLEMENTS = iWebITSysTray/iWebITSysTray.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = R8VHDNRMJJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1257,7 +1265,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rdfonseca.iWebITSysTray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -9,9 +9,9 @@ import Foundation
 
 
 func getMemoryUsage() -> Int {
-    let pagesize = Int(shell("pagesize").replacingOccurrences(of: "\n", with: ""))
+    let pagesize = Int(String(data: shell("pagesize"), encoding: .utf8)!.replacingOccurrences(of: "\n", with: ""))
     
-    let vm = shell("vm_stat")
+    let vm = String(data: shell("vm_stat"), encoding: .utf8)!
     let vmLines = vm.components(separatedBy: "\n")
     let vmStats = Dictionary(uniqueKeysWithValues: vmLines[1..<(vmLines.count - 2)].map { line in
         let components = line.trimmingCharacters(in: .whitespaces).components(separatedBy: ":")

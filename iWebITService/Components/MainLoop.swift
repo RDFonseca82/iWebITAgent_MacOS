@@ -31,7 +31,7 @@ func mainLoop() {
     updateTimers("timesync")
     updateTimers("timealive")
     updateCompanyInfo(onInit: false)
-//    checkAppsToUninstall()
+    checkAppsToUninstall()
     
     if AppInfo.allprepared != "1" {
         AppInfo.allprepared = "1"
@@ -57,7 +57,7 @@ func mainLoop() {
             
             updateDeviceInfo()
             updateCompanyInfo(onInit: false)
-//            checkAppsToUninstall()
+            checkAppsToUninstall()
         }
         
         if sixtyLoopClock == 60 {

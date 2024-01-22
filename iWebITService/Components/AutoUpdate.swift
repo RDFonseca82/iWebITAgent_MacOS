@@ -92,7 +92,7 @@ func updateToNewVersion(manual: Bool) {
         fileManager.createFile(atPath: updateSignalPath, contents: nil)
     }
     
-    let output = shell("sudo installer -pkg \"\(installerPath)\" -target / -verboseR").data(using: .utf8)
+    let output = shell("sudo installer -pkg \"\(installerPath)\" -target / -verboseR")
     
     fileManager.createFile(atPath: installerLogPath, contents: output)
 }

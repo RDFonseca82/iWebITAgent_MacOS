@@ -79,13 +79,25 @@ func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:S
     
     
     let applications: [[String:String]] = info.map { app in
-        let name = app["_name"] as? String ?? "None"
+        // .folding(options: .diacriticInsensitive, locale: .current)
+        let name = (app["_name"] as? String ?? "None")
+            .replacingOccurrences(of: "ã", with: "ã")
+            .replacingOccurrences(of: "ç", with: "ç")
+            .replacingOccurrences(of: "é", with: "é")
+            .replacingOccurrences(of: "ê", with: "ê")
+            .replacingOccurrences(of: "Á", with: "Á")
+            .replacingOccurrences(of: "á", with: "á")
+            .replacingOccurrences(of: "à", with: "à")
+            .replacingOccurrences(of: "ó", with: "ó")
+            .replacingOccurrences(of: "õ", with: "õ")
+            .replacingOccurrences(of: "í", with: "í")
+            .replacingOccurrences(of: "ú", with: "ú")
         let date = (app["lastModified"] as? String ?? "1900-01-01T00:00:01Z")
             .replacingOccurrences(of: "T", with: " ")
             .replacingOccurrences(of: "Z", with: "")
+        
         return ["name": name, "date": date]
     }
-    
     
     return applications
 }
@@ -103,4 +115,11 @@ func pickNumProcessors(_ strNumProcessors: String) -> String {
     }
 }
 
+extension Data {
+    var stringEncoding: String.Encoding? {
+        var nsString: NSString?
+        guard case let rawValue = NSString.stringEncoding(for: self, encodingOptions: nil, convertedString: &nsString, usedLossyConversion: nil), rawValue != 0 else { return nil }
+        return .init(rawValue: rawValue)
+    }
+}
 

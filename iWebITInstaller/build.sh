@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export VERSION="1.0.0.2"
+export VERSION="1.0.0.3"
 export PRODUCT="iWebITAgent"
 export PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 
