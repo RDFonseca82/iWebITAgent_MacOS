@@ -31,14 +31,13 @@ func checkAppsToUninstall() {
             guard let appName = app.appName
             else {
                 log("APP NAME IS NULL")
-                log("NO PATH FOUND FOR \(app.appName ?? "NULL")")
                 continue
             }
             
             let appMatches = installedApps.filter({ $0.name == appName })
 
             guard !appMatches.isEmpty else {
-                log("NO MATCHING APP FOUND FOR \(appName)")
+                log("NO MATCHING APP FOUND FOR \(appName)", important: true)
                 continue
             }
             
@@ -49,10 +48,10 @@ func checkAppsToUninstall() {
                     do {
                         try fileManager.removeItem(atPath: path)
                     } catch {
-                        log("COULDN'T REMOVE APP: \(appName)")
+                        log("COULDN'T REMOVE APP \(appName): \(error)", important: true)
                     }
                 } else {
-                    log("APP NOT FOUND: \(appName)")
+                    log("APP NOT FOUND: \(appName)", important: true)
                     continue
                 }
                 uninstalledAppsPaths.append(path)
@@ -65,7 +64,7 @@ func checkAppsToUninstall() {
             updateTimers("timealive")
         }
         
-        log("APPS UNINSTALLED (\(uninstalledAppsPaths.count)): \(uninstalledAppsPaths.joined(separator: ", "))")
+        log("APPS UNINSTALLED (\(uninstalledAppsPaths.count)): \(uninstalledAppsPaths.joined(separator: ", "))", important: true)
         
         return false
     }, 60)

@@ -56,7 +56,7 @@ class NetworkingManager {
             let (data, response) = try await URLSession.shared.data(for: request)
             let sortedData = try handleResponse(data: data, response: response)
             
-            return String(data: sortedData, encoding: .utf8) ?? "NULL"
+            return sortedData.toString() ?? "NULL"
         } catch {
             throw error
         }

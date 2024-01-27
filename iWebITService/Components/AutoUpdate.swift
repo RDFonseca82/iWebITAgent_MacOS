@@ -10,7 +10,7 @@ import AppKit
 
 
 func updateToNewVersion(manual: Bool) {
-    log("UPDATING TO NEW VERSION...")
+    log("UPDATING TO NEW VERSION...", important: true)
     
     guard let appSupportFolder = FilesManager.shared.getApplicationSupportDirectory() else {
         log("APP SUPPORT DIR IS NULL", important: true)
@@ -33,7 +33,7 @@ func updateToNewVersion(manual: Bool) {
     
     if !manual {
         doUntil({
-            log("GETTING INSTALLER URL")
+            log("GETTING INSTALLER URL", important: true)
             
             ensureUserLoggedIn()
             
@@ -46,7 +46,7 @@ func updateToNewVersion(manual: Bool) {
                 return false
             }
             
-            log("DOWNLOADING INSTALLER...")
+            log("DOWNLOADING INSTALLER...", important: true)
             
             var installer: Data? = nil
             
@@ -54,12 +54,12 @@ func updateToNewVersion(manual: Bool) {
                 installer = try NetworkingManager.download(url: installerUrl)
                 
                 guard installer != nil else {
-                    log("NO INSTALLER FOUND")
+                    log("NO INSTALLER FOUND", important: true)
                     return false
                 }
             } catch {
                 if AppInfo.net == "1" {
-                    log("NO INSTALLER FOUNd")
+                    log("NO INSTALLER FOUNd", important: true)
                     
                     return false
                 }
@@ -68,7 +68,7 @@ func updateToNewVersion(manual: Bool) {
             
             fileManager.createFile(atPath: installerPath, contents: installer)
             
-            log("DONE")
+            log("DONE", important: true)
             
             installerFound = true
             
@@ -77,11 +77,11 @@ func updateToNewVersion(manual: Bool) {
     }
     
     if !installerFound && !manual {
-        log("COULD NOT INSTALL NEW VERSION")
+        log("COULD NOT INSTALL NEW VERSION", important: true)
         return
     }
     
-    log("====> INSTALLING <====")
+    log("====> INSTALLING <====", important: true)
     
     let workspace = NSWorkspace.shared
     let apps = workspace.runningApplications.filter { (app) -> Bool in

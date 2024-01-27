@@ -20,9 +20,7 @@ class GetDeviceDataService {
             throw iWebITError.httpError
         }
         
-        let jsonString = String(data: data, encoding: .utf8)!
-        
-        guard let dtoData = (try? JSONDecoder().decode(DeviceDTO.self, from: jsonString.data(using: .utf8)!)) else {
+        guard let dtoData = (try? JSONDecoder().decode(DeviceDTO.self, from: data)) else {
             throw iWebITError.decodingError
         }
         

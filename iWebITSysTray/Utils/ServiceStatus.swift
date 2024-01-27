@@ -17,7 +17,7 @@ func isServiceRunning() -> Bool {
     process.standardOutput = pipe
     process.launch()
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    if let output = String(data: data, encoding: .utf8) {
+    if let output = data.toString() {
         if output.contains("iWebITService") {
             isRunning = true
         }

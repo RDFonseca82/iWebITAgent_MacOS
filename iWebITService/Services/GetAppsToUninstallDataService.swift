@@ -20,7 +20,7 @@ class GetAppsToUninstallDataService {
             throw iWebITError.httpError
         }
         
-        let jsonString = String(data: data, encoding: .utf8)!
+        let jsonString = data.toString()!
         
         if jsonString == "null" || jsonString == "" {
             return []

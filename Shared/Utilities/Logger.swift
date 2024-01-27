@@ -10,6 +10,10 @@ import Foundation
 
 func log(_ text: String, important: Bool = false, callerName: String = #function, callerLineNum: Int = #line, retry: Bool = false, printOnly: Bool = false) {
 
+    if AppInfo.verbose == "0" && !important {
+        return
+    }
+    
     #if DEBUG
         print(text)
     #endif
@@ -31,7 +35,7 @@ func log(_ text: String, important: Bool = false, callerName: String = #function
 
     if FileManager.default.fileExists(atPath: logPath.path) {
         if let content = FileManager.default.contents(atPath: logPath.path),
-           let firstLine = String(data: content, encoding: .utf8)?.components(separatedBy: .newlines).first {
+           let firstLine = content.toString()?.components(separatedBy: .newlines).first {
             if let parsedDate = dateFormatter.date(from: String(firstLine.prefix(19))) {
                 logCreateDate = parsedDate
             }

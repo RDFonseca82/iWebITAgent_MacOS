@@ -24,7 +24,7 @@ class SyncLocationDataService {
             "IdDeviceType": 62,
         ]
         
-        let jsonString = String(data: try JSONSerialization.data(withJSONObject: data), encoding: .utf8)!
+        let jsonString = try JSONSerialization.data(withJSONObject: data).toString()!
         
         log(
             try await NetworkingManager.send(

@@ -22,7 +22,6 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     } else {
         log("SENDING SWITCH VARIABLE")
         guard let extraData = extraData else {
-            print("ERROR")
             fatalError("Providing 0 as type sync requires extra data to be not null.")
         }
         data = extraData
@@ -40,6 +39,7 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     data["IdDeviceType"] = 62
     data["AppleBattery"] = BatteryFinder().getInternalBattery()?.charge ?? 100.0
     data["AppleType"] = 1 // para ios é 2
+    data["ComputerSystem_UserName"] = getUserNameId()
     
     guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .withoutEscapingSlashes) else {
         log("ERROR \(iWebITError.decodingError)", important: true)
@@ -54,7 +54,7 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     
     log("PREPARED TO SEND DATA")
     doUntil({
-        try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, data: ["json": String(data: jsonData, encoding: .utf8)!])
+        try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, data: ["json": jsonData.toString()!])
         return false
     }, 60)
     

@@ -21,7 +21,7 @@ class CheckCompanyDataService {
             throw iWebITError.httpError
         }
         
-        guard let jsonString = String(data: data, encoding: .utf8), jsonString != "null" else { return false }
+        guard let jsonString = data.toString(), jsonString != "null" else { return false }
         
         return true
     }

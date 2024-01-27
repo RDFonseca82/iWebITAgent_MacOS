@@ -15,7 +15,7 @@ func mainLoop() {
     
     resetRebootAndShutdownFlags()
     
-    log("SYNCING VERSION (new/old): \(Constants.AGENT_VERSION) \(AppInfo.agentversion)")
+    log("SYNCING VERSION (new/old): \(Constants.AGENT_VERSION) \(AppInfo.agentversion)", important: true)
     AppInfo.agentversion = Constants.AGENT_VERSION
     
     updateCompanyInfo(onInit: true)

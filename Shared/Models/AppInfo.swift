@@ -58,6 +58,9 @@ struct AppInfo: Codable {
     @AppInfoProperty("dolog")
     static var dolog: String
     
+    @AppInfoProperty("verbose")
+    static var verbose: String
+    
     static func isLoggedIn() -> Bool {
         return idsync.isNotBlank() && idsync != "IDSYNC" && idsync != "?"
     }

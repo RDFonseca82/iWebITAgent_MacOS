@@ -48,7 +48,7 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
                 AppInfo.uniqueid = uniqueId
             }
             
-            log("GENERATED UNIQUE ID: \(uniqueId)")
+            log("GENERATED UNIQUE ID: \(uniqueId)", important: true)
         } else {
             AppInfo.idcompany = companyInfo.idCompany!
             AppInfo.companyname = companyInfo.company!

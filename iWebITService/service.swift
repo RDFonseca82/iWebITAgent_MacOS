@@ -13,7 +13,11 @@ struct Service {
         Constants.shared.LOG_FILE = Constants.shared.LOG_FILE.appendingPathComponent("log_service.log")
         Constants.shared.OLD_LOG_FILE = Constants.shared.OLD_LOG_FILE.appendingPathComponent("old_log_service.log")
         
-        mainLoop()
+        //getServices()
+        
+        print(shell("launchctl list application.com.microsoft.VSCode.12899099958.12899099964"))
+        
+        //mainLoop()
     }
 }
 

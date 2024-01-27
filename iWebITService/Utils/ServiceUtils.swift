@@ -40,16 +40,20 @@ func alert(title: String, text: String, alertStyle: NSAlert.Style = .warning) {
 
 func waitForLogIn() {
     while !AppInfo.isLoggedIn() {
-        log("NO IDSYNC SPECIFIED, WAITING 15s")
+        log("NO IDSYNC SPECIFIED, WAITING 15s", important: true)
         Thread.sleep(forTimeInterval: TimeInterval(15))
     }
 }
 
-func ensureUserLoggedIn() {
+func ensureUserLoggedIn(callerName: String = #function, callerLineNum: Int = #line) {
     if !AppInfo.isLoggedIn() {
-        log("!!! ROLLBACK TO SERVICE START: USER NOT LOGGED IN !!!")
+        log("!!! ROLLBACK TO SERVICE START: USER NOT LOGGED IN !!!", important: true, callerName: callerName, callerLineNum: callerLineNum)
         fatalError("USER NOT LOGGED IN")
     }
+}
+
+func getUserNameId() -> String {
+    return shell("line=( $(LANG=C who -u | head -1) );  printf \"${line[0]}\"; echo;").toString()!.replacingOccurrences(of: "\n", with: "")
 }
 
 
@@ -62,7 +66,7 @@ extension FileManager {
                 return totalSize
             }
         } catch {
-            log("ERROR GETTING TOTAL STORAGE CAPACITY: \(error)")
+            log("ERROR GETTING TOTAL STORAGE CAPACITY: \(error)", important: true)
         }
         return nil
     }
@@ -77,7 +81,7 @@ extension FileManager {
                 }
             }
         } catch {
-            log("ERROR GETTING USED STORAGE SPACE: \(error)")
+            log("ERROR GETTING USED STORAGE SPACE: \(error)", important: true)
         }
         return nil
     }

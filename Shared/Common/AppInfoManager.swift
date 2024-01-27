@@ -81,7 +81,8 @@ extension AppInfoManager {
           "allprepared": "0",
           "net": "0",
           "manualupdate": "0",
-          "dolog": "0"
+          "dolog": "0",
+          "verbose": "0"
         }
         """
     }

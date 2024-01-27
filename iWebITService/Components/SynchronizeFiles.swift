@@ -50,7 +50,7 @@ func getFileLinks(filesToSync: inout [FileSyncModel]) {
 func downloadFiles(filesToSync: inout [FileSyncModel]) {
     for i in filesToSync.indices {
         guard let link = filesToSync[i].link else {
-            log("LINK IS NULL: \(filesToSync[i].jsonCorresponding)")
+            log("LINK IS NULL: \(filesToSync[i].jsonCorresponding)", important: true)
             continue
         }
         
@@ -75,7 +75,7 @@ func saveFiles(filesToSync: [FileSyncModel]) {
         log("SAVING: \(fileToSync.fileName)")
         
         guard var fileData = fileToSync.fileData else {
-            log("FILE \(fileToSync.fileName) HAS NO DATA, SKIPING")
+            log("FILE \(fileToSync.fileName) HAS NO DATA, SKIPING", important: true)
             continue
         }
         
@@ -85,7 +85,7 @@ func saveFiles(filesToSync: [FileSyncModel]) {
                 fileData = resizedData
             }
             else {
-                log("FAILED TO RESIZE IMAGE")
+                log("FAILED TO RESIZE IMAGE", important: true)
             }
         }
         
