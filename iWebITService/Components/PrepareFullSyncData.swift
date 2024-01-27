@@ -39,6 +39,8 @@ func prepareFullSyncData() -> [String: Any] {
     
     data["Aplications"] = getSPApplicationsDataType(dInfo["SPApplicationsDataType"] as? AnyList)
     
+    data["Services"] = getServices()
+    
     return data
 }
 
@@ -113,7 +115,7 @@ func getServices() -> [[String:String]] {
     #if DEBUG
     guard let output = shell("( launchctl list ) | grep -v 'com.apple.'").toString() else { return [] }
     #else
-    guard let output = shell("( /usr/bin/sudo launchctl list ; launchctl list ) | grep -v 'com.apple.'").toString() else { return [] }
+    guard let output = shell("( launchctl list ; su - \(getUserNameId()) -c 'launchctl list' ) | grep -v 'com.apple.'").toString() else { return [] }
     #endif
     
     let lines = output.split(separator: "\n")
@@ -124,13 +126,14 @@ func getServices() -> [[String:String]] {
     for line in lines {
         let components = line.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
         
-        if components.contains("PID") {
-            continue
-        }
+        if components.contains("PID") { continue }
         
         if components.count == 3 {
             let state = components[1] == "0" ? "Running" : "Stopped"
             let name = components[2]
+            
+            if name.contains("application.") { continue }
+            
             let plistPaths = possiblePlistLocations
                 .map { "\($0)/\(name).plist" }
                 .filter { fileManager.fileExists(atPath: $0) }
@@ -155,17 +158,32 @@ func getServices() -> [[String:String]] {
                     }
                 }
             } else {
+                var output = shell("launchctl list \(name)").toString()!
+                log("su - \(getUserNameId()) -c 'launchctl list \(name)'",important: true)
+                if output.contains("Could not find service") {
+                    output = shell("su - \(getUserNameId()) -c 'launchctl list \(name)'").toString()!
+                }
+                log(output, important: true)
+                
+                var programPath = output
+                    .split(separator: "\n")
+                    .filter { $0.contains("Program\"") }[0]
+                    .replacingOccurrences(of: "\t", with: "")
+                    .split(separator: "=")[1]
+                
+                programPath = programPath
+                    .prefix(upTo: programPath.index(programPath.endIndex, offsetBy: -2))
+                    .suffix(from: programPath.index(programPath.startIndex, offsetBy: 2))
+                
                 services.append(
                     ["Name": name,
                      "State": state,
                      "StartMode": "Auto",
-                     "PathName": "TODOOOOO"]
+                     "PathName": String(programPath)]
                 )
             }
         }
     }
-    
-    print(services)
     
     return services
 }
