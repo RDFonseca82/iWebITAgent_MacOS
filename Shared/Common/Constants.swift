@@ -11,7 +11,7 @@ struct Constants {
     static var shared = Constants()
     
     #if DEBUG
-    static let AGENT_VERSION = "1.0.0.3"
+    static let AGENT_VERSION = "1.0.0.5"
     #else
     static let AGENT_VERSION = "__VERSION__"
     #endif
