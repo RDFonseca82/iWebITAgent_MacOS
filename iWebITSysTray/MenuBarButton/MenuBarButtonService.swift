@@ -107,7 +107,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 }
                 
             } catch {
-                log("ERROR IN LOOP: \(error)")
+                log("ERROR IN LOOP: \(error)", important: true)
             }
         }
     }
@@ -140,18 +140,17 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
             syncingLocation = true
             sendLocation(newLocation: newLocation)
             
-            log("NEW LOCATION: \(coordinates.latitude) \(coordinates.longitude)")
+            log("NEW LOCATION: \(coordinates.latitude) \(coordinates.longitude)", important: true)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if !syncingLocation {
-            log("FAILED TO GET LOCATION: \(error)")
+            log("FAILED TO GET LOCATION: \(error)", important: true)
         }
     }
     
     func getLocationStatus() -> Bool {
-        print(CLLocationManager.locationServicesEnabled())
         return CLLocationManager.locationServicesEnabled()
     }
     

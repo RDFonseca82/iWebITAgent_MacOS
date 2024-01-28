@@ -160,8 +160,12 @@ func getServices() -> [[String:String]] {
             } else {
                 var output = shell("launchctl list \(name)").toString()!
                 
-                if output.contains("Could not find service") {
+                if output.contains("Could not find service") || output.isBlank() {
                     output = shell("su - \(getUserNameId()) -c 'launchctl list \(name)'").toString()!
+                }
+                
+                if output.contains("Could not find service") || output.isBlank() {
+                    continue
                 }
                 
                 var programPath = output
