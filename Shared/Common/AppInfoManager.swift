@@ -16,14 +16,14 @@ class AppInfoManager {
     
     init() {
         createAppInfoFileIfNeeded()
+        syncAppInfoNewKeys()
     }
     
     func getValue(key: String) -> String {
         do {
-            guard let jsonString = filesManager.loadFile(filename: appInfoFileName) else { throw iWebITError.loadingContentError }
-            return try jsonString.toJsonObject()[key] ?? "?"
+            return try (getDecodedAppInfo()[key] as? String) ?? "?"
         } catch {
-            print("Error getting JSON file: \(error)")
+            log("Error getting JSON file: \(error)", important: true)
             return "?"
         }
     }
@@ -35,7 +35,7 @@ class AppInfoManager {
             
             filesManager.saveFile(filename: appInfoFileName, content: try data.toJsonString())
         } catch {
-            print("Error saving JSON to file: \(error)")
+            log("Error saving JSON to file: \(error)", important: true)
         }
     }
     
@@ -48,13 +48,36 @@ class AppInfoManager {
         do {
             try filesManager.createFileIfNeeded(filename: appInfoFileName, content: initialAppInfo)
         } catch {
-            print("ERRO1: \(error)")
+            log("ERRO: \(error)", important: true)
         }
     }
     
-    func syncAgentVersion() {
-        if getValue(key: "agentversion") != Constants.AGENT_VERSION && Constants.AGENT_VERSION != "__VERSION__" && Constants.AGENT_VERSION != "" {
-            setValue(key: "agentversion", value: Constants.AGENT_VERSION)
+    func syncAppInfoNewKeys() {
+        var currentAppInfo = (try? getDecodedAppInfo()) ?? [:]
+        let defaultAppInfo = try! initialAppInfo.toJsonObject()
+        
+        let currentKeys = currentAppInfo.keys
+        let defaultKeys = defaultAppInfo.keys
+        
+        guard !currentKeys.isEmpty else {
+            createAppInfoFileIfNeeded()
+            return
+        }
+        
+        let keysToAppend = defaultKeys.filter { !currentKeys.contains($0) }
+        let keysToRemove = currentKeys.filter { !defaultKeys.contains($0) }
+        
+        keysToRemove.forEach { key in
+            currentAppInfo.removeValue(forKey: key)
+        }
+        
+        keysToAppend.forEach { key in
+            currentAppInfo[key] = defaultAppInfo[key]
+        }
+        do {
+            filesManager.saveFile(filename: appInfoFileName, content: try currentAppInfo.toJsonString())
+        } catch {
+            log("Error saving JSON to file: \(error)", important: true)
         }
     }
 }
