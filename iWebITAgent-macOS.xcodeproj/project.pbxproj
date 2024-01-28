@@ -127,6 +127,8 @@
 		84CCA6A42AA0AA4D008A4CF2 /* UninstallApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6A32AA0AA4D008A4CF2 /* UninstallApps.swift */; };
 		84E452912B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E452902B5DB3CA0081E083 /* GetAppsToUninstallDataService.swift */; };
 		84E452932B5E85010081E083 /* AppsToUninstallDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E452922B5E85010081E083 /* AppsToUninstallDTO.swift */; };
+		84E452942B66EA100081E083 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B452A893A9E00822D2C /* Logger.swift */; };
+		84E452952B66EA2B0081E083 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6852A9F5444008A4CF2 /* Utils.swift */; };
 		84E87F012AE9546900BC6898 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 84E87F002AE9546900BC6898 /* SwiftUIIntrospect */; };
 		84E87F032AEC00AF00BC6898 /* NSImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E87F022AEC00AF00BC6898 /* NSImageExt.swift */; };
 /* End PBXBuildFile section */
@@ -916,6 +918,7 @@
 				84AE462F2A84FA3600783806 /* iWebITAgentApp.swift in Sources */,
 				84BE9B3F2A893A9300822D2C /* ConstantsExtended.swift in Sources */,
 				8444A7712A9BA32500F3C1D6 /* MultipartRequest.swift in Sources */,
+				84E452952B66EA2B0081E083 /* Utils.swift in Sources */,
 				8444A6A32A8E702800F3C1D6 /* WindowAccessor.swift in Sources */,
 				8444A6DC2A93AB8D00F3C1D6 /* OcorrenciasScreen.swift in Sources */,
 				8444A74F2A992E4400F3C1D6 /* DataExtension.swift in Sources */,
@@ -935,6 +938,7 @@
 				8444A6D82A937F2000F3C1D6 /* NavBar.swift in Sources */,
 				8444A7092A94E86A00F3C1D6 /* SuporteScreen.swift in Sources */,
 				8444A6A92A8E7BBC00F3C1D6 /* LoginViewModel.swift in Sources */,
+				84E452942B66EA100081E083 /* Logger.swift in Sources */,
 				84CCA67C2A9D261E008A4CF2 /* ImageManipulation.swift in Sources */,
 				8444A6E02A93E7DE00F3C1D6 /* HomeViewModel.swift in Sources */,
 				8444A71B2A9619BE00F3C1D6 /* HomeState.swift in Sources */,
