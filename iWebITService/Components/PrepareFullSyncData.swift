@@ -14,16 +14,24 @@ func prepareFullSyncData() -> [String: Any] {
     let dInfo = getDeviceSyncInfo(fullSyncVars)
     var data = [String: Any]()
     
+    log("GETTING 1")
+    
     data["DeviceHost"] = getDeviceHost(dInfo["SPNetworkDataType"] as? AnyList)
     data["AppleMemoryTotal"] = getTotalMemory(dInfo["SPHardwareDataType"] as? AnyList)
     data["AppleMemoryUsed"] = getMemoryUsage()
+    
+    log("GETTING 2")
     
     let softwareData = getSPSoftwareDataType(dInfo["SPSoftwareDataType"] as? AnyList)
     
     data["ComputerSystem_DNSHostName"] = softwareData.hostName
     data["AppleVersion"] = softwareData.appleVersion
     
+    log("GETTING 3")
+    
     let hardwareData = getSPHardwareDataType(dInfo["SPHardwareDataType"] as? AnyList)
+    
+    log("GETTING 4")
     
     data["AppleBootRomVersion"] = hardwareData.bootRom
     data["AppleModel"] = hardwareData.appleModel
@@ -34,12 +42,20 @@ func prepareFullSyncData() -> [String: Any] {
     data["AppleSerialNumber"] = hardwareData.serialNumber
     data["AppleSMCVersionSystem"] = hardwareData.smcVersionSystem
     
+    log("GETTING 5")
+    
     data["AppleStorage"] = FileManager.getTotalStorageCapacity() ?? 0
     data["AppleStorageUsed"] = FileManager.getUsedStorageSpace() ?? 0
     
+    log("GETTING 6")
+    
     data["Aplications"] = getSPApplicationsDataType(dInfo["SPApplicationsDataType"] as? AnyList)
     
+    log("GETTING 7")
+    
     data["Services"] = getServices()
+    
+    log("GETTING 8")
     
     return data
 }
@@ -49,7 +65,10 @@ func getSPSoftwareDataType(_ spSoftwareDataType: AnyList?) -> (hostName: String,
         let spSoftwareDataType = spSoftwareDataType,
         spSoftwareDataType.count > 0,
         let info = spSoftwareDataType[0] as? AnyDict
-    else { return ("","") }
+    else {
+        log("FAILED TO GET SOFTWARE", important: true)
+        return ("","")
+    }
     
     let hostName = info["local_host_name"] as? String ?? ""
     let appleVersion = info["os_version"] as? String ?? ""
@@ -60,21 +79,36 @@ func getSPSoftwareDataType(_ spSoftwareDataType: AnyList?) -> (hostName: String,
 func getSPHardwareDataType(_ spHardwareDataType: AnyList?) -> (
     bootRom: String, cpuType: String, processorSpeed: String,
     appleModel: String, numProcessors: String, osLoader: String,
-    serialNumber: String, smcVersionSystem: String) {
+    serialNumber: String, smcVersionSystem: String
+) {
     guard
         let spHardwareDataType = spHardwareDataType,
         spHardwareDataType.count > 0,
         let info = spHardwareDataType[0] as? AnyDict
-    else { return ("", "", "", "", "", "", "", "") }
+    else {
+        log("FAILED TO GET HARDWARE", important: true)
+        return ("", "", "", "", "", "", "", "")
+    }
     
     let bootRom = info["boot_rom_version"] as? String ?? ""
-    let cpuType = info["cpu_type"] as? String ?? ""
     let processorSpeed = info["current_processor_speed"] as? String ?? ""
     let appleModel = info["machine_model"] as? String ?? ""
-    let numProcessors = String(info["number_processors"] as? Int ?? -1)
     let osLoader = info["os_loader_version"] as? String ?? ""
     let serialNumber = info["serial_number"] as? String ?? ""
     let smcVersionSystem = info["SMC_version_system"] as? String ?? ""
+    let numProcessorsRaw = info["number_processors"]
+        
+    let numProcessors: String
+        
+    if let value = numProcessorsRaw as? String {
+        numProcessors = pickNumProcessors(value)
+    } else if let value = numProcessorsRaw as? Int {
+        numProcessors = String(value)
+    } else {
+        numProcessors = "-1"
+    }
+    
+    let cpuType = (info["chip_type"] as? String) ?? info["cpu_type"] as? String ?? ""
     
     return (bootRom, cpuType, processorSpeed, appleModel, numProcessors, osLoader, serialNumber, smcVersionSystem)
 }
@@ -84,7 +118,10 @@ func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:S
         let spApplicationsDataType = spApplicationsDataType,
         spApplicationsDataType.count > 0,
         let info = spApplicationsDataType as? [AnyDict]
-    else { return [] }
+    else {
+        log("FAILED TO GET APPLICATIONS", important: true)
+        return []
+    }
     
     
     let applications: [[String:String]] = info.map { app in
@@ -115,7 +152,10 @@ func getServices() -> [[String:String]] {
     #if DEBUG
     guard let output = shell("( launchctl list ) | grep -v 'com.apple.'").toString() else { return [] }
     #else
-    guard let output = shell("( launchctl list ; su - \(getUserNameId()) -c 'launchctl list' ) | grep -v 'com.apple.'").toString() else { return [] }
+    guard let output = shell("( launchctl list ; su - \(getUserNameId()) -c 'launchctl list' ) | grep -v 'com.apple.'").toString() else {
+        log("FAILED TO GET SERVICES", important: true)
+        return []
+    }
     #endif
     
     let lines = output.split(separator: "\n")
@@ -147,11 +187,25 @@ func getServices() -> [[String:String]] {
                             log("NO DATA FOR \(path)", important: true)
                             continue
                         }
+                        let programArgs = plist["ProgramArguments"] as? NSArray ?? []
+                        var pathName = "null"
+                        
+                        if programArgs.count > 0 {
+                            pathName = programArgs[0] as? String ?? "null"
+                        } else {
+                            pathName = plist["Program"] as? String ?? "null"
+                        }
+                        
+                        guard pathName != "null" else {
+                            log("NO PATH FOR \(path)")
+                            continue
+                        }
+                        
                         services.append(
                             ["Name": name,
                              "State": state,
                              "StartMode": (plist["RunAtLoad"] as? Int ?? 0) == 1 ? "Auto" : "Manual",
-                             "PathName": (plist["ProgramArguments"] as! NSArray)[0] as! String]
+                             "PathName": pathName]
                         )
                     } catch {
                         log("ERROR READING PLIST FOR \(path): \(error)", important: true)

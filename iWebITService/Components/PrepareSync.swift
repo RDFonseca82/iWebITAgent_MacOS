@@ -27,9 +27,11 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
         data = extraData
         
     }
+    log("GETTING 10")
     if typeSync != "0" {
         data["TypeSync"] = typeSync
     }
+    log("GETTING 11")
     
     data["UniqueID"] = AppInfo.uniqueid
     data["IDSync"] = AppInfo.idsync
@@ -40,11 +42,14 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     data["AppleBattery"] = BatteryFinder().getInternalBattery()?.charge ?? 100.0
     data["AppleType"] = 1 // para ios é 2
     data["ComputerSystem_UserName"] = getUserNameId()
+    log("GETTING 12", important: true)
     
     guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .withoutEscapingSlashes) else {
         log("ERROR \(iWebITError.decodingError)", important: true)
         return
     }
+    
+    log("GETTING 13")
     
     if AppInfo.dolog == "1" {
         if let prettyJsonData = try? JSONSerialization.data(withJSONObject: data, options: [.prettyPrinted, .withoutEscapingSlashes]) {
