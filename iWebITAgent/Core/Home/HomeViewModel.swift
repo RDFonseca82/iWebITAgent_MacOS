@@ -37,7 +37,7 @@ class HomeViewModel: ObservableObject {
                 self.filterSupports(nil)
             }
         } catch {
-            print("ERROR HOME VIEWMODEL: \(error)")
+            log("ERROR HOME VIEWMODEL: \(error)", important: true)
             await MainActor.run {
                 state = HomeState(error: error as? iWebITError ?? iWebITError.generalError, isLoading: false)
             }
@@ -55,7 +55,7 @@ class HomeViewModel: ObservableObject {
                 state = HomeState(isLoadingSend: false)
             }
         } catch {
-            print("ERROR HOME VIEWMODEL: \(error)")
+            log("ERROR HOME VIEWMODEL: \(error)", important: true)
             await MainActor.run {
                 state = HomeState(error: error as? iWebITError ?? iWebITError.generalError, isLoadingSend: false)
             }

@@ -7,6 +7,12 @@
 
 import Foundation
 
+#if DEBUG
+let DEBUG = true
+#else
+let DEBUG = false
+#endif
+
 
 func log(_ text: String, important: Bool = false, callerName: String = #function, callerLineNum: Int = #line, retry: Bool = false, printOnly: Bool = false) {
 
@@ -14,9 +20,9 @@ func log(_ text: String, important: Bool = false, callerName: String = #function
         return
     }
     
-    #if DEBUG
+    if AppInfo.verbose == "1" || DEBUG {
         print(text)
-    #endif
+    }
     
     if printOnly {
         return

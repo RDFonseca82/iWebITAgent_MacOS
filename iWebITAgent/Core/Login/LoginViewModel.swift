@@ -49,20 +49,10 @@ class LoginViewModel: ObservableObject {
                 loginWindow.close()
             }
         } catch {
-            print("ERROR HOME VIEWMODEL: \(error)")
+            log("ERROR LOGIN VIEWMODEL: \(error)", important: true)
             await MainActor.run {
                 state = LoginState(error: error as? iWebITError ?? iWebITError.generalError, isLoading: false)
             }
         }
     }
-    
-//        print(shell("launchctl load /Library/LaunchAgents/com.rdfonseca.iWebITAgent.plist"))
-//    func login5() {
-//        let myAppleScript = """
-//        do shell script \"sudo touch /Library/hello" with administrator privileges
-//        """
-//        var error: NSDictionary?
-//        let scriptObject = NSAppleScript(source: myAppleScript)!
-//        scriptObject.executeAndReturnError(&error)
-//    }
 }
