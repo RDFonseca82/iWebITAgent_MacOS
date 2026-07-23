@@ -44,12 +44,12 @@ final class AgentXPCClient {
     }
 
     func requestSynchronization(full: Bool) async throws {
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             proxy().requestSynchronization(full: full) { error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
-                    continuation.resume()
+                    continuation.resume(returning: ())
                 }
             }
         }
