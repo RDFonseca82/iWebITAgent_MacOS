@@ -41,6 +41,8 @@ for scheme in iWebITService-v2 iWebIT-v2 iWebITSysTray-v2; do
     DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
     CODE_SIGN_STYLE=Manual \
     CODE_SIGN_IDENTITY="$DEVELOPER_ID_APPLICATION_IDENTITY" \
+    CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
+    OTHER_CODE_SIGN_FLAGS="--timestamp" \
     MARKETING_VERSION="$VERSION" \
     CURRENT_PROJECT_VERSION="$BUILD" \
     build
@@ -55,9 +57,30 @@ cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.xpc.plist" \
 cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.menubar.plist" \
   "$PAYLOAD_DIR/Library/LaunchAgents/app.iwebit.agent.menubar.plist"
 
+validate_release_signature() {
+  local signed_path="$1"
+  local signature_details
+  local entitlements
+
+  signature_details="$(codesign --display --verbose=4 "$signed_path" 2>&1)"
+  if ! grep -q '^Timestamp=' <<<"$signature_details"; then
+    echo "Secure timestamp missing from signature: $signed_path" >&2
+    exit 65
+  fi
+
+  entitlements="$(codesign --display --entitlements :- "$signed_path" 2>/dev/null || true)"
+  if grep -q 'com.apple.security.get-task-allow' <<<"$entitlements"; then
+    echo "Development entitlement get-task-allow found in release signature: $signed_path" >&2
+    exit 65
+  fi
+}
+
 codesign --verify --deep --strict --verbose=2 "$INSTALL_DIR/iWebIT.app"
 codesign --verify --deep --strict --verbose=2 "$INSTALL_DIR/iWebITAgent.app"
 codesign --verify --strict --verbose=2 "$INSTALL_DIR/iWebITService"
+validate_release_signature "$INSTALL_DIR/iWebIT.app"
+validate_release_signature "$INSTALL_DIR/iWebITAgent.app"
+validate_release_signature "$INSTALL_DIR/iWebITService"
 
 pkgbuild \
   --root "$PAYLOAD_DIR" \
