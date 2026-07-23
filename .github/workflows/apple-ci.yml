@@ -31,7 +31,7 @@ jobs:
             done
       - name: Enforce app-only iPhone and iPad boundary
         run: |
-          if grep -R -E -i --line-number '\bMDM\b|mobile device management' \
+          if git grep -E -i --line-number '\bMDM\b|mobile device management' -- \
             MIGRATION_STATUS.md Documentation iWebITMobile Packages/iWebITCore; then
             echo "Device-management functionality is outside the mobile app scope."
             exit 1
@@ -90,9 +90,12 @@ jobs:
           CODE_SIGNING_ALLOWED=NO
           build
       - name: Build macOS v2 targets
-        run: >-
-          xcodebuild
-          -project iWebITAgent-v2.xcodeproj
-          -alltargets
-          CODE_SIGNING_ALLOWED=NO
-          build
+        run: |
+          for scheme in iWebITService-v2 iWebIT-v2 iWebITSysTray-v2; do
+            xcodebuild \
+              -project iWebITAgent-v2.xcodeproj \
+              -scheme "$scheme" \
+              -configuration Debug \
+              CODE_SIGNING_ALLOWED=NO \
+              build
+          done

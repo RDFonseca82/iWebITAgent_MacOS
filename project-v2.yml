@@ -40,7 +40,6 @@ targets:
     sources:
       - path: Shared
       - path: iWebITAgent
-      - path: iWebITService/XPC/AgentXPCProtocol.swift
     dependencies:
       - package: iWebITCore
     info:
