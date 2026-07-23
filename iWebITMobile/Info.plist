@@ -10,6 +10,8 @@
     <string>https://agent.iwebit.app</string>
     <key>CFBundleDisplayName</key>
     <string>iWebIT</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
     <key>BGTaskSchedulerPermittedIdentifiers</key>
     <array>
         <string>app.iwebit.mobile.refresh</string>
@@ -21,7 +23,23 @@
         <string>processing</string>
         <string>remote-notification</string>
     </array>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UILaunchScreen</key>
+    <dict/>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>A localização é incluída apenas quando escolher sincronizá-la para um pedido de suporte.</string>
+    <string>A localização é incluída apenas quando escolher sincronizá-la para um pedido de suporte. A recolha só ocorre com autorização.</string>
 </dict>
 </plist>
