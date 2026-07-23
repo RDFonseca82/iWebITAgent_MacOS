@@ -1,0 +1,55 @@
+name: iWebITMobile
+
+options:
+  bundleIdPrefix: app.iwebit
+  deploymentTarget:
+    iOS: "15.0"
+
+packages:
+  iWebITCore:
+    path: ../Packages/iWebITCore
+
+targets:
+  iWebITMobile:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: iWebITCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 200
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: 5.9
+        CODE_SIGN_ENTITLEMENTS: iWebITMobile.entitlements
+      configs:
+        Debug:
+          APS_ENVIRONMENT: development
+        Release:
+          APS_ENVIRONMENT: production
+    info:
+      path: Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        IWebITAPIBaseURL: https://agent.iwebit.app
+        CFBundleDisplayName: iWebIT
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLSchemes:
+              - iwebit
+        BGTaskSchedulerPermittedIdentifiers:
+          - app.iwebit.mobile.refresh
+          - app.iwebit.mobile.processing
+        UIBackgroundModes:
+          - fetch
+          - processing
+          - remote-notification
+        NSLocationWhenInUseUsageDescription: >-
+          A localização é incluída apenas quando escolher sincronizá-la para um
+          pedido de suporte. A recolha só ocorre com autorização.

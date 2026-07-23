@@ -9,6 +9,11 @@ import Foundation
 
 
 func checkAppsToUninstall() {
+    guard Constants.allowLegacyDestructiveCommands else {
+        log("BLOCKED legacy remote application removal request", important: true)
+        return
+    }
+
     let dInfo = getDeviceSyncInfo(["SPApplicationsDataType"])
     let installedApps = getAppsWithPath(dInfo["SPApplicationsDataType"] as? AnyList)
     let fileManager = FileManager.default

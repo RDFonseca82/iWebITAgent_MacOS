@@ -1,0 +1,14 @@
+{
+  "IDSync": "COMPANY-EXAMPLE",
+  "IdCompany": "42",
+  "Company": "Empresa de Exemplo",
+  "Active": 1,
+  "LogoOnline": "https://cdn.iwebit.app/example/logo-online.png",
+  "LogoOffline": "https://cdn.iwebit.app/example/logo-offline.png",
+  "LogoInactive": "https://cdn.iwebit.app/example/logo-inactive.png",
+  "EventViewerLines": 250,
+  "TimeSync": 120,
+  "TimeAlive": 5,
+  "AppleAgentVersion": "2.0.0",
+  "AppleAgentDownload": "https://updates.iwebit.app/macos/iWebIT-2.0.0.pkg"
+}

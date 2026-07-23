@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundleVersion</key>
+    <string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>IWebITAPIBaseURL</key>
+    <string>https://agent.iwebit.app</string>
+    <key>CFBundleDisplayName</key>
+    <string>iWebIT</string>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>app.iwebit.mobile.refresh</string>
+        <string>app.iwebit.mobile.processing</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>processing</string>
+        <string>remote-notification</string>
+    </array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>A localização é incluída apenas quando escolher sincronizá-la para um pedido de suporte.</string>
+</dict>
+</plist>

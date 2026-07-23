@@ -1,0 +1,312 @@
+name: Apple signed release and update channel
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Marketing version (for example 2.0.0)
+        required: true
+        default: 2.0.0
+        type: string
+      build:
+        description: Monotonic build number
+        required: true
+        default: '200'
+        type: string
+      upload_to_testflight:
+        description: Upload the signed IPA to App Store Connect/TestFlight
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apple-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Apple agent version consistency
+        run: python3 scripts/ci/check_version_consistency.py
+      - name: Test update channel configuration
+        run: python3 scripts/ci/test_update_channel_config.py
+      - name: Test core, contracts and command security
+        run: swift test --package-path Packages/iWebITCore
+      - name: Validate release inputs and scripts
+        run: |
+          [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          [[ "${{ inputs.build }}" =~ ^[1-9][0-9]*$ ]]
+          bash -n scripts/release/*.sh scripts/release/package-scripts/*
+          find Documentation -name '*.json' -print0 | while IFS= read -r -d '' file; do
+            python3 -m json.tool "$file" >/dev/null
+          done
+
+  macos-installer:
+    needs: verify
+    runs-on: macos-15
+    environment: apple-release
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      DEVELOPER_ID_APPLICATION_IDENTITY: ${{ secrets.DEVELOPER_ID_APPLICATION_IDENTITY }}
+      DEVELOPER_ID_INSTALLER_IDENTITY: ${{ secrets.DEVELOPER_ID_INSTALLER_IDENTITY }}
+      NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
+      NOTARY_ISSUER_ID: ${{ secrets.NOTARY_ISSUER_ID }}
+      RELEASE_TAG: v${{ inputs.version }}-${{ inputs.build }}
+      PACKAGE_DOWNLOAD_URL: https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}-${{ inputs.build }}/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg
+      UPDATE_MANIFEST_URL: https://github.com/${{ github.repository }}/releases/latest/download/update-manifest.json
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        env:
+          APP_P12: ${{ secrets.DEVELOPER_ID_APPLICATION_P12_BASE64 }}
+          INSTALLER_P12: ${{ secrets.DEVELOPER_ID_INSTALLER_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          NOTARY_KEY: ${{ secrets.NOTARY_PRIVATE_KEY_BASE64 }}
+          UPDATE_KEY: ${{ secrets.IWEBIT_UPDATE_PRIVATE_KEY_BASE64 }}
+          UPDATE_KEY_ID: ${{ secrets.IWEBIT_UPDATE_KEY_ID }}
+          UPDATE_PUBLIC_KEY: ${{ secrets.IWEBIT_UPDATE_PUBLIC_KEY_BASE64 }}
+        run: |
+          test -n "$APPLE_TEAM_ID"
+          test -n "$DEVELOPER_ID_APPLICATION_IDENTITY"
+          test -n "$DEVELOPER_ID_INSTALLER_IDENTITY"
+          test -n "$APP_P12"
+          test -n "$INSTALLER_P12"
+          test -n "$P12_PASSWORD"
+          test -n "$NOTARY_KEY_ID"
+          test -n "$NOTARY_ISSUER_ID"
+          test -n "$NOTARY_KEY"
+          test -n "$UPDATE_KEY"
+          test -n "$UPDATE_KEY_ID"
+          test -n "$UPDATE_PUBLIC_KEY"
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Import Developer ID certificates
+        env:
+          APP_P12: ${{ secrets.DEVELOPER_ID_APPLICATION_P12_BASE64 }}
+          INSTALLER_P12: ${{ secrets.DEVELOPER_ID_INSTALLER_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+        run: |
+          APP_CERT="$RUNNER_TEMP/developer-id-application.p12"
+          INSTALLER_CERT="$RUNNER_TEMP/developer-id-installer.p12"
+          KEYCHAIN="$RUNNER_TEMP/iwebit-signing.keychain-db"
+          echo -n "$APP_P12" | base64 --decode > "$APP_CERT"
+          echo -n "$INSTALLER_P12" | base64 --decode > "$INSTALLER_CERT"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security import "$APP_CERT" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security import "$INSTALLER_CERT" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN"
+
+      - name: Create trusted update channel configuration
+        env:
+          UPDATE_PUBLIC_KEY: ${{ secrets.IWEBIT_UPDATE_PUBLIC_KEY_BASE64 }}
+          UPDATE_KEY_ID: ${{ secrets.IWEBIT_UPDATE_KEY_ID }}
+        run: |
+          python3 scripts/release/create-update-channel.py \
+            --manifest-url "$UPDATE_MANIFEST_URL" \
+            --key-id "$UPDATE_KEY_ID" \
+            --public-key-base64 "$UPDATE_PUBLIC_KEY" \
+            --expected-team-id "$APPLE_TEAM_ID" \
+            --interval-seconds 21600 \
+            --output "$RUNNER_TEMP/update-channel.json"
+          echo "UPDATE_CHANNEL_CONFIG_PATH=$RUNNER_TEMP/update-channel.json" >> "$GITHUB_ENV"
+
+      - name: Build signed pkg
+        run: |
+          chmod +x scripts/release/build-signed-package.sh scripts/release/package-scripts/*
+          scripts/release/build-signed-package.sh \
+            "${{ inputs.version }}" \
+            "${{ inputs.build }}" \
+            "$RUNNER_TEMP/release"
+
+      - name: Notarize and staple
+        env:
+          NOTARY_PRIVATE_KEY_BASE64: ${{ secrets.NOTARY_PRIVATE_KEY_BASE64 }}
+        run: |
+          NOTARY_KEY_PATH="$RUNNER_TEMP/AuthKey_${NOTARY_KEY_ID}.p8"
+          echo -n "$NOTARY_PRIVATE_KEY_BASE64" | base64 --decode > "$NOTARY_KEY_PATH"
+          chmod +x scripts/release/notarize-with-api-key.sh
+          scripts/release/notarize-with-api-key.sh \
+            "$RUNNER_TEMP/release/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg" \
+            "$NOTARY_KEY_PATH"
+
+      - name: Create signed update manifest
+        env:
+          UPDATE_PRIVATE_KEY: ${{ secrets.IWEBIT_UPDATE_PRIVATE_KEY_BASE64 }}
+          UPDATE_KEY_ID: ${{ secrets.IWEBIT_UPDATE_KEY_ID }}
+          UPDATE_PUBLIC_KEY: ${{ secrets.IWEBIT_UPDATE_PUBLIC_KEY_BASE64 }}
+        run: |
+          swift run --package-path Packages/iWebITCore iwebit-update-manifest \
+            --artifact "$RUNNER_TEMP/release/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg" \
+            --version "${{ inputs.version }}" \
+            --build "${{ inputs.build }}" \
+            --minimum-os "11.0" \
+            --download-url "$PACKAGE_DOWNLOAD_URL" \
+            --key-id "$UPDATE_KEY_ID" \
+            --private-key-base64 "$UPDATE_PRIVATE_KEY" \
+            --public-key-base64 "$UPDATE_PUBLIC_KEY" \
+            --output "$RUNNER_TEMP/release/update-manifest.json"
+          shasum -a 256 "$RUNNER_TEMP/release/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg" \
+            > "$RUNNER_TEMP/release/SHA256SUMS"
+
+      - name: Upload notarized installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: iWebIT-macOS-${{ inputs.version }}-${{ inputs.build }}
+          path: ${{ runner.temp }}/release/*
+          if-no-files-found: error
+
+      - name: Remove temporary keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/iwebit-signing.keychain-db" || true
+
+  ios-ipados-archive:
+    needs: verify
+    runs-on: macos-15
+    environment: apple-release
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Import Apple Distribution certificate and profile
+        env:
+          DISTRIBUTION_P12: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
+          PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+        run: |
+          test -n "$APPLE_TEAM_ID"
+          test -n "$DISTRIBUTION_P12"
+          test -n "$P12_PASSWORD"
+          test -n "$PROFILE_BASE64"
+          CERT="$RUNNER_TEMP/ios-distribution.p12"
+          PROFILE="$RUNNER_TEMP/iWebITMobile.mobileprovision"
+          KEYCHAIN="$RUNNER_TEMP/ios-signing.keychain-db"
+          echo -n "$DISTRIBUTION_P12" | base64 --decode > "$CERT"
+          echo -n "$PROFILE_BASE64" | base64 --decode > "$PROFILE"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security import "$CERT" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN"
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          PROFILE_UUID="$(security cms -D -i "$PROFILE" | plutil -extract UUID raw -)"
+          cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          echo "PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
+
+      - name: Archive universal iPhone and iPad app
+        working-directory: iWebITMobile
+        run: |
+          xcodegen generate
+          xcodebuild \
+            -project iWebITMobile.xcodeproj \
+            -scheme iWebITMobile \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$RUNNER_TEMP/iWebITMobile.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE="$PROFILE_UUID" \
+            MARKETING_VERSION="${{ inputs.version }}" \
+            CURRENT_PROJECT_VERSION="${{ inputs.build }}" \
+            archive
+
+      - name: Export signed ipa
+        env:
+          PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          PROFILE="$RUNNER_TEMP/iWebITMobile.mobileprovision"
+          PROFILE_NAME="$(security cms -D -i "$PROFILE" | plutil -extract Name raw -)"
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>teamID</key><string>$APPLE_TEAM_ID</string>
+            <key>provisioningProfiles</key><dict>
+              <key>app.iwebit.mobile</key><string>$PROFILE_NAME</string>
+            </dict>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/iWebITMobile.xcarchive" \
+            -exportPath "$RUNNER_TEMP/ios-release" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+
+      - name: Upload signed ipa to TestFlight
+        if: inputs.upload_to_testflight
+        env:
+          ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          ASC_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY_BASE64 }}
+        run: |
+          test -n "$ASC_KEY_ID"
+          test -n "$ASC_ISSUER_ID"
+          test -n "$ASC_PRIVATE_KEY_BASE64"
+          KEY_DIR="$HOME/.appstoreconnect/private_keys"
+          KEY_PATH="$KEY_DIR/AuthKey_${ASC_KEY_ID}.p8"
+          IPA_PATH="$(find "$RUNNER_TEMP/ios-release" -name '*.ipa' -print -quit)"
+          test -n "$IPA_PATH"
+          mkdir -p "$KEY_DIR"
+          echo -n "$ASC_PRIVATE_KEY_BASE64" | base64 --decode > "$KEY_PATH"
+          chmod 0600 "$KEY_PATH"
+          xcrun altool --validate-app -f "$IPA_PATH" -t ios \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+          xcrun altool --upload-app -f "$IPA_PATH" -t ios \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Upload signed ipa
+        uses: actions/upload-artifact@v4
+        with:
+          name: iWebIT-iOS-iPadOS-${{ inputs.version }}-${{ inputs.build }}
+          path: ${{ runner.temp }}/ios-release/*
+          if-no-files-found: error
+
+      - name: Remove temporary keychain and profile
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/ios-signing.keychain-db" || true
+          rm -f "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          rm -f "$HOME/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8"
+  publish-macos-release:
+    needs: [macos-installer, ios-ipados-archive]
+    runs-on: macos-15
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: v${{ inputs.version }}-${{ inputs.build }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: iWebIT-macOS-${{ inputs.version }}-${{ inputs.build }}
+          path: ${{ runner.temp }}/github-release
+      - name: Publish immutable GitHub Release
+        run: |
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite signed assets."
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "$RUNNER_TEMP/github-release/"* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "iWebIT ${{ inputs.version }} (${{ inputs.build }})" \
+            --generate-notes

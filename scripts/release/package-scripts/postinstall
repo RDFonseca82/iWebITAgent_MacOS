@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+PRODUCT_DIR="/Library/Application Support/iWebITAgent"
+
+/usr/sbin/chown -R root:wheel "$PRODUCT_DIR"
+/bin/chmod 0755 "$PRODUCT_DIR" "$PRODUCT_DIR/iWebITService"
+/bin/chmod 0644 "$PRODUCT_DIR/update-channel.json"
+/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+/bin/launchctl bootstrap system /Library/LaunchDaemons/app.iwebit.agent.service.plist
+/bin/launchctl enable system/app.iwebit.agent.service
+
+CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
+if [[ "$CONSOLE_UID" -ge 500 ]]; then
+  /bin/launchctl bootout "gui/$CONSOLE_UID/app.iwebit.agent.menubar" 2>/dev/null || true
+  /bin/launchctl bootstrap "gui/$CONSOLE_UID" \
+    /Library/LaunchAgents/app.iwebit.agent.menubar.plist || true
+fi
+
+exit 0

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "2.0",
+  "snapshotID": "22222222-2222-2222-2222-222222222222",
+  "collectedAt": "2026-07-23T10:15:00Z",
+  "platform": "iOS",
+  "identity": {
+    "deviceID": "ios-enrollment-example-001",
+    "displayName": "iPhone de exemplo",
+    "model": "iPhone",
+    "modelIdentifier": "iPhone18,1",
+    "vendorIdentifier": "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
+  },
+  "operatingSystem": {
+    "name": "iOS",
+    "version": "26.0",
+    "kernelVersion": "Darwin 25.0.0",
+    "locale": "pt_PT",
+    "timeZone": "Europe/Lisbon"
+  },
+  "hardware": {
+    "architecture": "arm64",
+    "processorCount": 6,
+    "activeProcessorCount": 6,
+    "physicalMemoryBytes": 8589934592
+  },
+  "storage": {},
+  "battery": {
+    "level": 0.76,
+    "state": "unplugged",
+    "isLowPowerModeEnabled": false
+  },
+  "network": {
+    "interfaces": [],
+    "currentTransport": "cellular",
+    "isExpensive": true,
+    "isConstrained": false
+  },
+  "security": {},
+  "management": {
+    "isManaged": false
+  },
+  "agent": {
+    "version": "2.0.0",
+    "build": "200",
+    "bundleIdentifier": "app.iwebit.mobile",
+    "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",
+    "pushTokenAvailable": true,
+    "backgroundRefreshStatus": "available"
+  },
+  "location": {
+    "latitude": 38.7223,
+    "longitude": -9.1393,
+    "horizontalAccuracyMeters": 12,
+    "altitudeMeters": 93,
+    "recordedAt": "2026-07-23T10:14:30Z",
+    "authorization": "authorizedWhenInUse"
+  },
+  "applications": [],
+  "services": [],
+  "permissions": [
+    {"capability": "location", "authorization": "authorizedWhenInUse", "required": false},
+    {"capability": "notifications", "authorization": "authorized", "required": true},
+    {"capability": "backgroundRefresh", "authorization": "available", "required": true}
+  ],
+  "collection": [
+    {"category": "identity", "state": "collected", "source": "application"},
+    {"category": "operatingSystem", "state": "collected", "source": "application"},
+    {"category": "hardware", "state": "collected", "source": "application"},
+    {"category": "battery", "state": "collected", "source": "application"},
+    {"category": "network", "state": "collected", "source": "application"},
+    {"category": "storage", "state": "unavailable", "source": "application", "message": "Automatic off-device disk telemetry is excluded by Apple Required Reason API policy."},
+    {"category": "location", "state": "collected", "source": "user"},
+    {"category": "applications", "state": "unsupported", "source": "application", "message": "iOS and iPadOS do not expose installed application inventory to applications."},
+    {"category": "services", "state": "unsupported", "source": "application", "message": "iOS and iPadOS do not expose system services to applications."},
+    {"category": "security", "state": "unsupported", "source": "application", "message": "Passcode, encryption and system security posture are not exposed to applications."}
+  ]
+}

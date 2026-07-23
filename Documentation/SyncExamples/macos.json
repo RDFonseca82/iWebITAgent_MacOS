@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "2.0",
+  "snapshotID": "11111111-1111-1111-1111-111111111111",
+  "collectedAt": "2026-07-23T10:15:00Z",
+  "platform": "macOS",
+  "identity": {
+    "deviceID": "mac-example-001",
+    "displayName": "MacBook de exemplo",
+    "serialNumber": "EXAMPLE-SERIAL",
+    "model": "MacBook Pro",
+    "modelIdentifier": "Mac15,6",
+    "ownership": "corporate"
+  },
+  "operatingSystem": {
+    "name": "macOS",
+    "version": "26.0",
+    "build": "25A000",
+    "kernelVersion": "Darwin 25.0.0",
+    "locale": "pt-PT",
+    "timeZone": "Europe/Lisbon",
+    "uptimeSeconds": 172800
+  },
+  "hardware": {
+    "architecture": "arm64",
+    "processor": "Apple M3 Pro",
+    "processorCount": 12,
+    "activeProcessorCount": 12,
+    "physicalMemoryBytes": 19327352832,
+    "bootROMVersion": "Example.001",
+    "smcVersion": "not-applicable"
+  },
+  "storage": {
+    "totalBytes": 494384795648,
+    "availableBytes": 288621584384,
+    "importantUsageAvailableBytes": 280000000000,
+    "opportunisticUsageAvailableBytes": 250000000000
+  },
+  "battery": {
+    "level": 0.82,
+    "state": "charging",
+    "isLowPowerModeEnabled": false,
+    "cycleCount": 87,
+    "health": "normal",
+    "temperatureCelsius": 31.4
+  },
+  "network": {
+    "hostName": "mac-example.local",
+    "interfaces": [
+      {
+        "name": "en0",
+        "type": "wifi",
+        "addresses": ["192.0.2.10", "2001:db8::10"],
+        "macAddress": "02:00:00:00:00:01",
+        "isActive": true
+      }
+    ],
+    "currentTransport": "wifi",
+    "isExpensive": false,
+    "isConstrained": false
+  },
+  "security": {
+    "isPasscodePresent": true,
+    "isEncrypted": true,
+    "secureBootLevel": "full",
+    "systemIntegrityProtectionEnabled": true,
+    "firewallEnabled": true,
+    "gatekeeperEnabled": true,
+    "activationLockEnabled": true,
+    "compromised": false
+  },
+  "management": {
+    "isManaged": false
+  },
+  "agent": {
+    "version": "2.0.0",
+    "build": "200",
+    "bundleIdentifier": "app.iwebit.agent",
+    "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",
+    "pushTokenAvailable": true,
+    "backgroundRefreshStatus": "launchd-running"
+  },
+  "location": {
+    "latitude": 38.7223,
+    "longitude": -9.1393,
+    "horizontalAccuracyMeters": 25,
+    "altitudeMeters": 95,
+    "recordedAt": "2026-07-23T10:14:30Z",
+    "authorization": "authorized"
+  },
+  "applications": [
+    {
+      "name": "iWebIT",
+      "bundleIdentifier": "app.iwebit.agent",
+      "version": "2.0.0",
+      "build": "200",
+      "path": "/Applications/iWebIT.app",
+      "managed": false,
+      "source": "privilegedAgent"
+    }
+  ],
+  "services": [
+    {
+      "label": "app.iwebit.service",
+      "state": "running",
+      "startMode": "automatic",
+      "executablePath": "/Library/PrivilegedHelperTools/app.iwebit.service",
+      "processIdentifier": 412
+    }
+  ],
+  "permissions": [
+    {"capability": "location", "authorization": "authorized", "required": false},
+    {"capability": "screenRecording", "authorization": "authorized", "required": false},
+    {"capability": "notifications", "authorization": "authorized", "required": false}
+  ],
+  "collection": [
+    {"category": "identity", "state": "collected", "source": "privilegedAgent"},
+    {"category": "hardware", "state": "collected", "source": "privilegedAgent"},
+    {"category": "applications", "state": "collected", "source": "privilegedAgent"},
+    {"category": "services", "state": "collected", "source": "privilegedAgent"},
+    {"category": "management", "state": "notManaged", "source": "privilegedAgent"}
+  ]
+}

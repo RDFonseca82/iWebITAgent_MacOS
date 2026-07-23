@@ -1,0 +1,9 @@
+{
+  "checkIntervalSeconds": 21600,
+  "expectedTeamID": "R8VHDNRMJJ",
+  "manifestURL": "https://github.com/example/iwebit-agent/releases/latest/download/update-manifest.json",
+  "schemaVersion": 1,
+  "updatePublicKeys": {
+    "updates-2026": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8="
+  }
+}

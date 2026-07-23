@@ -98,11 +98,11 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)
                 }
-                if deviceInfo.deviceLocation == 1 {
+                if deviceInfo.deviceLocation == 1 && Constants.allowLegacyPrivacyCommands {
                     locationManager?.requestLocation()
                 }
                 
-                if deviceInfo.windowsPrintScreen == 1 {
+                if deviceInfo.windowsPrintScreen == 1 && Constants.allowLegacyPrivacyCommands {
                     try await screenshotAndSend()
                 }
                 

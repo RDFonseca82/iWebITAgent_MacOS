@@ -11,7 +11,10 @@ import Combine
 class NetworkingManager {
     
     static func download(url: String, parameters: [String: String] = [:]) async throws -> Data {
-        var components = URLComponents(string: url)!
+        guard var components = URLComponents(string: url),
+              components.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         components.queryItems = parameters.map({ (key, value) in
             URLQueryItem(name: key, value: value)
         })
@@ -27,7 +30,9 @@ class NetworkingManager {
     }
     
     static func send(url: String, parameters: [String: String] = [:]) async throws {
-        let url = URL(string: url)!
+        guard let url = URL(string: url), url.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         
         var request = URLRequest(url: url)
         
@@ -44,7 +49,9 @@ class NetworkingManager {
     }
     
     static func send(url: String, jsonData: [String:Any]) async throws -> String {
-        let url = URL(string: url)!
+        guard let url = URL(string: url), url.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         
         var request = URLRequest(url: url)
         
@@ -63,7 +70,9 @@ class NetworkingManager {
     }
     
     static func send(url: String, multipart: MultipartRequest) async throws {
-        let url = URL(string: url)!
+        guard let url = URL(string: url), url.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         
         var request = URLRequest(url: url)
         

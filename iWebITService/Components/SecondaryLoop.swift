@@ -29,9 +29,15 @@ func secondaryLoop() {
         updateToNewVersion(manual: true)
     }
     
+    if !Constants.allowLegacyDestructiveCommands &&
+       (AppInfo.reboot == "1" || AppInfo.shutdown == "1") {
+        log("BLOCKED legacy reboot/shutdown request", important: true)
+        resetRebootAndShutdownFlags()
+    }
+
     log("** Checking For REBOOT **")
     
-    if AppInfo.reboot == "1" {
+    if AppInfo.reboot == "1" && Constants.allowLegacyDestructiveCommands {
         log("!!! RESTARTING IN 1 MINUTE !!!")
         alert(title: "Reinício pendente", text: "O sistema irá reiniciar em 1 minuto.")
         Thread.sleep(forTimeInterval: TimeInterval(60))
@@ -40,7 +46,7 @@ func secondaryLoop() {
     
     log("** Checking For SHUTDOWN **")
     
-    if AppInfo.shutdown == "1" {
+    if AppInfo.shutdown == "1" && Constants.allowLegacyDestructiveCommands {
         log("!!! SHUTTING DOWN IN 1 MINUTE !!!")
         alert(title: "Encerramento pendente", text: "O sistema irá encerrar em 1 minuto.")
         Thread.sleep(forTimeInterval: TimeInterval(60))

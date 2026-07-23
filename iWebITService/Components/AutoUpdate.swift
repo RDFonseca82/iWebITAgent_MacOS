@@ -10,6 +10,10 @@ import AppKit
 
 
 func updateToNewVersion(manual: Bool) {
+    guard Constants.allowLegacyUnsignedUpdates else {
+        log("BLOCKED legacy unsigned update request", important: true)
+        return
+    }
     log("UPDATING TO NEW VERSION...", important: true)
     
     guard let appSupportFolder = FilesManager.shared.getApplicationSupportDirectory() else {

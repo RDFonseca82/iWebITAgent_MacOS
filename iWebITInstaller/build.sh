@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# DONT FORGET TO CHANGE VERSION AND BUILD NUMBER IN XCODE TOO
-export VERSION="1.0.0.5"
+# Version consistency is enforced by scripts/ci/check_version_consistency.py
+export VERSION="2.0.0"
 export PRODUCT="iWebITAgent"
 export PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 

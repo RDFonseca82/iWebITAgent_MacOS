@@ -1,0 +1,16 @@
+{
+  "IdDevice": "1001",
+  "UniqueID": "device-example",
+  "IdCompany": "42",
+  "IDSync": "COMPANY-EXAMPLE",
+  "IdDeviceType": 62,
+  "Active": 1,
+  "FullSync": 1,
+  "DeviceLocation": 1,
+  "OperatingSystem_Reboot": 0,
+  "OperatingSystem_ShutDown": 0,
+  "TimeSync": 120,
+  "TimeAlive": 5,
+  "AndroidMessageTxt": "Manutenção agendada",
+  "WindowsPrintScreen": 0
+}

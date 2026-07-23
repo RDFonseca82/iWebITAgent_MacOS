@@ -10,7 +10,10 @@ import Foundation
 
 extension NetworkingManager {
     static func download(url: String, parameters: [String: String] = [:]) throws -> Data {
-        var components = URLComponents(string: url)!
+        guard var components = URLComponents(string: url),
+              components.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         components.queryItems = parameters.map({ (key, value) in
             URLQueryItem(name: key, value: value)
         })
@@ -45,7 +48,9 @@ extension NetworkingManager {
     }
     
     static func send(url: String, jsonPayload: Data) throws {
-        let url = URL(string: url)!
+        guard let url = URL(string: url), url.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         
         var request = URLRequest(url: url)
         
@@ -82,7 +87,9 @@ extension NetworkingManager {
     }
     
     static func send(url: String, data: [String:Any]) throws {
-        let url = URL(string: url)!
+        guard let url = URL(string: url), url.scheme?.lowercased() == "https" else {
+            throw URLError(.appTransportSecurityRequiresSecureConnection)
+        }
         
         var request = URLRequest(url: url)
         

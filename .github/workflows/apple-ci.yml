@@ -1,0 +1,94 @@
+name: Apple CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  core-and-contracts:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Apple agent version consistency
+        run: python3 scripts/ci/check_version_consistency.py
+      - name: Test update channel configuration
+        run: python3 scripts/ci/test_update_channel_config.py
+      - name: Test iWebITCore
+        run: swift test --package-path Packages/iWebITCore
+      - name: Validate JSON examples and Apple manifests
+        run: |
+          find Documentation -name '*.json' -print0 | while IFS= read -r -d '' file; do
+            python3 -m json.tool "$file" >/dev/null
+          done
+          find . \( -name '*.plist' -o -name '*.entitlements' -o -name '*.xcprivacy' \) \
+            -not -path './.git/*' -print0 | while IFS= read -r -d '' file; do
+              plutil -lint "$file"
+            done
+      - name: Enforce app-only iPhone and iPad boundary
+        run: |
+          if grep -R -E -i --line-number '\bMDM\b|mobile device management' \
+            MIGRATION_STATUS.md Documentation iWebITMobile Packages/iWebITCore; then
+            echo "Device-management functionality is outside the mobile app scope."
+            exit 1
+          fi
+          if grep -R -E --line-number \
+            'systemUptime|volumeAvailableCapacity|serialNumber|InstalledApplication\(' \
+            iWebITMobile/Sources/Device; then
+            echo "Forbidden mobile off-device telemetry collector found."
+            exit 1
+          fi
+      - name: Validate release shell scripts
+        run: bash -n scripts/release/*.sh scripts/release/package-scripts/*
+      - name: Reject production cleartext endpoints
+        run: |
+          if grep -R --line-number 'http://agent\.iwebit\.app' Shared iWebITAgent iWebITService iWebITSysTray; then
+            echo "Cleartext production endpoint found."
+            exit 1
+          fi
+
+  mobile:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        working-directory: iWebITMobile
+        run: xcodegen generate
+      - name: Build iPhone and iPad target
+        working-directory: iWebITMobile
+        run: >-
+          xcodebuild
+          -project iWebITMobile.xcodeproj
+          -scheme iWebITMobile
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO
+          build
+
+  macos-static-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate macOS v2 project
+        run: xcodegen generate --spec project-v2.yml
+      - name: Build current macOS targets
+        run: >-
+          xcodebuild
+          -project iWebITAgent-macOS.xcodeproj
+          -alltargets
+          CODE_SIGNING_ALLOWED=NO
+          build
+      - name: Build macOS v2 targets
+        run: >-
+          xcodebuild
+          -project iWebITAgent-v2.xcodeproj
+          -alltargets
+          CODE_SIGNING_ALLOWED=NO
+          build

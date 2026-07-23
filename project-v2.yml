@@ -1,0 +1,99 @@
+name: iWebITAgent-v2
+
+options:
+  bundleIdPrefix: app.iwebit
+  deploymentTarget:
+    macOS: "11.0"
+
+packages:
+  iWebITCore:
+    path: Packages/iWebITCore
+  SwiftUIIntrospect:
+    url: https://github.com/siteline/SwiftUI-Introspect.git
+    branch: main
+
+targets:
+  iWebITService-v2:
+    type: tool
+    platform: macOS
+    sources:
+      - path: Shared
+      - path: iWebITService
+    dependencies:
+      - package: iWebITCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.agent.service
+        PRODUCT_NAME: iWebITService
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 200
+        GENERATE_INFOPLIST_FILE: YES
+        CREATE_INFOPLIST_SECTION_IN_BINARY: YES
+        SWIFT_VERSION: 5.9
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: IWEBIT_V2
+        MACOSX_DEPLOYMENT_TARGET: "11.0"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: iWebITService/iWebITService.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: R8VHDNRMJJ
+
+  iWebIT-v2:
+    type: application
+    platform: macOS
+    sources:
+      - path: Shared
+      - path: iWebITAgent
+      - path: iWebITService/XPC/AgentXPCProtocol.swift
+    dependencies:
+      - package: iWebITCore
+      - package: SwiftUIIntrospect
+    info:
+      path: iWebITAgent/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.agent
+        PRODUCT_NAME: iWebIT
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 200
+        SWIFT_VERSION: 5.9
+        MACOSX_DEPLOYMENT_TARGET: "11.0"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: iWebITAgent/iWebITAgent.entitlements
+        DEVELOPMENT_TEAM: R8VHDNRMJJ
+
+  iWebITSysTray-v2:
+    type: application
+    platform: macOS
+    sources:
+      - path: Shared
+      - path: iWebITSysTray
+    dependencies:
+      - package: iWebITCore
+    info:
+      path: iWebITSysTray/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.agent.menubar
+        PRODUCT_NAME: iWebITAgent
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 200
+        SWIFT_VERSION: 5.9
+        MACOSX_DEPLOYMENT_TARGET: "11.0"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: iWebITSysTray/iWebITSysTray.entitlements
+        INFOPLIST_KEY_LSUIElement: YES
+        DEVELOPMENT_TEAM: R8VHDNRMJJ
+
+schemes:
+  iWebITService-v2:
+    build:
+      targets:
+        iWebITService-v2: all
+  iWebIT-v2:
+    build:
+      targets:
+        iWebIT-v2: all
+  iWebITSysTray-v2:
+    build:
+      targets:
+        iWebITSysTray-v2: all

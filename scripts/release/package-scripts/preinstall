@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
+if [[ "$CONSOLE_UID" -ge 500 ]]; then
+  /bin/launchctl bootout "gui/$CONSOLE_UID/app.iwebit.agent.menubar" 2>/dev/null || true
+fi
+/usr/bin/pkill -x iWebITService 2>/dev/null || true
+/usr/bin/pkill -x iWebITAgent 2>/dev/null || true
+exit 0
