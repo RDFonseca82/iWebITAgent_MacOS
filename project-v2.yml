@@ -8,9 +8,6 @@ options:
 packages:
   iWebITCore:
     path: Packages/iWebITCore
-  SwiftUIIntrospect:
-    url: https://github.com/siteline/SwiftUI-Introspect.git
-    branch: main
 
 targets:
   iWebITService-v2:
@@ -46,7 +43,6 @@ targets:
       - path: iWebITService/XPC/AgentXPCProtocol.swift
     dependencies:
       - package: iWebITCore
-      - package: SwiftUIIntrospect
     info:
       path: iWebITAgent/Info.plist
     settings:

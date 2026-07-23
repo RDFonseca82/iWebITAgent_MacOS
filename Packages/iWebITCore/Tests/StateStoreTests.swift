@@ -13,6 +13,7 @@ final class StateStoreTests: XCTestCase {
         }
 
         XCTAssertEqual(updated.deviceID, "device-1")
-        XCTAssertEqual(try await store.load().companyID, "42")
+        let loaded = try await store.load()
+        XCTAssertEqual(loaded.companyID, "42")
     }
 }

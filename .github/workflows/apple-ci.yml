@@ -13,7 +13,7 @@ jobs:
   core-and-contracts:
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check Apple agent version consistency
         run: python3 scripts/ci/check_version_consistency.py
       - name: Test update channel configuration
@@ -54,9 +54,11 @@ jobs:
   mobile:
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: |
+          brew untap aws/tap 2>/dev/null || true
+          brew install xcodegen
       - name: Generate project
         working-directory: iWebITMobile
         run: xcodegen generate
@@ -73,9 +75,11 @@ jobs:
   macos-static-build:
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: |
+          brew untap aws/tap 2>/dev/null || true
+          brew install xcodegen
       - name: Generate macOS v2 project
         run: xcodegen generate --spec project-v2.yml
       - name: Build current macOS targets

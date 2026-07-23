@@ -22,8 +22,8 @@ public struct RequestAuthenticator: Sendable {
 
     public init(
         credentials: DeviceCredentials,
-        now: @escaping @Sendable () -> Date = Date.init,
-        nonce: @escaping @Sendable () -> UUID = UUID.init
+        now: @escaping @Sendable () -> Date = { Date() },
+        nonce: @escaping @Sendable () -> UUID = { UUID() }
     ) {
         self.credentials = credentials
         self.now = now

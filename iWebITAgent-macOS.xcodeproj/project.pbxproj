@@ -129,7 +129,6 @@
 		84E452932B5E85010081E083 /* AppsToUninstallDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E452922B5E85010081E083 /* AppsToUninstallDTO.swift */; };
 		84E452942B66EA100081E083 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BE9B452A893A9E00822D2C /* Logger.swift */; };
 		84E452952B66EA2B0081E083 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA6852A9F5444008A4CF2 /* Utils.swift */; };
-		84E87F012AE9546900BC6898 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 84E87F002AE9546900BC6898 /* SwiftUIIntrospect */; };
 		84E87F032AEC00AF00BC6898 /* NSImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E87F022AEC00AF00BC6898 /* NSImageExt.swift */; };
 /* End PBXBuildFile section */
 
@@ -257,7 +256,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84E87F012AE9546900BC6898 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,7 +750,6 @@
 			);
 			name = iWebIT;
 			packageProductDependencies = (
-				84E87F002AE9546900BC6898 /* SwiftUIIntrospect */,
 			);
 			productName = "iWebITAgent-macOS";
 			productReference = 84AE462B2A84FA3600783806 /* iWebIT.app */;
@@ -807,7 +804,6 @@
 			);
 			mainGroup = 84AE46222A84FA3600783806;
 			packageReferences = (
-				84E87EFF2AE9546900BC6898 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 84AE462C2A84FA3600783806 /* Products */;
 			projectDirPath = "";
@@ -1326,24 +1322,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		84E87EFF2AE9546900BC6898 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		84E87F002AE9546900BC6898 /* SwiftUIIntrospect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 84E87EFF2AE9546900BC6898 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = SwiftUIIntrospect;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84AE46232A84FA3600783806 /* Project object */;
 }

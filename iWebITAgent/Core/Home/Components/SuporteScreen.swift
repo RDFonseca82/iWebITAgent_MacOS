@@ -5,8 +5,8 @@
 //  Created by Admin on 21/08/2023.
 //
 
+import AppKit
 import SwiftUI
-import SwiftUIIntrospect
 
 struct SuporteScreen: View {
     @EnvironmentObject var toastVm: SnackbarViewModel
@@ -48,13 +48,8 @@ struct SuporteScreen: View {
                         .padding(.leading, 10)
                 }
                 
-                TextEditor(text: $homeVm.suporteMensagem.max(5000))
+                SupportTextEditor(text: $homeVm.suporteMensagem.max(5000))
                     .height(300)
-                    .introspect(.textEditor, on: .macOS(.v11, .v12, .v13, .v14)) { textEditor in
-                        textEditor.backgroundColor = .clear
-                        textEditor.textContainerInset = NSSize(width: 4, height: 10)
-                    }
-                    .font(.title3)
             }
             .overlay(
                 HStack {
@@ -118,5 +113,72 @@ struct SuporteScreen: View {
         }
         .fillMaxSize()
         .padding(12)
+    }
+}
+private struct SupportTextEditor: NSViewRepresentable {
+    @Binding var text: String
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    func makeNSView(context: Context) -> NSScrollView {
+        let scrollView = NSScrollView()
+        scrollView.borderType = .noBorder
+        scrollView.drawsBackground = false
+        scrollView.hasVerticalScroller = true
+        scrollView.autohidesScrollers = true
+
+        let textView = NSTextView(frame: .zero)
+        textView.delegate = context.coordinator
+        textView.string = text
+        textView.isRichText = false
+        textView.allowsUndo = true
+        textView.drawsBackground = false
+        textView.backgroundColor = .clear
+        textView.textColor = .labelColor
+        textView.font = .systemFont(ofSize: 20)
+        textView.textContainerInset = NSSize(width: 4, height: 10)
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.autoresizingMask = [.width]
+        textView.minSize = NSSize(width: 0, height: scrollView.contentSize.height)
+        textView.maxSize = NSSize(
+            width: CGFloat.greatestFiniteMagnitude,
+            height: CGFloat.greatestFiniteMagnitude
+        )
+        textView.textContainer?.widthTracksTextView = true
+        textView.textContainer?.containerSize = NSSize(
+            width: scrollView.contentSize.width,
+            height: CGFloat.greatestFiniteMagnitude
+        )
+        scrollView.documentView = textView
+        return scrollView
+    }
+
+    func updateNSView(_ scrollView: NSScrollView, context: Context) {
+        context.coordinator.parent = self
+        guard let textView = scrollView.documentView as? NSTextView,
+              textView.string != text else {
+            return
+        }
+        textView.string = text
+    }
+
+    static func dismantleNSView(_ scrollView: NSScrollView, coordinator: Coordinator) {
+        (scrollView.documentView as? NSTextView)?.delegate = nil
+    }
+
+    final class Coordinator: NSObject, NSTextViewDelegate {
+        var parent: SupportTextEditor
+
+        init(parent: SupportTextEditor) {
+            self.parent = parent
+        }
+
+        func textDidChange(_ notification: Notification) {
+            guard let textView = notification.object as? NSTextView else { return }
+            parent.text = textView.string
+        }
     }
 }

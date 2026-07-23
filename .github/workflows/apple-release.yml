@@ -30,7 +30,7 @@ jobs:
   verify:
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check Apple agent version consistency
         run: python3 scripts/ci/check_version_consistency.py
       - name: Test update channel configuration
@@ -60,7 +60,7 @@ jobs:
       PACKAGE_DOWNLOAD_URL: https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}-${{ inputs.build }}/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg
       UPDATE_MANIFEST_URL: https://github.com/${{ github.repository }}/releases/latest/download/update-manifest.json
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Validate required secrets
         env:
@@ -86,8 +86,9 @@ jobs:
           test -n "$UPDATE_PUBLIC_KEY"
 
       - name: Install XcodeGen
-        run: brew install xcodegen
-
+        run: |
+          brew untap aws/tap 2>/dev/null || true
+          brew install xcodegen
       - name: Import Developer ID certificates
         env:
           APP_P12: ${{ secrets.DEVELOPER_ID_APPLICATION_P12_BASE64 }}
@@ -178,11 +179,12 @@ jobs:
     env:
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install XcodeGen
-        run: brew install xcodegen
-
+        run: |
+          brew untap aws/tap 2>/dev/null || true
+          brew install xcodegen
       - name: Import Apple Distribution certificate and profile
         env:
           DISTRIBUTION_P12: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
