@@ -188,7 +188,7 @@ jobs:
 
   ios-ipados-archive:
     needs: verify
-    runs-on: macos-15
+    runs-on: macos-26
     environment: apple-release
     env:
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -276,6 +276,23 @@ jobs:
             -archivePath "$RUNNER_TEMP/iWebITMobile.xcarchive" \
             -exportPath "$RUNNER_TEMP/ios-release" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+
+      - name: Validate exported app identity
+        run: |
+          IPA_PATH="$(find "$RUNNER_TEMP/ios-release" -name '*.ipa' -print -quit)"
+          VERIFY_DIR="$RUNNER_TEMP/ios-verify"
+          test -n "$IPA_PATH"
+          rm -rf "$VERIFY_DIR"
+          mkdir -p "$VERIFY_DIR"
+          ditto -x -k "$IPA_PATH" "$VERIFY_DIR"
+          APP_PATH="$(find "$VERIFY_DIR/Payload" -maxdepth 1 -name '*.app' -print -quit)"
+          test -n "$APP_PATH"
+          ACTUAL_BUNDLE_ID="$(plutil -extract CFBundleIdentifier raw "$APP_PATH/Info.plist")"
+          if [[ "$ACTUAL_BUNDLE_ID" != "app.iwebit.mobile" ]]; then
+            echo "::error::Exported Bundle ID is '$ACTUAL_BUNDLE_ID'; expected 'app.iwebit.mobile'."
+            exit 1
+          fi
+          plutil -extract CFBundleIconName raw "$APP_PATH/Info.plist" >/dev/null
 
       - name: Validate TestFlight secrets
         if: inputs.upload_to_testflight
