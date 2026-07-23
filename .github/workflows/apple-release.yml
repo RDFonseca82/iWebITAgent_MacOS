@@ -16,7 +16,7 @@ on:
       upload_to_testflight:
         description: Upload the signed IPA to App Store Connect/TestFlight
         required: true
-        default: false
+        default: true
         type: boolean
 
 permissions:
@@ -143,7 +143,18 @@ jobs:
           chmod +x scripts/release/notarize-with-api-key.sh
           scripts/release/notarize-with-api-key.sh \
             "$RUNNER_TEMP/release/iWebIT-${{ inputs.version }}-${{ inputs.build }}.pkg" \
-            "$NOTARY_KEY_PATH"
+            "$NOTARY_KEY_PATH" \
+            "$RUNNER_TEMP/release"
+
+      - name: Upload notarization diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: iWebIT-macOS-notarization-${{ inputs.version }}-${{ inputs.build }}
+          path: |
+            ${{ runner.temp }}/release/notary-submit.json
+            ${{ runner.temp }}/release/notary-log.json
+          if-no-files-found: warn
 
       - name: Create signed update manifest
         env:
@@ -165,7 +176,7 @@ jobs:
             > "$RUNNER_TEMP/release/SHA256SUMS"
 
       - name: Upload notarized installer
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: iWebIT-macOS-${{ inputs.version }}-${{ inputs.build }}
           path: ${{ runner.temp }}/release/*
@@ -298,7 +309,7 @@ jobs:
             --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
 
       - name: Upload signed ipa
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: iWebIT-iOS-iPadOS-${{ inputs.version }}-${{ inputs.build }}
           path: ${{ runner.temp }}/ios-release/*
@@ -319,7 +330,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       RELEASE_TAG: v${{ inputs.version }}-${{ inputs.build }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: iWebIT-macOS-${{ inputs.version }}-${{ inputs.build }}
           path: ${{ runner.temp }}/github-release
