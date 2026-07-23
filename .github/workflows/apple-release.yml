@@ -41,7 +41,7 @@ jobs:
         run: |
           [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
           [[ "${{ inputs.build }}" =~ ^[1-9][0-9]*$ ]]
-          bash -n scripts/release/*.sh scripts/release/package-scripts/*
+          bash -n scripts/ci/*.sh scripts/release/*.sh scripts/release/package-scripts/*
           find Documentation -name '*.json' -print0 | while IFS= read -r -d '' file; do
             python3 -m json.tool "$file" >/dev/null
           done
@@ -64,26 +64,29 @@ jobs:
 
       - name: Validate required secrets
         env:
-          APP_P12: ${{ secrets.DEVELOPER_ID_APPLICATION_P12_BASE64 }}
-          INSTALLER_P12: ${{ secrets.DEVELOPER_ID_INSTALLER_P12_BASE64 }}
-          P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
-          NOTARY_KEY: ${{ secrets.NOTARY_PRIVATE_KEY_BASE64 }}
-          UPDATE_KEY: ${{ secrets.IWEBIT_UPDATE_PRIVATE_KEY_BASE64 }}
-          UPDATE_KEY_ID: ${{ secrets.IWEBIT_UPDATE_KEY_ID }}
-          UPDATE_PUBLIC_KEY: ${{ secrets.IWEBIT_UPDATE_PUBLIC_KEY_BASE64 }}
+          DEVELOPER_ID_APPLICATION_P12_BASE64: ${{ secrets.DEVELOPER_ID_APPLICATION_P12_BASE64 }}
+          DEVELOPER_ID_INSTALLER_P12_BASE64: ${{ secrets.DEVELOPER_ID_INSTALLER_P12_BASE64 }}
+          DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          CI_KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+          NOTARY_PRIVATE_KEY_BASE64: ${{ secrets.NOTARY_PRIVATE_KEY_BASE64 }}
+          IWEBIT_UPDATE_PRIVATE_KEY_BASE64: ${{ secrets.IWEBIT_UPDATE_PRIVATE_KEY_BASE64 }}
+          IWEBIT_UPDATE_KEY_ID: ${{ secrets.IWEBIT_UPDATE_KEY_ID }}
+          IWEBIT_UPDATE_PUBLIC_KEY_BASE64: ${{ secrets.IWEBIT_UPDATE_PUBLIC_KEY_BASE64 }}
         run: |
-          test -n "$APPLE_TEAM_ID"
-          test -n "$DEVELOPER_ID_APPLICATION_IDENTITY"
-          test -n "$DEVELOPER_ID_INSTALLER_IDENTITY"
-          test -n "$APP_P12"
-          test -n "$INSTALLER_P12"
-          test -n "$P12_PASSWORD"
-          test -n "$NOTARY_KEY_ID"
-          test -n "$NOTARY_ISSUER_ID"
-          test -n "$NOTARY_KEY"
-          test -n "$UPDATE_KEY"
-          test -n "$UPDATE_KEY_ID"
-          test -n "$UPDATE_PUBLIC_KEY"
+          bash scripts/ci/validate-required-secrets.sh \
+            APPLE_TEAM_ID \
+            DEVELOPER_ID_APPLICATION_IDENTITY \
+            DEVELOPER_ID_INSTALLER_IDENTITY \
+            DEVELOPER_ID_APPLICATION_P12_BASE64 \
+            DEVELOPER_ID_INSTALLER_P12_BASE64 \
+            DEVELOPER_ID_P12_PASSWORD \
+            CI_KEYCHAIN_PASSWORD \
+            NOTARY_KEY_ID \
+            NOTARY_ISSUER_ID \
+            NOTARY_PRIVATE_KEY_BASE64 \
+            IWEBIT_UPDATE_PRIVATE_KEY_BASE64 \
+            IWEBIT_UPDATE_KEY_ID \
+            IWEBIT_UPDATE_PUBLIC_KEY_BASE64
 
       - name: Install XcodeGen
         run: |
@@ -181,6 +184,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Validate required secrets
+        env:
+          IOS_DISTRIBUTION_P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          IOS_DISTRIBUTION_P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          CI_KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+        run: |
+          bash scripts/ci/validate-required-secrets.sh \
+            APPLE_TEAM_ID \
+            IOS_DISTRIBUTION_P12_BASE64 \
+            IOS_DISTRIBUTION_P12_PASSWORD \
+            IOS_PROVISIONING_PROFILE_BASE64 \
+            CI_KEYCHAIN_PASSWORD
+
       - name: Install XcodeGen
         run: |
           brew untap aws/tap 2>/dev/null || true
@@ -192,10 +209,6 @@ jobs:
           PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
         run: |
-          test -n "$APPLE_TEAM_ID"
-          test -n "$DISTRIBUTION_P12"
-          test -n "$P12_PASSWORD"
-          test -n "$PROFILE_BASE64"
           CERT="$RUNNER_TEMP/ios-distribution.p12"
           PROFILE="$RUNNER_TEMP/iWebITMobile.mobileprovision"
           KEYCHAIN="$RUNNER_TEMP/ios-signing.keychain-db"
@@ -253,6 +266,18 @@ jobs:
             -exportPath "$RUNNER_TEMP/ios-release" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
 
+      - name: Validate TestFlight secrets
+        if: inputs.upload_to_testflight
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY_BASE64 }}
+        run: |
+          bash scripts/ci/validate-required-secrets.sh \
+            APP_STORE_CONNECT_KEY_ID \
+            APP_STORE_CONNECT_ISSUER_ID \
+            APP_STORE_CONNECT_PRIVATE_KEY_BASE64
+
       - name: Upload signed ipa to TestFlight
         if: inputs.upload_to_testflight
         env:
@@ -260,9 +285,6 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           ASC_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY_BASE64 }}
         run: |
-          test -n "$ASC_KEY_ID"
-          test -n "$ASC_ISSUER_ID"
-          test -n "$ASC_PRIVATE_KEY_BASE64"
           KEY_DIR="$HOME/.appstoreconnect/private_keys"
           KEY_PATH="$KEY_DIR/AuthKey_${ASC_KEY_ID}.p8"
           IPA_PATH="$(find "$RUNNER_TEMP/ios-release" -name '*.ipa' -print -quit)"

@@ -43,7 +43,7 @@ jobs:
             exit 1
           fi
       - name: Validate release shell scripts
-        run: bash -n scripts/release/*.sh scripts/release/package-scripts/*
+        run: bash -n scripts/ci/*.sh scripts/release/*.sh scripts/release/package-scripts/*
       - name: Reject production cleartext endpoints
         run: |
           if grep -R --line-number 'http://agent\.iwebit\.app' Shared iWebITAgent iWebITService iWebITSysTray; then
