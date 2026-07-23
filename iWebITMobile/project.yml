@@ -15,6 +15,7 @@ targets:
     platform: iOS
     sources:
       - path: Sources
+      - path: ../iWebITAgent/Assets.xcassets
       - path: PrivacyInfo.xcprivacy
         buildPhase: resources
     dependencies:
@@ -27,6 +28,7 @@ targets:
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: 5.9
         CODE_SIGN_ENTITLEMENTS: iWebITMobile.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       configs:
         Debug:
           APS_ENVIRONMENT: development
@@ -39,6 +41,7 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         IWebITAPIBaseURL: https://agent.iwebit.app
         CFBundleDisplayName: iWebIT
+        CFBundleIconName: AppIcon
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
             CFBundleURLSchemes:
@@ -50,6 +53,17 @@ targets:
           - fetch
           - processing
           - remote-notification
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        "UISupportedInterfaceOrientations~ipad":
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UILaunchScreen: {}
         NSLocationWhenInUseUsageDescription: >-
           A localização é incluída apenas quando escolher sincronizá-la para um
           pedido de suporte. A recolha só ocorre com autorização.
