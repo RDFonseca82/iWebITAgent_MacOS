@@ -57,6 +57,37 @@ cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.xpc.plist" \
 cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.menubar.plist" \
   "$PAYLOAD_DIR/Library/LaunchAgents/app.iwebit.agent.menubar.plist"
 
+resign_embedded_dylibs() {
+  local app_path="$1"
+  local frameworks_path="$app_path/Contents/Frameworks"
+
+  [[ -d "$frameworks_path" ]] || return 0
+  while IFS= read -r -d '' dylib_path; do
+    codesign --force --options runtime --timestamp \
+      --sign "$DEVELOPER_ID_APPLICATION_IDENTITY" \
+      "$dylib_path"
+  done < <(find "$frameworks_path" -type f -name '*.dylib' -print0)
+}
+
+resign_release_product() {
+  local signed_path="$1"
+  local entitlements_path="$2"
+
+  codesign --force --options runtime --timestamp \
+    --sign "$DEVELOPER_ID_APPLICATION_IDENTITY" \
+    --entitlements "$entitlements_path" \
+    "$signed_path"
+}
+
+resign_embedded_dylibs "$INSTALL_DIR/iWebIT.app"
+resign_embedded_dylibs "$INSTALL_DIR/iWebITAgent.app"
+resign_release_product "$INSTALL_DIR/iWebIT.app" \
+  "$ROOT_DIR/iWebITAgent/iWebITAgent.entitlements"
+resign_release_product "$INSTALL_DIR/iWebITAgent.app" \
+  "$ROOT_DIR/iWebITSysTray/iWebITSysTray.entitlements"
+resign_release_product "$INSTALL_DIR/iWebITService" \
+  "$ROOT_DIR/iWebITService/iWebITService.entitlements"
+
 validate_release_signature() {
   local signed_path="$1"
   local signature_details
