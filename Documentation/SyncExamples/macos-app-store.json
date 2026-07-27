@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "2.0",
+  "snapshotID": "44444444-4444-4444-4444-444444444444",
+  "collectedAt": "2026-07-27T14:30:00Z",
+  "platform": "macOS",
+  "identity": {
+    "deviceID": "mac-store-example-001",
+    "displayName": "Mac de exemplo",
+    "model": "Mac",
+    "modelIdentifier": "Mac15,6"
+  },
+  "operatingSystem": {
+    "name": "macOS",
+    "version": "15.6.0",
+    "kernelVersion": "24.6.0",
+    "locale": "pt_PT",
+    "timeZone": "Europe/Lisbon"
+  },
+  "hardware": {
+    "architecture": "arm64",
+    "processorCount": 8,
+    "activeProcessorCount": 8,
+    "physicalMemoryBytes": 17179869184
+  },
+  "storage": {},
+  "network": {
+    "hostName": "mac-de-exemplo.local",
+    "interfaces": []
+  },
+  "security": {},
+  "management": {
+    "isManaged": false
+  },
+  "agent": {
+    "version": "2.0.0",
+    "build": "200",
+    "bundleIdentifier": "app.iwebit.mobile",
+    "lastSuccessfulSyncAt": "2026-07-27T14:20:00Z",
+    "pushTokenAvailable": true,
+    "backgroundRefreshStatus": "apns-on-demand"
+  },
+  "applications": [],
+  "services": [],
+  "permissions": [
+    {
+      "capability": "notifications",
+      "authorization": "authorized",
+      "required": true
+    }
+  ],
+  "collection": [
+    {"category": "identity", "state": "collected", "source": "application"},
+    {"category": "operatingSystem", "state": "collected", "source": "application"},
+    {"category": "hardware", "state": "collected", "source": "application"},
+    {"category": "network", "state": "collected", "source": "application"},
+    {"category": "notifications", "state": "collected", "source": "application"},
+    {"category": "storage", "state": "unsupported", "source": "application", "message": "Excluded from the sandboxed App Store edition."},
+    {"category": "location", "state": "unsupported", "source": "application", "message": "Location is not collected by the macOS App Store edition."},
+    {"category": "applications", "state": "unsupported", "source": "application", "message": "Application inventory requires the separately distributed full agent."},
+    {"category": "services", "state": "unsupported", "source": "application", "message": "Service inventory requires the separately distributed full agent."},
+    {"category": "security", "state": "unsupported", "source": "application", "message": "Privileged security posture is excluded from the App Store edition."},
+    {"category": "management", "state": "notManaged", "source": "application"}
+  ]
+}
