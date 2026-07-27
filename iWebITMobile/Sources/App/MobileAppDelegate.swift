@@ -7,10 +7,28 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        Task {
+            await AgentLogger.shared.log(
+                category: "lifecycle",
+                action: "launch",
+                message: "Aplicação iniciada."
+            )
+        }
         UNUserNotificationCenter.current().delegate = self
         BackgroundRefreshCoordinator.shared.register()
 
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { _, _ in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+            granted, error in
+            Task {
+                await AgentLogger.shared.log(
+                    error == nil ? .info : .warning,
+                    category: "notifications",
+                    action: "authorization",
+                    message: granted
+                        ? "Notificações autorizadas."
+                        : "Notificações não autorizadas."
+                )
+            }
             DispatchQueue.main.async {
                 application.registerForRemoteNotifications()
             }
@@ -18,7 +36,24 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
         return true
     }
 
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        Task {
+            await AgentLogger.shared.log(
+                category: "lifecycle",
+                action: "active",
+                message: "Aplicação ativa."
+            )
+        }
+    }
+
     func applicationDidEnterBackground(_ application: UIApplication) {
+        Task {
+            await AgentLogger.shared.log(
+                category: "lifecycle",
+                action: "background",
+                message: "Aplicação em segundo plano."
+            )
+        }
         BackgroundRefreshCoordinator.shared.scheduleRefresh()
     }
 
@@ -40,7 +75,12 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        [.banner, .badge, .sound]
+        await AgentLogger.shared.log(
+            category: "notifications",
+            action: "foreground-received",
+            message: "Notificação recebida em primeiro plano."
+        )
+        return [.banner, .badge, .sound]
     }
 }
 
