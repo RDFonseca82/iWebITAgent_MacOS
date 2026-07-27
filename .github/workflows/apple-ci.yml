@@ -99,3 +99,16 @@ jobs:
               CODE_SIGNING_ALLOWED=NO \
               build
           done
+      - name: Generate sandboxed macOS App Store project
+        working-directory: iWebITMacStore
+        run: xcodegen generate
+      - name: Build sandboxed macOS App Store target
+        working-directory: iWebITMacStore
+        run: >-
+          xcodebuild
+          -project iWebITMacStore.xcodeproj
+          -scheme iWebITMacStore
+          -configuration Debug
+          -destination 'generic/platform=macOS'
+          CODE_SIGNING_ALLOWED=NO
+          build
