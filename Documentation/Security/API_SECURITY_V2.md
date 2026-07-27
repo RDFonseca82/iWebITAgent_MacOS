@@ -12,6 +12,9 @@ explicit localhost test environment.
 4. The client stores credentials in Keychain using
    `AfterFirstUnlockThisDeviceOnly`.
 5. `IDSync` is no longer used as an ongoing bearer credential.
+6. The mobile app derives a salted local verifier after enrollment. IDSYNC is
+   requested again only to unlock local diagnostics or authorize logout; it is
+   never written to logs or stored in plain text.
 
 Production mobile enrollment should use App Attest where applicable. macOS
 enrollment should use an appropriate signed-client attestation design. Both
