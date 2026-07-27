@@ -16,7 +16,9 @@ The app never stores the IDSYNC as plain text. After a successful enrollment it:
 An installation upgraded from an earlier version has no verifier. Its first
 protected action validates IDSYNC using the HTTPS enrollment endpoint, rotates
 the device credentials, stores the verifier, and then authorizes the action.
-Failed attempts never include the submitted code in logs.
+Failed attempts never include the submitted code in logs. After five failed
+attempts, protected actions are blocked for 60 seconds to limit local and online
+guessing.
 
 Protected logout deletes device credentials, server trust, the IDSYNC verifier,
 last-sync state, and logs from the previous association.
