@@ -106,6 +106,7 @@ final class MobileRuntime: ObservableObject {
             let environment = try apiEnvironment()
             let result = try await requestEnrollment(idSync: normalized, environment: environment)
             let credentials = try saveEnrollment(result, idSync: normalized)
+            resetAccessAttempts()
             await AgentLogger.shared.log(
                 category: "enrollment",
                 action: "success",
