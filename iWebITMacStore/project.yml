@@ -1,0 +1,52 @@
+name: iWebITMacStore
+
+options:
+  bundleIdPrefix: app.iwebit
+  deploymentTarget:
+    macOS: "11.0"
+
+packages:
+  iWebITCore:
+    path: ../Packages/iWebITCore
+
+targets:
+  iWebITMacStore:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+      - path: ../iWebITAgent/Assets.xcassets
+      - path: PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: iWebITCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
+        PRODUCT_NAME: iWebIT
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 200
+        SWIFT_VERSION: 5.9
+        MACOSX_DEPLOYMENT_TARGET: 11.0
+        CODE_SIGN_ENTITLEMENTS: iWebITMacStore.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_APP_SANDBOX: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+      configs:
+        Debug:
+          APS_ENVIRONMENT: development
+        Release:
+          APS_ENVIRONMENT: production
+    info:
+      path: Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleDisplayName: iWebIT Agent
+        CFBundleIconName: AppIcon
+        IWebITAPIBaseURL: https://agent.iwebit.app
+        LSApplicationCategoryType: public.app-category.utilities
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSHighResolutionCapable: true
+        NSHumanReadableCopyright: Copyright © iWebIT. Todos os direitos reservados.
