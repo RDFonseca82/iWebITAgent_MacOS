@@ -415,9 +415,11 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN"
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          PROFILE_UUID="$(security cms -D -i "$PROFILE" | plutil -extract UUID raw -)"
-          PROFILE_NAME="$(security cms -D -i "$PROFILE" | plutil -extract Name raw -)"
-          PROFILE_APP_ID="$(security cms -D -i "$PROFILE" | plutil -extract Entitlements.application-identifier raw -)"
+          DECODED_PROFILE="$RUNNER_TEMP/iWebITMacStore-profile.plist"
+          security cms -D -i "$PROFILE" > "$DECODED_PROFILE"
+          PROFILE_UUID="$(plutil -extract UUID raw "$DECODED_PROFILE")"
+          PROFILE_NAME="$(plutil -extract Name raw "$DECODED_PROFILE")"
+          PROFILE_APP_ID="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.application-identifier' "$DECODED_PROFILE" 2>/dev/null || /usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' "$DECODED_PROFILE")"
           if [[ "$PROFILE_APP_ID" != "$APPLE_TEAM_ID.app.iwebit.mobile" ]]; then
             echo "::error::The macOS profile is for '$PROFILE_APP_ID'; expected '$APPLE_TEAM_ID.app.iwebit.mobile'."
             exit 1
