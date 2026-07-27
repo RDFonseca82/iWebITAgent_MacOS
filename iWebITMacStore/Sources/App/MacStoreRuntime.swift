@@ -224,8 +224,6 @@ final class MacStoreRuntime: ObservableObject {
             notificationAuthorization = "ativa"
         case .provisional:
             notificationAuthorization = "provisória"
-        case .ephemeral:
-            notificationAuthorization = "temporária"
         @unknown default:
             notificationAuthorization = "desconhecida"
         }
