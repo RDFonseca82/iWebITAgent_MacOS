@@ -24,6 +24,32 @@ final class PrivacyTests: XCTestCase {
         XCTAssertNoThrow(try SnapshotPrivacyValidator().validateMobileAppOrigin(snapshot))
     }
 
+    func testAcceptsSandboxedMacAppStoreSnapshot() {
+        XCTAssertNoThrow(
+            try SnapshotPrivacyValidator().validateMacAppStoreOrigin(macStoreSnapshot())
+        )
+    }
+
+    func testRejectsPrivilegedSourceFromMacAppStore() {
+        let snapshot = macStoreSnapshot(
+            collection: [
+                CollectionResult(category: "security", state: .collected, source: .privilegedAgent)
+            ]
+        )
+        XCTAssertThrowsError(try SnapshotPrivacyValidator().validateMacAppStoreOrigin(snapshot)) {
+            XCTAssertEqual($0 as? SnapshotPrivacyViolation, .macAppStorePrivilegedSource)
+        }
+    }
+
+    func testRejectsApplicationInventoryFromMacAppStore() {
+        let snapshot = macStoreSnapshot(
+            applications: [InstalledApplication(name: "Example", source: .application)]
+        )
+        XCTAssertThrowsError(try SnapshotPrivacyValidator().validateMacAppStoreOrigin(snapshot)) {
+            XCTAssertEqual($0 as? SnapshotPrivacyViolation, .macAppStoreApplicationInventory)
+        }
+    }
+
     private func mobileSnapshot(storage: StorageInfo, uptime: TimeInterval?) -> DeviceSnapshot {
         DeviceSnapshot(
             platform: .iOS,
@@ -53,6 +79,48 @@ final class PrivacyTests: XCTestCase {
                 pushTokenAvailable: false
             ),
             location: nil
+        )
+    }
+
+    private func macStoreSnapshot(
+        applications: [InstalledApplication] = [],
+        collection: [CollectionResult] = []
+    ) -> DeviceSnapshot {
+        DeviceSnapshot(
+            platform: .macOS,
+            identity: DeviceIdentity(
+                deviceID: "mac-store-1",
+                displayName: "Mac",
+                model: "Mac",
+                modelIdentifier: "arm64"
+            ),
+            operatingSystem: OperatingSystemInfo(
+                name: "macOS",
+                version: "15.0",
+                locale: "pt_PT",
+                timeZone: "Europe/Lisbon"
+            ),
+            hardware: HardwareInfo(
+                architecture: "arm64",
+                processorCount: 8,
+                activeProcessorCount: 8,
+                physicalMemoryBytes: 16_000_000_000
+            ),
+            storage: StorageInfo(),
+            battery: nil,
+            network: NetworkInfo(hostName: "Mac"),
+            security: SecurityInfo(),
+            management: ManagementInfo(isManaged: false),
+            agent: AgentInfo(
+                version: "2.0.0",
+                build: "200",
+                bundleIdentifier: "app.iwebit.mobile",
+                pushTokenAvailable: true,
+                backgroundRefreshStatus: "push"
+            ),
+            location: nil,
+            applications: applications,
+            collection: collection
         )
     }
 }
