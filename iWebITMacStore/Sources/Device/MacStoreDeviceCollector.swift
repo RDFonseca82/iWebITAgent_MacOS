@@ -117,8 +117,6 @@ struct MacStoreDeviceCollector: Sendable {
                     description = "authorized"
                 case .provisional:
                     description = "provisional"
-                case .ephemeral:
-                    description = "ephemeral"
                 @unknown default:
                     description = "unknown"
                 }
@@ -134,8 +132,9 @@ struct MacStoreDeviceCollector: Sendable {
     private func machineIdentifier() -> String {
         var info = utsname()
         uname(&info)
+        let capacity = MemoryLayout.size(ofValue: info.machine)
         return withUnsafePointer(to: &info.machine) { pointer in
-            pointer.withMemoryRebound(to: CChar.self, capacity: MemoryLayout.size(ofValue: info.machine)) {
+            pointer.withMemoryRebound(to: CChar.self, capacity: capacity) {
                 String(cString: $0)
             }
         }
@@ -144,8 +143,9 @@ struct MacStoreDeviceCollector: Sendable {
     private func kernelVersion() -> String? {
         var info = utsname()
         guard uname(&info) == 0 else { return nil }
+        let capacity = MemoryLayout.size(ofValue: info.release)
         return withUnsafePointer(to: &info.release) { pointer in
-            pointer.withMemoryRebound(to: CChar.self, capacity: MemoryLayout.size(ofValue: info.release)) {
+            pointer.withMemoryRebound(to: CChar.self, capacity: capacity) {
                 String(cString: $0)
             }
         }
