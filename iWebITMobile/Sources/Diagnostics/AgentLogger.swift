@@ -97,6 +97,11 @@ actor AgentLogger {
         }.joined(separator: "\n")
     }
 
+    func clear() {
+        try? fileManager.removeItem(at: logURL)
+        try? fileManager.removeItem(at: rotatedLogURL)
+    }
+
     private func rotateIfNeeded(adding bytes: Int) {
         let attributes = try? fileManager.attributesOfItem(atPath: logURL.path)
         let currentSize = (attributes?[.size] as? NSNumber)?.intValue ?? 0
