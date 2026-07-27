@@ -56,9 +56,6 @@ private struct MacStoreEnrollmentView: View {
             TextField("ID de sincronização", text: $idSync)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(maxWidth: 360)
-                .onSubmit {
-                    Task { await runtime.enroll(idSync: idSync) }
-                }
             Button("Associar este Mac") {
                 Task { await runtime.enroll(idSync: idSync) }
             }
@@ -283,7 +280,7 @@ private struct MacStoreSettingsView: View {
                     .padding(6)
             }
             Divider()
-            Button("Desassociar este Mac", role: .destructive) {
+            Button("Desassociar este Mac") {
                 runtime.signOut()
             }
             Spacer()
