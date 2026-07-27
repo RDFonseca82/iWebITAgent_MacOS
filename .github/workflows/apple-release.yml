@@ -453,7 +453,7 @@ jobs:
             echo "::error::Archived Bundle ID is '$ACTUAL_BUNDLE_ID'; expected 'app.iwebit.mobile'."
             exit 1
           fi
-          codesign -d --entitlements "$RUNNER_TEMP/mac-store-entitlements.plist" "$APP_PATH"
+          codesign -d --entitlements :- "$APP_PATH" > "$RUNNER_TEMP/mac-store-entitlements.plist"
           plutil -extract com.apple.security.app-sandbox raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
           plutil -extract com.apple.security.network.client raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
           plutil -extract com.apple.developer.aps-environment raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx production
