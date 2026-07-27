@@ -11,7 +11,7 @@ substitute for legal review or the App Store Connect privacy questionnaire.
 | OS name/version, kernel, locale and timezone | Yes | Yes | Yes |
 | CPU counts, architecture and physical memory | Yes | Yes | Yes |
 | Battery level/state and Low Power Mode | Yes | No | Yes |
-| Network overview | Interfaces and addresses | Host name only | Transport state only |
+| Network overview | Interfaces and addresses | Host name only | Transport state in snapshots; local/public IP shown only in protected diagnostics |
 | Notification authorization | Yes | Yes | Yes |
 | Background sync | Daemon schedule | APNs on demand | APNs and BackgroundTasks |
 | Agent version/build, last sync and push availability | Yes | Yes | Yes |
@@ -26,6 +26,10 @@ substitute for legal review or the App Store Connect privacy questionnaire.
 | Screenshot | Explicit macOS permission | No | User-created support attachment only |
 | Remote restart/shutdown/application removal | Signed command | No | No |
 | Update delivery | Verified signed GitHub pkg | Mac App Store | App Store/TestFlight |
+
+Mobile diagnostic IP addresses and redacted logs remain on the device and are
+not added to snapshots. Public-IP lookup is an explicit protected diagnostic
+request and its HTTPS provider necessarily observes the request source address.
 
 The Mac App Store edition is sandboxed and uses only application-origin data.
 Its runtime validates every snapshot before upload and rejects privileged source
