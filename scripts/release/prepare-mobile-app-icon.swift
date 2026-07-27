@@ -58,7 +58,7 @@ func prepareAppIcon(sourcePath: String, outputPath: String) throws {
 
     let canvas = NSRect(x: 0, y: 0, width: pixelSize, height: pixelSize)
     NSColor.white.setFill()
-    canvas.fill()
+    NSBezierPath(rect: canvas).fill()
     sourceImage.draw(
         in: canvas,
         from: .zero,
