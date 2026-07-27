@@ -11,7 +11,8 @@ It serializes releases through the protected `apple-release` environment and:
 6. creates an Ed25519-signed manifest and SHA-256 file;
 7. builds and signs the universal iPhone/iPad IPA;
 8. optionally uploads the IPA to App Store Connect/TestFlight;
-9. publishes the macOS pkg, manifest and checksums in an immutable GitHub Release.
+9. builds, signs and optionally uploads the sandboxed macOS App Store package;
+10. publishes the macOS pkg, manifest and checksums in an immutable GitHub Release.
 
 The release tag is `v<version>-<build>`. Publication waits for both Apple builds
 to succeed and refuses to overwrite an existing tag. GitHub Actions artifacts
@@ -26,8 +27,7 @@ use the authenticated backend or an HTTPS CDN for that case, without embedding
 a repository token in the agent.
 
 iPhone and iPad cannot self-update from GitHub. GitHub builds and uploads the
-signed IPA; TestFlight or the App Store performs installation and updates. Set
-`upload_to_testflight: true` when starting the workflow to enable the upload.
+signed IPA; TestFlight or the App Store performs installation and updates. The sandboxed macOS edition follows the same rule. Set `upload_to_testflight: true` for iPhone/iPad and `upload_macos_to_testflight: true` for macOS.
 
 ## Required GitHub Actions secrets
 
@@ -50,6 +50,9 @@ examples; never copy a placeholder literally.
 | `IOS_DISTRIBUTION_P12_BASE64` | Base64 of a `.p12` export containing the Apple Distribution certificate and its private key. |
 | `IOS_DISTRIBUTION_P12_PASSWORD` | Password used when exporting the iOS Apple Distribution `.p12`. |
 | `IOS_PROVISIONING_PROFILE_BASE64` | Base64 of an App Store distribution provisioning profile for bundle ID `app.iwebit.mobile`. |
+| `MAC_INSTALLER_DISTRIBUTION_P12_BASE64` | Base64 of the Mac Installer Distribution `.p12` and private key used to export the Mac App Store package. |
+| `MAC_INSTALLER_DISTRIBUTION_P12_PASSWORD` | Password of the Mac Installer Distribution `.p12`. |
+| `MAC_APP_STORE_PROVISIONING_PROFILE_BASE64` | Base64 of a Mac App Store Connect profile for bundle ID `app.iwebit.mobile`. |
 | `IWEBIT_UPDATE_PRIVATE_KEY_BASE64` | Base64 of the raw 32-byte CryptoKit `Curve25519.Signing.PrivateKey` representation. |
 | `IWEBIT_UPDATE_PUBLIC_KEY_BASE64` | Base64 of the matching raw 32-byte CryptoKit public-key representation. |
 | `IWEBIT_UPDATE_KEY_ID` | A stable identifier chosen by the project, such as `iwebit-update-2026-01`; it is not a secret but is stored here with the key pair. |
@@ -73,6 +76,8 @@ base64 < developer-id-application.p12 | tr -d '\n'
 base64 < developer-id-installer.p12 | tr -d '\n'
 base64 < ios-distribution.p12 | tr -d '\n'
 base64 < iWebITMobile.mobileprovision | tr -d '\n'
+base64 < mac-installer-distribution.p12 | tr -d '\n'
+base64 < iWebITMacStore.provisionprofile | tr -d '\n'
 base64 < AuthKey_AB12C3D4E5.p8 | tr -d '\n'
 ```
 
@@ -110,3 +115,4 @@ pkg, artifact or GitHub Release.
 
 See `Documentation/Updates/AUTOMATIC_UPDATE_CHANNEL.md` for the installed agent
 checks, private-repository alternative and safe key-rotation sequence.
+For the complete Windows-only setup and App Store Connect steps, see `Documentation/Distribution/MAC_APP_STORE.md`.
