@@ -12,6 +12,8 @@ final class MobileRuntime: ObservableObject {
     }
 
     private static let lastSyncDefaultsKey = "app.iwebit.mobile.last-successful-sync"
+    private static let failedAccessAttemptsKey = "app.iwebit.mobile.failed-access-attempts"
+    private static let accessLockedUntilKey = "app.iwebit.mobile.access-locked-until"
 
     @Published private(set) var phase: Phase = .loading
     @Published private(set) var tickets: [SupportTicket] = []
@@ -35,6 +37,9 @@ final class MobileRuntime: ObservableObject {
     private var observers: [NSObjectProtocol] = []
 
     init() {
+        if lastSuccessfulSyncAt != nil {
+            lastSyncStatus = "última execução conhecida com sucesso"
+        }
         observers.append(
             NotificationCenter.default.addObserver(
                 forName: .didReceiveAPNSToken,
@@ -236,9 +241,23 @@ final class MobileRuntime: ObservableObject {
     func authorizeAccess(idSync: String) async -> Bool {
         let normalized = idSync.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !normalized.isEmpty else { return false }
+        guard accessAttemptAllowed else {
+            await AgentLogger.shared.log(
+                .warning,
+                category: "access",
+                action: "rate-limited",
+                message: "Acesso protegido temporariamente bloqueado após várias tentativas."
+            )
+            return false
+        }
         do {
             if try accessCodeStore.containsVerifier() {
                 let authorized = try accessCodeStore.verify(code: normalized)
+                if authorized {
+                    resetAccessAttempts()
+                } else {
+                    recordDeniedAccess()
+                }
                 await AgentLogger.shared.log(
                     authorized ? .info : .warning,
                     category: "access",
@@ -259,6 +278,7 @@ final class MobileRuntime: ObservableObject {
             let result = try await requestEnrollment(idSync: normalized, environment: environment)
             let credentials = try saveEnrollment(result, idSync: normalized)
             await activate(credentials: credentials, environment: environment)
+            resetAccessAttempts()
             await AgentLogger.shared.log(
                 category: "access",
                 action: "migration-success",
@@ -266,6 +286,7 @@ final class MobileRuntime: ObservableObject {
             )
             return true
         } catch {
+            recordDeniedAccess()
             await AgentLogger.shared.log(
                 .warning,
                 category: "access",
@@ -451,6 +472,36 @@ final class MobileRuntime: ObservableObject {
                 message: "Não foi possível registar o token APNs."
             )
         }
+    }
+
+    private var accessAttemptAllowed: Bool {
+        guard let lockedUntil = UserDefaults.standard.object(
+            forKey: Self.accessLockedUntilKey
+        ) as? Date else {
+            return true
+        }
+        if lockedUntil <= Date() {
+            resetAccessAttempts()
+            return true
+        }
+        return false
+    }
+
+    private func recordDeniedAccess() {
+        let defaults = UserDefaults.standard
+        let attempts = defaults.integer(forKey: Self.failedAccessAttemptsKey) + 1
+        defaults.set(attempts, forKey: Self.failedAccessAttemptsKey)
+        if attempts >= 5 {
+            defaults.set(
+                Date(timeIntervalSinceNow: 60),
+                forKey: Self.accessLockedUntilKey
+            )
+        }
+    }
+
+    private func resetAccessAttempts() {
+        UserDefaults.standard.removeObject(forKey: Self.failedAccessAttemptsKey)
+        UserDefaults.standard.removeObject(forKey: Self.accessLockedUntilKey)
     }
 
     private func apiEnvironment() throws -> APIEnvironment {
