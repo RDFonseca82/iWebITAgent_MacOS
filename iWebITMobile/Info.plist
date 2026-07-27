@@ -8,6 +8,8 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>IWebITAPIBaseURL</key>
     <string>https://agent.iwebit.app</string>
+    <key>IWebITPublicIPAddressURL</key>
+    <string>https://api64.ipify.org?format=json</string>
     <key>CFBundleDisplayName</key>
     <string>iWebIT</string>
     <key>CFBundleIconName</key>
