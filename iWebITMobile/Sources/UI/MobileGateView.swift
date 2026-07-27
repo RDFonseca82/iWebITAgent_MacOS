@@ -22,8 +22,8 @@ struct MobileGateView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
-                Button("Voltar à associação") {
-                    runtime.signOut()
+                Button("Tentar novamente") {
+                    Task { await runtime.retryConfiguration() }
                 }
             }
             .padding()
