@@ -15,7 +15,7 @@ targets:
     platform: iOS
     sources:
       - path: Sources
-      - path: ../iWebITAgent/Assets.xcassets
+      - path: Assets.xcassets
       - path: PrivacyInfo.xcprivacy
         buildPhase: resources
     dependencies:
