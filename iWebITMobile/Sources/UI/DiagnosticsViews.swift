@@ -25,7 +25,7 @@ struct ProtectedDiagnosticsView: View {
                         Button(isLoading ? "A validar…" : "Abrir diagnóstico") {
                             load()
                         }
-                        .disabled(isLoading || idSync.isBlank)
+                        .disabled(isLoading || idSync.isDiagnosticCodeBlank)
                     } header: {
                         Text("Acesso protegido")
                     } footer: {
@@ -190,7 +190,7 @@ struct ProtectedLogoutSection: View {
                 }
             }
             .foregroundColor(.red)
-            .disabled(isWorking || idSync.isBlank)
+            .disabled(isWorking || idSync.isDiagnosticCodeBlank)
 
             if let errorMessage {
                 Text(errorMessage).foregroundColor(.red)
@@ -203,7 +203,7 @@ struct ProtectedLogoutSection: View {
 }
 
 private extension String {
-    var isBlank: Bool {
+    var isDiagnosticCodeBlank: Bool {
         trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
