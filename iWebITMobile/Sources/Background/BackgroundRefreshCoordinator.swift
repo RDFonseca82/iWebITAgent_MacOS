@@ -1,4 +1,5 @@
 import BackgroundTasks
+import Foundation
 
 final class BackgroundRefreshCoordinator {
     static let shared = BackgroundRefreshCoordinator()
@@ -9,15 +10,33 @@ final class BackgroundRefreshCoordinator {
     private init() {}
 
     func register() {
-        BGTaskScheduler.shared.register(
+        let registered = BGTaskScheduler.shared.register(
             forTaskWithIdentifier: Self.refreshIdentifier,
             using: nil
         ) { task in
             guard let refreshTask = task as? BGAppRefreshTask else {
                 task.setTaskCompleted(success: false)
+                Task {
+                    await AgentLogger.shared.log(
+                        .error,
+                        category: "background",
+                        action: "invalid-task",
+                        message: "Tipo de tarefa de background inesperado."
+                    )
+                }
                 return
             }
             self.handle(refreshTask)
+        }
+        Task {
+            await AgentLogger.shared.log(
+                registered ? .info : .warning,
+                category: "background",
+                action: "register",
+                message: registered
+                    ? "Tarefa de atualização registada."
+                    : "Não foi possível registar a tarefa de atualização."
+            )
         }
     }
 
@@ -26,19 +45,56 @@ final class BackgroundRefreshCoordinator {
         request.earliestBeginDate = earliestBeginDate
         do {
             try BGTaskScheduler.shared.submit(request)
+            Task {
+                await AgentLogger.shared.log(
+                    category: "background",
+                    action: "scheduled",
+                    message: "Atualização em segundo plano agendada."
+                )
+            }
         } catch {
-            // Scheduling is opportunistic. Foreground and APNs sync remain the fallback.
+            Task {
+                await AgentLogger.shared.log(
+                    .warning,
+                    category: "background",
+                    action: "schedule-failure",
+                    message: "O sistema recusou o agendamento em segundo plano."
+                )
+            }
         }
     }
 
     private func handle(_ task: BGAppRefreshTask) {
         scheduleRefresh()
+        Task {
+            await AgentLogger.shared.log(
+                category: "background",
+                action: "execute",
+                message: "Atualização em segundo plano iniciada."
+            )
+        }
         let syncTask = Task {
             let success = await MobileSyncTrigger.shared.performBackgroundSync()
             task.setTaskCompleted(success: success)
+            await AgentLogger.shared.log(
+                success ? .info : .warning,
+                category: "background",
+                action: "complete",
+                message: success
+                    ? "Atualização em segundo plano concluída."
+                    : "Atualização em segundo plano falhou."
+            )
         }
         task.expirationHandler = {
             syncTask.cancel()
+            Task {
+                await AgentLogger.shared.log(
+                    .warning,
+                    category: "background",
+                    action: "expired",
+                    message: "Atualização cancelada pelo limite do sistema."
+                )
+            }
         }
     }
 }
@@ -52,7 +108,15 @@ actor MobileSyncTrigger {
     }
 
     func performBackgroundSync() async -> Bool {
-        guard let operation else { return false }
+        guard let operation else {
+            await AgentLogger.shared.log(
+                .warning,
+                category: "background",
+                action: "missing-operation",
+                message: "Não existe operação de sincronização instalada."
+            )
+            return false
+        }
         return await operation()
     }
 }
