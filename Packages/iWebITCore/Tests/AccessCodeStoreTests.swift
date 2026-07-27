@@ -2,7 +2,7 @@ import XCTest
 @testable import iWebITCore
 
 final class AccessCodeStoreTests: XCTestCase {
-    func testStoresVerifierAndChecksExactNormalizedCode() throws {
+    func testStoresOnlyVerifierAndChecksExactNormalizedCode() throws {
         let store = KeychainAccessCodeStore(
             service: "app.iwebit.tests.\(UUID().uuidString)",
             account: "idsync"
