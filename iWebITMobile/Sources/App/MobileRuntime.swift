@@ -319,6 +319,7 @@ final class MobileRuntime: ObservableObject {
             lastSyncStatus = "ainda não executada"
             pushTokenAvailable = false
             phase = .enrollmentRequired
+            await AgentLogger.shared.clear()
             await AgentLogger.shared.log(
                 category: "access",
                 action: "logout",
