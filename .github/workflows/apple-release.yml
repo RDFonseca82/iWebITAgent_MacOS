@@ -236,6 +236,16 @@ jobs:
           cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
           echo "PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
 
+      - name: Prepare opaque App Store icon
+        working-directory: iWebITMobile
+        run: |
+          swift ../scripts/release/prepare-mobile-app-icon.swift \
+            ../iWebITAgent/Assets.xcassets/AppIcon.appiconset/logo_1024.png \
+            Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+          sips -g pixelWidth -g pixelHeight -g hasAlpha \
+            Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+          [[ "$(sips -g hasAlpha Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png | awk '/hasAlpha:/ {print $2}')" == "no" ]]
+
       - name: Archive universal iPhone and iPad app
         working-directory: iWebITMobile
         run: |
