@@ -21,6 +21,7 @@ private enum Destination: String, CaseIterable, Identifiable {
     case overview
     case incidents
     case support
+    case diagnostics
     case settings
 
     var id: String { rawValue }
@@ -30,6 +31,7 @@ private enum Destination: String, CaseIterable, Identifiable {
         case .overview: return "Dispositivo"
         case .incidents: return "Ocorrências"
         case .support: return "Suporte"
+        case .diagnostics: return "Diagnóstico"
         case .settings: return "Definições"
         }
     }
@@ -39,6 +41,7 @@ private enum Destination: String, CaseIterable, Identifiable {
         case .overview: return "laptopcomputer.and.iphone"
         case .incidents: return "list.bullet.rectangle"
         case .support: return "questionmark.bubble"
+        case .diagnostics: return "stethoscope"
         case .settings: return "gearshape"
         }
     }
@@ -49,6 +52,7 @@ private enum Destination: String, CaseIterable, Identifiable {
         case .overview: DeviceOverviewView()
         case .incidents: LiveIncidentsView()
         case .support: LiveSupportRequestView()
+        case .diagnostics: ProtectedDiagnosticsView()
         case .settings: MobileSettingsView()
         }
     }
@@ -105,6 +109,7 @@ private struct MobileSettingsView: View {
                 Text("A app identifica a origem e o estado de cada categoria sincronizada.")
                 Link("Política de privacidade", destination: URL(string: "https://www.iwebit.app/privacypolicy.php")!)
             }
+            ProtectedLogoutSection()
         }
         .navigationTitle("Definições")
     }
