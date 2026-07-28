@@ -15,7 +15,7 @@ struct Constants {
     ) as? String ?? "2.0.0"
     static let AGENT_BUILD = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleVersion"
-    ) as? String ?? "200"
+    ) as? String ?? "201"
     
     static let PRODUCT_DIR = "__PRODUCT_DIR__"
     static let BUNDLE_ID = "com.rdfonseca.iWebIT"
