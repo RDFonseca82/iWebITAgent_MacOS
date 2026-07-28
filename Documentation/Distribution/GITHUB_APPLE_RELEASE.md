@@ -29,6 +29,15 @@ a repository token in the agent.
 iPhone and iPad cannot self-update from GitHub. GitHub builds and uploads the
 signed IPA; TestFlight or the App Store performs installation and updates. The sandboxed macOS edition follows the same rule. Set `upload_to_testflight: true` for iPhone/iPad. For macOS, set `build_macos_app_store: true` and `upload_macos_to_testflight: true`; leave both disabled until the three required `MAC_*` environment secrets are configured.
 
+## Encryption export compliance
+
+The App Store targets declare `ITSAppUsesNonExemptEncryption` as `false`.
+They use Apple HTTPS, Keychain and CryptoKit APIs for exempt authentication,
+hashing and digital signatures, and do not implement proprietary encryption.
+The release workflow verifies this declaration in every exported App Store
+bundle. For an older build without the key, answer **None of the algorithms
+mentioned above** in App Store Connect.
+
 ## Required GitHub Actions secrets
 
 Create these as Environment secrets in repository **Settings > Environments >

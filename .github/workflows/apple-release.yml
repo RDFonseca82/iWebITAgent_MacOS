@@ -11,7 +11,7 @@ on:
       build:
         description: Monotonic build number
         required: true
-        default: '201'
+        default: '202'
         type: string
       upload_to_testflight:
         description: Upload the signed IPA to App Store Connect/TestFlight
@@ -334,6 +334,7 @@ jobs:
             exit 1
           fi
           plutil -extract CFBundleIconName raw "$APP_PATH/Info.plist" >/dev/null
+          plutil -extract ITSAppUsesNonExemptEncryption raw "$APP_PATH/Info.plist" | grep -qx false
 
       - name: Validate TestFlight secrets
         if: inputs.upload_to_testflight
@@ -480,6 +481,7 @@ jobs:
           plutil -extract com.apple.security.app-sandbox raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
           plutil -extract com.apple.security.network.client raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
           plutil -extract com.apple.developer.aps-environment raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx production
+          plutil -extract ITSAppUsesNonExemptEncryption raw "$APP_PATH/Contents/Info.plist" | grep -qx false
 
       - name: Export signed Mac App Store package
         run: |

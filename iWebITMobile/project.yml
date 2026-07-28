@@ -24,7 +24,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
         MARKETING_VERSION: 2.0.0
-        CURRENT_PROJECT_VERSION: 201
+        CURRENT_PROJECT_VERSION: 202
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: 5.9
         CODE_SIGN_ENTITLEMENTS: iWebITMobile.entitlements
@@ -39,6 +39,7 @@ targets:
       properties:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
         IWebITAPIBaseURL: https://agent.iwebit.app
         IWebITPublicIPAddressURL: https://api64.ipify.org?format=json
         CFBundleDisplayName: iWebIT

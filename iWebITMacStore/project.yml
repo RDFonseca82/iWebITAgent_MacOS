@@ -25,7 +25,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
         PRODUCT_NAME: iWebIT
         MARKETING_VERSION: 2.0.0
-        CURRENT_PROJECT_VERSION: 201
+        CURRENT_PROJECT_VERSION: 202
         SWIFT_VERSION: 5.9
         MACOSX_DEPLOYMENT_TARGET: 11.0
         CODE_SIGN_ENTITLEMENTS: iWebITMacStore.entitlements
@@ -43,6 +43,7 @@ targets:
       properties:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
         CFBundleDisplayName: iWebIT Agent
         CFBundleIconName: AppIcon
         IWebITAPIBaseURL: https://agent.iwebit.app

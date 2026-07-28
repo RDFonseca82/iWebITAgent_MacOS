@@ -22,6 +22,16 @@ checks = {
     "iWebITMobile/project.yml": [
         f"MARKETING_VERSION: {MARKETING}",
         f"CURRENT_PROJECT_VERSION: {BUILD}",
+        "ITSAppUsesNonExemptEncryption: false",
+    ],
+    "iWebITMobile/Info.plist": [
+        "<key>ITSAppUsesNonExemptEncryption</key>",
+        "<false/>",
+    ],
+    "iWebITMacStore/project.yml": [
+        f"MARKETING_VERSION: {MARKETING}",
+        f"CURRENT_PROJECT_VERSION: {BUILD}",
+        "ITSAppUsesNonExemptEncryption: false",
     ],
     "iWebITAgent-macOS.xcodeproj/project.pbxproj": [
         f"MARKETING_VERSION = {MARKETING};",
