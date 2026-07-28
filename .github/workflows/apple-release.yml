@@ -436,6 +436,24 @@ jobs:
           security import "$INSTALLER_CERT" -P "$INSTALLER_DISTRIBUTION_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN"
+          INSTALLER_CERT_SHA="$(security find-certificate -c "Installer" -Z "$KEYCHAIN" | awk '/SHA-1 hash:/ { print $3; exit }')"
+          INSTALLER_CERT_SUBJECT="$(security find-certificate -c "Installer" -p "$KEYCHAIN" | openssl x509 -noout -subject)"
+          if [[ -z "$INSTALLER_CERT_SHA" ]]; then
+            echo "::error::The installer P12 does not contain an installer certificate."
+            exit 1
+          fi
+          case "$INSTALLER_CERT_SUBJECT" in
+            *"3rd Party Mac Developer Installer"*|*"Mac Installer Distribution"*) ;;
+            *)
+              echo "::error::The installer P12 contains '$INSTALLER_CERT_SUBJECT'. Use a Mac App Store installer distribution certificate, not Developer ID Installer."
+              exit 1
+              ;;
+          esac
+          if ! security find-identity -v "$KEYCHAIN" | grep -Fq "$INSTALLER_CERT_SHA"; then
+            echo "::error::The Mac App Store installer certificate was imported without its private key."
+            exit 1
+          fi
+          echo "MAC_INSTALLER_CERT_SHA=$INSTALLER_CERT_SHA" >> "$GITHUB_ENV"
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
           DECODED_PROFILE="$RUNNER_TEMP/iWebITMacStore-profile.plist"
           security cms -D -i "$PROFILE" > "$DECODED_PROFILE"
@@ -493,7 +511,7 @@ jobs:
             <key>destination</key><string>export</string>
             <key>signingStyle</key><string>manual</string>
             <key>signingCertificate</key><string>Apple Distribution</string>
-            <key>installerSigningCertificate</key><string>Mac Installer Distribution</string>
+            <key>installerSigningCertificate</key><string>$MAC_INSTALLER_CERT_SHA</string>
             <key>teamID</key><string>$APPLE_TEAM_ID</string>
             <key>provisioningProfiles</key><dict>
               <key>app.iwebit.mobile</key><string>$MAC_STORE_PROFILE_NAME</string>
