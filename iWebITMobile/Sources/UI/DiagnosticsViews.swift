@@ -186,7 +186,8 @@ struct ProtectedLogoutSection: View {
                 isWorking = true
                 errorMessage = nil
                 Task {
-                    if !await runtime.signOut(idSync: idSync) {
+                    let signedOut = await runtime.signOut(idSync: idSync)
+                    if !signedOut {
                         errorMessage = "IDSYNC inválido. O dispositivo não foi desassociado."
                     }
                     isWorking = false
