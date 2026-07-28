@@ -33,6 +33,9 @@ checks = {
     ".github/workflows/apple-release.yml": [
         f"default: {MARKETING}",
         f"default: '{BUILD}'",
+        "build_macos_app_store:",
+        "if: inputs.build_macos_app_store",
+        'PROVISIONING_PROFILE_SPECIFIER="$IOS_PROFILE_NAME"',
     ],
 }
 

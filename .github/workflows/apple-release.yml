@@ -18,10 +18,15 @@ on:
         required: true
         default: true
         type: boolean
-      upload_macos_to_testflight:
-        description: Upload the sandboxed macOS package to App Store Connect/TestFlight
+      build_macos_app_store:
+        description: Build the sandboxed macOS App Store edition (requires the three MAC_* secrets)
         required: true
-        default: true
+        default: false
+        type: boolean
+      upload_macos_to_testflight:
+        description: Upload the sandboxed macOS package (only when build_macos_app_store is enabled)
+        required: true
+        default: false
         type: boolean
 
 permissions:
@@ -243,9 +248,24 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN"
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          PROFILE_UUID="$(security cms -D -i "$PROFILE" | plutil -extract UUID raw -)"
+          DECODED_PROFILE="$RUNNER_TEMP/iWebITMobile-profile.plist"
+          security cms -D -i "$PROFILE" > "$DECODED_PROFILE"
+          PROFILE_UUID="$(plutil -extract UUID raw "$DECODED_PROFILE")"
+          PROFILE_NAME="$(plutil -extract Name raw "$DECODED_PROFILE")"
+          PROFILE_APP_ID="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' "$DECODED_PROFILE")"
+          PROFILE_TEAM_ID="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.developer.team-identifier' "$DECODED_PROFILE")"
+          if [[ "$PROFILE_APP_ID" != "$APPLE_TEAM_ID.app.iwebit.mobile" ]]; then
+            echo "::error::The iOS/iPadOS profile is for '$PROFILE_APP_ID'; expected '$APPLE_TEAM_ID.app.iwebit.mobile'."
+            exit 1
+          fi
+          if [[ "$PROFILE_TEAM_ID" != "$APPLE_TEAM_ID" ]]; then
+            echo "::error::The iOS/iPadOS profile belongs to team '$PROFILE_TEAM_ID'; expected '$APPLE_TEAM_ID'."
+            exit 1
+          fi
+          security find-identity -v -p codesigning "$KEYCHAIN"
           cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
           echo "PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
+          echo "IOS_PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
 
       - name: Prepare opaque App Store icon
         working-directory: iWebITMobile
@@ -270,7 +290,7 @@ jobs:
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE="$PROFILE_UUID" \
+            PROVISIONING_PROFILE_SPECIFIER="$IOS_PROFILE_NAME" \
             MARKETING_VERSION="${{ inputs.version }}" \
             CURRENT_PROJECT_VERSION="${{ inputs.build }}" \
             archive
@@ -361,6 +381,7 @@ jobs:
           rm -f "$HOME/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8"
   macos-app-store:
     needs: verify
+    if: inputs.build_macos_app_store
     runs-on: macos-26
     environment: apple-release
     env:

@@ -100,8 +100,11 @@ private struct DiagnosticsReportView: View {
             }
 
             Section("Logs") {
-                NavigationLink("Consultar logs do agente") {
-                    AgentLogsView(entries: report.logs, formattedLogs: report.formattedLogs)
+                NavigationLink(destination: AgentLogsView(
+                    entries: report.logs,
+                    formattedLogs: report.formattedLogs
+                )) {
+                    Text("Consultar logs do agente")
                 }
             }
         }

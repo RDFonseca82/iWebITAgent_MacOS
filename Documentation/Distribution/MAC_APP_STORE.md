@@ -91,6 +91,8 @@ Open **Actions > Apple signed release and update channel > Run workflow**:
 - `version`: `2.0.0` for the first upload;
 - `build`: a positive number not previously uploaded for this macOS version;
 - `upload_to_testflight`: controls the iPhone/iPad upload;
+- `build_macos_app_store`: set to `true` only after all three `MAC_*`
+  secrets in the table above have been configured;
 - `upload_macos_to_testflight`: set to `true`.
 
 The `macos-app-store` job validates the profile bundle ID, archives the
@@ -98,6 +100,12 @@ sandboxed app, checks sandbox/network/APNs entitlements, exports a
 Mac Installer Distribution-signed package, validates it with Apple and uploads
 it. The package is also retained as the
 `iWebIT-macOS-AppStore-<version>-<build>` GitHub Actions artifact.
+
+Both macOS App Store options default to `false` so an iPhone/iPad or full-agent
+release is not blocked while the additional Mac Installer Distribution
+certificate and Mac App Store profile are still being prepared. Enabling
+`build_macos_app_store` keeps the three `MAC_*` secrets mandatory; the workflow
+does not bypass or replace Apple signing.
 
 After upload, Apple processing can take several minutes. In App Store Connect,
 open **TestFlight > macOS** and answer any export-compliance question. Internal

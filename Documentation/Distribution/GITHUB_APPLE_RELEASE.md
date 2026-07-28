@@ -27,7 +27,7 @@ use the authenticated backend or an HTTPS CDN for that case, without embedding
 a repository token in the agent.
 
 iPhone and iPad cannot self-update from GitHub. GitHub builds and uploads the
-signed IPA; TestFlight or the App Store performs installation and updates. The sandboxed macOS edition follows the same rule. Set `upload_to_testflight: true` for iPhone/iPad and `upload_macos_to_testflight: true` for macOS.
+signed IPA; TestFlight or the App Store performs installation and updates. The sandboxed macOS edition follows the same rule. Set `upload_to_testflight: true` for iPhone/iPad. For macOS, set `build_macos_app_store: true` and `upload_macos_to_testflight: true`; leave both disabled until the three required `MAC_*` environment secrets are configured.
 
 ## Required GitHub Actions secrets
 
