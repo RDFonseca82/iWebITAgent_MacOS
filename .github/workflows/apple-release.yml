@@ -478,9 +478,9 @@ jobs:
             exit 1
           fi
           codesign -d --entitlements :- "$APP_PATH" > "$RUNNER_TEMP/mac-store-entitlements.plist"
-          plutil -extract com.apple.security.app-sandbox raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
-          plutil -extract com.apple.security.network.client raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
-          plutil -extract com.apple.developer.aps-environment raw "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx production
+          /usr/libexec/PlistBuddy -c "Print :com.apple.security.app-sandbox" "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
+          /usr/libexec/PlistBuddy -c "Print :com.apple.security.network.client" "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx true
+          /usr/libexec/PlistBuddy -c "Print :com.apple.developer.aps-environment" "$RUNNER_TEMP/mac-store-entitlements.plist" | grep -qx production
           plutil -extract ITSAppUsesNonExemptEncryption raw "$APP_PATH/Contents/Info.plist" | grep -qx false
 
       - name: Export signed Mac App Store package
