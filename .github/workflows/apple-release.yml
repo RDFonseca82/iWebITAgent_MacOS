@@ -567,8 +567,8 @@ jobs:
       - name: Publish immutable GitHub Release
         run: |
           if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Release $RELEASE_TAG already exists; refusing to overwrite signed assets."
-            exit 1
+            echo "Release $RELEASE_TAG already exists; keeping its immutable signed assets."
+            exit 0
           fi
           gh release create "$RELEASE_TAG" "$RUNNER_TEMP/github-release/"* \
             --repo "$GITHUB_REPOSITORY" \
