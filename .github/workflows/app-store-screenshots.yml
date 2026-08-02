@@ -1,0 +1,117 @@
+name: App Store screenshots
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install XcodeGen
+        run: |
+          brew untap aws/tap 2>/dev/null || true
+          brew install xcodegen
+
+      - name: Generate mobile project
+        working-directory: iWebITMobile
+        run: xcodegen generate
+
+      - name: Build Debug app for Simulator
+        working-directory: iWebITMobile
+        run: |
+          xcodebuild \
+            -project iWebITMobile.xcodeproj \
+            -scheme iWebITMobile \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/iWebITDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Capture real iPhone and iPad screens
+        env:
+          APP_PATH: ${{ runner.temp }}/iWebITDerivedData/Build/Products/Debug-iphonesimulator/iWebITMobile.app
+        run: |
+          set -euo pipefail
+
+          RUNTIME_ID="$(xcrun simctl list runtimes --json | python3 -c '
+          import json, sys
+          runtimes = json.load(sys.stdin)["runtimes"]
+          available = [r for r in runtimes if r.get("isAvailable") and r["identifier"].startswith("com.apple.CoreSimulator.SimRuntime.iOS-")]
+          if not available:
+              raise SystemExit("No available iOS Simulator runtime")
+          print(sorted(available, key=lambda r: tuple(int(x) for x in r["version"].split(".")))[-1]["identifier"])
+          ')"
+
+          mkdir -p \
+            Documentation/AppStore/Screenshots/iPhone-6.5 \
+            Documentation/AppStore/Screenshots/iPad-13
+
+          capture_device() {
+            local name="$1"
+            local device_type="$2"
+            local output_directory="$3"
+            local expected_width="$4"
+            local expected_height="$5"
+            local udid
+            udid="$(xcrun simctl create "$name" "$device_type" "$RUNTIME_ID")"
+            trap 'xcrun simctl shutdown "$udid" >/dev/null 2>&1 || true; xcrun simctl delete "$udid" >/dev/null 2>&1 || true' RETURN
+
+            xcrun simctl boot "$udid"
+            xcrun simctl bootstatus "$udid" -b
+            xcrun simctl ui "$udid" appearance light
+            xcrun simctl status_bar "$udid" override \
+              --time 09:41 --batteryState charged --batteryLevel 100 \
+              --wifiBars 3 --cellularBars 4 || true
+            xcrun simctl install "$udid" "$APP_PATH"
+
+            for item in \
+              '01-dispositivo:overview' \
+              '02-ocorrencias:incidents' \
+              '03-diagnostico:diagnostics'; do
+              local filename="${item%%:*}"
+              local route="${item##*:}"
+              xcrun simctl launch --terminate-running-process "$udid" app.iwebit.mobile \
+                --app-store-screenshots "--screenshot=$route" \
+                -AppleLanguages '(pt-PT)' -AppleLocale pt_PT
+              sleep 4
+              xcrun simctl io "$udid" screenshot \
+                "$output_directory/$filename.png"
+              local width
+              local height
+              width="$(sips -g pixelWidth "$output_directory/$filename.png" | awk '/pixelWidth:/ {print $2}')"
+              height="$(sips -g pixelHeight "$output_directory/$filename.png" | awk '/pixelHeight:/ {print $2}')"
+              test "$width" = "$expected_width"
+              test "$height" = "$expected_height"
+            done
+
+            xcrun simctl shutdown "$udid"
+            xcrun simctl delete "$udid"
+            trap - RETURN
+          }
+
+          capture_device \
+            'iWebIT iPhone 6.5' \
+            'com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max' \
+            'Documentation/AppStore/Screenshots/iPhone-6.5' \
+            1242 2688
+
+          capture_device \
+            'iWebIT iPad 13' \
+            'com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4' \
+            'Documentation/AppStore/Screenshots/iPad-13' \
+            2064 2752
+
+      - name: Upload App Store screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-store-screenshots-204
+          path: Documentation/AppStore/Screenshots
+          if-no-files-found: error
+          retention-days: 30

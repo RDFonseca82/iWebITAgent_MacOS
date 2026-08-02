@@ -171,6 +171,57 @@ private struct AgentLogsView: View {
     }
 }
 
+#if DEBUG
+struct AppStoreScreenshotDiagnosticsView: View {
+    var body: some View {
+        DiagnosticsReportView(
+            report: Self.report,
+            isRefreshing: false,
+            refresh: {}
+        )
+        .navigationTitle("Diagnóstico")
+    }
+
+    private static let report: MobileDiagnosticsReport = {
+        let now = Date()
+        let entries = [
+            AgentLogEntry(
+                id: UUID(),
+                timestamp: now.addingTimeInterval(-20),
+                level: .info,
+                category: "sync",
+                action: "success",
+                message: "Snapshot sincronizado com sucesso."
+            ),
+            AgentLogEntry(
+                id: UUID(),
+                timestamp: now.addingTimeInterval(-90),
+                level: .info,
+                category: "notifications",
+                action: "token-registered",
+                message: "Token APNs sincronizado com o backend."
+            )
+        ]
+        return MobileDiagnosticsReport(
+            generatedAt: now,
+            items: [
+                DiagnosticItem(section: "Agente", label: "Versão", value: "2.0.0 (204)"),
+                DiagnosticItem(section: "Agente", label: "Servidor", value: "agent.iwebit.app"),
+                DiagnosticItem(section: "Sincronização", label: "Último resultado", value: "sucesso"),
+                DiagnosticItem(section: "Sincronização", label: "Token de notificações", value: "registado"),
+                DiagnosticItem(section: "Dispositivo", label: "Plataforma", value: UIDevice.current.userInterfaceIdiom == .pad ? "iPadOS" : "iOS"),
+                DiagnosticItem(section: "Dispositivo", label: "Modelo", value: UIDevice.current.model),
+                DiagnosticItem(section: "Rede", label: "Transporte", value: "Wi-Fi"),
+                DiagnosticItem(section: "Rede", label: "Ligação disponível", value: "sim"),
+                DiagnosticItem(section: "Permissões", label: "Notificações", value: "autorizadas"),
+                DiagnosticItem(section: "Logs", label: "Registos disponíveis", value: String(entries.count))
+            ],
+            logs: entries,
+            formattedLogs: "[INFO] sync.success — Snapshot sincronizado com sucesso."
+        )
+    }()
+}
+#endif
 struct ProtectedLogoutSection: View {
     @EnvironmentObject private var runtime: MobileRuntime
     @State private var idSync = ""

@@ -38,6 +38,12 @@ final class MobileRuntime: ObservableObject {
     private var observers: [NSObjectProtocol] = []
 
     init() {
+#if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--app-store-screenshots") {
+            configureAppStoreScreenshotState()
+            return
+        }
+#endif
         if lastSuccessfulSyncAt != nil {
             lastSyncStatus = "última execução conhecida com sucesso"
         }
@@ -503,6 +509,41 @@ final class MobileRuntime: ObservableObject {
         UserDefaults.standard.removeObject(forKey: Self.accessLockedUntilKey)
     }
 
+#if DEBUG
+    private func configureAppStoreScreenshotState() {
+        let now = Date()
+        phase = .ready
+        lastSuccessfulSyncAt = now.addingTimeInterval(-180)
+        lastSyncStatus = "sucesso"
+        pushTokenAvailable = true
+        tickets = [
+            SupportTicket(
+                id: "review-1",
+                subject: "Sincronização do dispositivo",
+                latestMessage: "Inventário atualizado e recebido com sucesso.",
+                createdAt: now.addingTimeInterval(-86_400),
+                updatedAt: now.addingTimeInterval(-300),
+                status: .resolved
+            ),
+            SupportTicket(
+                id: "review-2",
+                subject: "Pedido de apoio",
+                latestMessage: "A equipa de suporte está a analisar o pedido.",
+                createdAt: now.addingTimeInterval(-7_200),
+                updatedAt: now.addingTimeInterval(-1_200),
+                status: .waitingForSupport
+            ),
+            SupportTicket(
+                id: "review-3",
+                subject: "Notificações",
+                latestMessage: "Confirme a receção da notificação de teste.",
+                createdAt: now.addingTimeInterval(-172_800),
+                updatedAt: now.addingTimeInterval(-3_600),
+                status: .waitingForUser
+            )
+        ]
+    }
+#endif
     private func legacyClient() throws -> LegacyAppleAPIClient {
         try LegacyAppleAPIClient(
             syncURL: configuredURL("IWebITAppleSyncURL"),
