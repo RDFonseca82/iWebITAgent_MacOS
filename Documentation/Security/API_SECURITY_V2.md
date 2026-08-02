@@ -1,5 +1,13 @@
 # iWebIT API security protocol v2
 
+> Status: this document describes the target v2 backend contract. The current
+> production Apple agents use the HTTPS legacy compatibility contract: company
+> lookup through `script_api.php`, registration and every synchronization through
+> `script_ios.php`, and support through `script_api_support.php`. Because that
+> backend requires IDSYNC on every sync, the agents retain it only in the local
+> device Keychain. Per-device request signatures can become mandatory only after
+> the server implements the v2 endpoints described below.
+
 All production endpoints must use HTTPS. Cleartext HTTP is accepted only for an
 explicit localhost test environment.
 

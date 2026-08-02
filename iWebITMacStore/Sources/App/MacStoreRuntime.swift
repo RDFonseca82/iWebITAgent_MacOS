@@ -20,14 +20,17 @@ final class MacStoreRuntime: ObservableObject {
     @Published private(set) var lastSuccessfulSyncAt: Date?
     @Published private(set) var notificationAuthorization = "a verificar"
 
-    private let credentialStore = KeychainCredentialStore(
+    private let credentialStore = KeychainLegacyAppleCredentialStore(
+        service: "app.iwebit.mac-store.legacy-apple-authentication"
+    )
+    private let obsoleteCredentialStore = KeychainCredentialStore(
         service: "app.iwebit.mac-store.device-authentication"
     )
-    private let trustStore = KeychainServerTrustStore(
+    private let obsoleteTrustStore = KeychainServerTrustStore(
         service: "app.iwebit.mac-store.server-trust"
     )
-    private var client: SecureAPIClient?
-    private var supportRepository: SupportRepository?
+    private var client: LegacyAppleAPIClient?
+    private var activeCredentials: LegacyAppleCredentials?
     private var syncService: MacStoreSyncService?
     private var pendingPushToken: Data?
     private var observers: [NSObjectProtocol] = []
@@ -76,32 +79,30 @@ final class MacStoreRuntime: ObservableObject {
 
         phase = .loading
         do {
-            let environment = try apiEnvironment()
-            let enrollmentClient = EnrollmentAPIClient(environment: environment)
-            let result = try await enrollmentClient.enroll(
-                DeviceEnrollmentRequest(
-                    idSync: normalized,
-                    platform: .macOS,
-                    appVersion: appVersion,
-                    appBuild: appBuild,
-                    vendorIdentifier: nil
-                )
+            let client = try legacyClient()
+            let company = try await client.company(idSync: normalized)
+            let credentials = LegacyAppleCredentials(
+                idSync: normalized,
+                uniqueID: installationIdentifier(),
+                idCompany: company.idCompany
             )
-            let credentials = DeviceCredentials(
-                deviceID: result.deviceID,
-                keyID: result.keyID,
-                sharedSecret: result.sharedSecret
+            let snapshot = try await MacStoreDeviceCollector().collect(
+                deviceID: credentials.uniqueID,
+                lastSuccessfulSyncAt: nil,
+                pushTokenAvailable: pendingPushToken != nil
+            )
+            try SnapshotPrivacyValidator().validateMacAppStoreOrigin(snapshot)
+            try await client.synchronize(
+                snapshot,
+                credentials: credentials,
+                pushToken: pendingPushToken.map(Self.hex)
             )
             try credentialStore.save(credentials)
-            try trustStore.save(
-                ServerTrustBundle(
-                    commandPublicKeys: result.commandPublicKeys,
-                    updatePublicKeys: result.updatePublicKeys
-                )
-            )
-            await activate(credentials: credentials, environment: environment)
+            try? obsoleteCredentialStore.delete()
+            try? obsoleteTrustStore.delete()
+            await activate(credentials: credentials, client: client)
         } catch {
-            phase = .failed(String(describing: error))
+            phase = .failed(userMessage(for: error))
         }
     }
 
@@ -125,9 +126,9 @@ final class MacStoreRuntime: ObservableObject {
     }
 
     func loadTickets() async {
-        guard let supportRepository else { return }
+        guard let client, let credentials = activeCredentials else { return }
         do {
-            tickets = try await supportRepository.tickets()
+            tickets = try await client.tickets(uniqueID: credentials.uniqueID)
             supportMessage = nil
         } catch {
             supportMessage = "Não foi possível obter as ocorrências."
@@ -135,10 +136,14 @@ final class MacStoreRuntime: ObservableObject {
     }
 
     func createTicket(name: String, message: String) async throws {
-        guard let supportRepository else {
+        guard let client, let credentials = activeCredentials else {
             throw CoreError.unauthorized
         }
-        let ticket = try await supportRepository.create(name: name, message: message)
+        let ticket = try await client.createTicket(
+            uniqueID: credentials.uniqueID,
+            name: name,
+            message: message
+        )
         tickets.insert(ticket, at: 0)
         supportMessage = "Pedido enviado ao suporte."
     }
@@ -156,13 +161,13 @@ final class MacStoreRuntime: ObservableObject {
     }
 
     func signOut() {
-        do {
-            try credentialStore.delete()
-            try trustStore.delete()
-        } catch {}
+        try? credentialStore.delete()
+        try? obsoleteCredentialStore.delete()
+        try? obsoleteTrustStore.delete()
         client = nil
-        supportRepository = nil
+        activeCredentials = nil
         syncService = nil
+        pendingPushToken = nil
         tickets = []
         lastSuccessfulSyncAt = nil
         syncMessage = nil
@@ -171,29 +176,28 @@ final class MacStoreRuntime: ObservableObject {
 
     private func configureFromKeychain() async {
         do {
-            let environment = try apiEnvironment()
+            let client = try legacyClient()
             guard let credentials = try credentialStore.load() else {
                 phase = .enrollmentRequired
                 return
             }
-            await activate(credentials: credentials, environment: environment)
+            await activate(credentials: credentials, client: client)
         } catch {
-            phase = .failed(String(describing: error))
+            phase = .failed(userMessage(for: error))
         }
     }
 
-    private func activate(credentials: DeviceCredentials, environment: APIEnvironment) async {
-        let client = SecureAPIClient(
-            environment: environment,
-            authenticator: RequestAuthenticator(credentials: credentials)
-        )
+    private func activate(
+        credentials: LegacyAppleCredentials,
+        client: LegacyAppleAPIClient
+    ) async {
         let syncService = MacStoreSyncService(
             client: client,
             credentialStore: credentialStore,
-            pushTokenAvailable: pendingPushToken != nil
+            pushToken: pendingPushToken
         )
         self.client = client
-        self.supportRepository = SupportRepository(client: client)
+        self.activeCredentials = credentials
         self.syncService = syncService
         phase = .ready
         await registerPendingPushToken()
@@ -202,15 +206,12 @@ final class MacStoreRuntime: ObservableObject {
     }
 
     private func registerPendingPushToken() async {
-        guard let token = pendingPushToken, let client else { return }
-        do {
-            await syncService?.setPushTokenAvailable(true)
-            try await client.postWithoutResponse(
-                "/v2/devices/push-token",
-                body: PushTokenRegistration(token: token)
-            )
+        guard let token = pendingPushToken, let syncService else { return }
+        await syncService.setPushToken(token)
+        if await syncService.synchronize() {
             pendingPushToken = nil
-        } catch {}
+            lastSuccessfulSyncAt = Date()
+        }
     }
 
     private func refreshNotificationAuthorization() async {
@@ -229,23 +230,54 @@ final class MacStoreRuntime: ObservableObject {
         }
     }
 
-    private func apiEnvironment() throws -> APIEnvironment {
-        guard let value = Bundle.main.object(forInfoDictionaryKey: "IWebITAPIBaseURL") as? String,
+    private func legacyClient() throws -> LegacyAppleAPIClient {
+        try LegacyAppleAPIClient(
+            syncURL: configuredURL("IWebITAppleSyncURL"),
+            apiURL: configuredURL("IWebITLegacyAPIURL"),
+            supportURL: configuredURL("IWebITLegacySupportURL")
+        )
+    }
+
+    private func configuredURL(_ key: String) throws -> URL {
+        guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String,
               let url = URL(string: value) else {
             throw CoreError.invalidURL
         }
-        return try APIEnvironment(baseURL: url)
+        return url
     }
 
-    private var appVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
+    private func installationIdentifier() -> String {
+        let key = "app.iwebit.mac-store.installation-identifier"
+        if let value = UserDefaults.standard.string(forKey: key), !value.isEmpty {
+            return value
+        }
+        let value = UUID().uuidString.lowercased()
+        UserDefaults.standard.set(value, forKey: key)
+        return value
     }
 
-    private var appBuild: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+    private func userMessage(for error: Error) -> String {
+        if let coreError = error as? CoreError {
+            switch coreError {
+            case .unauthorized:
+                return "O IDSYNC não foi aceite. Confirme o código e tente novamente."
+            case .server(let statusCode):
+                return "O servidor iWebIT respondeu com o erro HTTP \(statusCode)."
+            case .invalidResponse:
+                return "O servidor iWebIT devolveu uma resposta inválida."
+            case .invalidURL, .insecureTransport:
+                return "A ligação segura ao servidor iWebIT não está corretamente configurada."
+            default:
+                break
+            }
+        }
+        if error is URLError {
+            return "Não foi possível contactar o servidor iWebIT. Confirme a ligação à Internet."
+        }
+        return "Não foi possível associar este Mac. Tente novamente."
     }
-}
 
-private struct PushTokenRegistration: Codable, Sendable {
-    let token: Data
+    private static func hex(_ data: Data) -> String {
+        data.map { String(format: "%02x", $0) }.joined()
+    }
 }

@@ -8,8 +8,12 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
-    <key>IWebITAPIBaseURL</key>
-    <string>https://agent.iwebit.app</string>
+    <key>IWebITAppleSyncURL</key>
+    <string>https://agent.iwebit.app/scripts/script_ios.php</string>
+    <key>IWebITLegacyAPIURL</key>
+    <string>https://agent.iwebit.app/scripts/script_api.php</string>
+    <key>IWebITLegacySupportURL</key>
+    <string>https://agent.iwebit.app/scripts/script_api_support.php</string>
     <key>IWebITPublicIPAddressURL</key>
     <string>https://api64.ipify.org?format=json</string>
     <key>CFBundleDisplayName</key>

@@ -20,7 +20,7 @@ struct MobileDiagnosticsReport: Sendable {
 struct MobileDiagnosticsBuilder: Sendable {
     @MainActor
     func build(
-        credentials: DeviceCredentials,
+        credentials: LegacyAppleCredentials,
         lastSuccessfulSyncAt: Date?,
         lastSyncStatus: String,
         pushTokenAvailable: Bool
@@ -35,7 +35,7 @@ struct MobileDiagnosticsBuilder: Sendable {
         let logs = await AgentLogger.shared.recent()
         let formattedLogs = await AgentLogger.shared.formattedRecent()
         let server = (
-            Bundle.main.object(forInfoDictionaryKey: "IWebITAPIBaseURL") as? String
+            Bundle.main.object(forInfoDictionaryKey: "IWebITAppleSyncURL") as? String
         ) ?? "não configurado"
 
         var items: [DiagnosticItem] = [
@@ -46,8 +46,7 @@ struct MobileDiagnosticsBuilder: Sendable {
             item("Agente", "Build", appBuild),
             item("Agente", "Bundle ID", Bundle.main.bundleIdentifier ?? "desconhecido"),
             item("Agente", "Servidor", server),
-            item("Agente", "Device ID", credentials.deviceID),
-            item("Agente", "Key ID", credentials.keyID),
+            item("Agente", "Device ID", credentials.uniqueID),
             item("Sincronização", "Última sincronização", date(lastSuccessfulSyncAt)),
             item("Sincronização", "Último resultado", lastSyncStatus),
             item(

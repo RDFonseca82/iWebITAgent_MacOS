@@ -11,7 +11,7 @@ on:
       build:
         description: Monotonic build number
         required: true
-        default: '202'
+        default: '204'
         type: string
       upload_to_testflight:
         description: Upload the signed IPA to App Store Connect/TestFlight

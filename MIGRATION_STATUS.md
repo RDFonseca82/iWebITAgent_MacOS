@@ -1,9 +1,19 @@
 # iWebIT Apple platform migration
 
+## Current production Apple API
+
+The App Store iOS/iPadOS app and the sandboxed macOS App Store app now use
+`https://agent.iwebit.app/scripts/script_ios.php` for both initial registration
+and every device synchronization. The full macOS agent already uses the same
+endpoint. `script_api.php` remains read-only for company/device/support queries,
+and `script_api_support.php` remains the support-message write endpoint.
+
+The server does not currently expose the planned `/v2` enrollment/signature
+contract, so IDSYNC remains a legacy bearer value protected in the local Keychain.
 ## Implemented in this iteration
 
 - All Apple agents and installers aligned to release line 2.0: marketing
-  version 2.0.0, build 202, with runtime bundle reporting and CI consistency
+  version 2.0.0, build 204, with runtime bundle reporting and CI consistency
   checks.
 - Production legacy URLs changed to HTTPS and all legacy networking helpers
   reject non-HTTPS dynamic URLs.

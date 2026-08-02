@@ -25,7 +25,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
         PRODUCT_NAME: iWebIT
         MARKETING_VERSION: 2.0.0
-        CURRENT_PROJECT_VERSION: 202
+        CURRENT_PROJECT_VERSION: 204
         SWIFT_VERSION: 5.9
         MACOSX_DEPLOYMENT_TARGET: 11.0
         CODE_SIGN_ENTITLEMENTS: iWebITMacStore.entitlements
@@ -46,7 +46,9 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         CFBundleDisplayName: iWebIT Agent
         CFBundleIconName: AppIcon
-        IWebITAPIBaseURL: https://agent.iwebit.app
+        IWebITAppleSyncURL: https://agent.iwebit.app/scripts/script_ios.php
+        IWebITLegacyAPIURL: https://agent.iwebit.app/scripts/script_api.php
+        IWebITLegacySupportURL: https://agent.iwebit.app/scripts/script_api_support.php
         LSApplicationCategoryType: public.app-category.utilities
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         NSHighResolutionCapable: true

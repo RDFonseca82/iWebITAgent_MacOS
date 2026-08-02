@@ -2,42 +2,53 @@ import Foundation
 import iWebITCore
 
 actor MacStoreSyncService {
-    private let client: SecureAPIClient
+    private let client: LegacyAppleAPIClient
     private let collector: MacStoreDeviceCollector
-    private let credentialStore: KeychainCredentialStore
+    private let credentialStore: KeychainLegacyAppleCredentialStore
     private var lastSuccessfulSyncAt: Date?
+    private var pushToken: String?
     private var pushTokenAvailable: Bool
 
     init(
-        client: SecureAPIClient,
+        client: LegacyAppleAPIClient,
         collector: MacStoreDeviceCollector = MacStoreDeviceCollector(),
-        credentialStore: KeychainCredentialStore,
-        pushTokenAvailable: Bool = false
+        credentialStore: KeychainLegacyAppleCredentialStore,
+        pushToken: Data? = nil
     ) {
         self.client = client
         self.collector = collector
         self.credentialStore = credentialStore
-        self.pushTokenAvailable = pushTokenAvailable
+        self.pushToken = pushToken.map(Self.hex)
+        self.pushTokenAvailable = pushToken != nil
     }
 
-    func setPushTokenAvailable(_ available: Bool) {
-        pushTokenAvailable = available
+    func setPushToken(_ token: Data) {
+        pushToken = Self.hex(token)
+        pushTokenAvailable = true
     }
 
     func synchronize() async -> Bool {
         do {
             guard let credentials = try credentialStore.load() else { return false }
             let snapshot = try await collector.collect(
-                deviceID: credentials.deviceID,
+                deviceID: credentials.uniqueID,
                 lastSuccessfulSyncAt: lastSuccessfulSyncAt,
                 pushTokenAvailable: pushTokenAvailable
             )
             try SnapshotPrivacyValidator().validateMacAppStoreOrigin(snapshot)
-            try await client.postWithoutResponse("/v2/devices/snapshots", body: snapshot)
+            try await client.synchronize(
+                snapshot,
+                credentials: credentials,
+                pushToken: pushToken
+            )
             lastSuccessfulSyncAt = Date()
             return true
         } catch {
             return false
         }
+    }
+
+    private static func hex(_ data: Data) -> String {
+        data.map { String(format: "%02x", $0) }.joined()
     }
 }

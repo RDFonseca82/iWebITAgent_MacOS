@@ -14,7 +14,7 @@ struct EnrollmentView: View {
                 } header: {
                     Text("Associar dispositivo")
                 } footer: {
-                    Text("A associação troca o IDSync por uma credencial revogável guardada no Keychain.")
+                    Text("O IDSYNC é guardado de forma segura no Keychain para sincronizar este dispositivo.")
                 }
 
                 Button("Associar") {

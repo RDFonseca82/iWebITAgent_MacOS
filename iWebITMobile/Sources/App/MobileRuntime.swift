@@ -25,13 +25,14 @@ final class MobileRuntime: ObservableObject {
     @Published private(set) var lastSyncStatus = "ainda não executada"
     @Published private(set) var pushTokenAvailable = UIApplication.shared.isRegisteredForRemoteNotifications
 
-    private let credentialStore = KeychainCredentialStore()
-    private let trustStore = KeychainServerTrustStore()
+    private let credentialStore = KeychainLegacyAppleCredentialStore()
+    private let obsoleteCredentialStore = KeychainCredentialStore()
+    private let obsoleteTrustStore = KeychainServerTrustStore()
     private let accessCodeStore = KeychainAccessCodeStore(
         service: "app.iwebit.mobile.diagnostics-access"
     )
-    private var client: SecureAPIClient?
-    private var supportRepository: SupportRepository?
+    private var client: LegacyAppleAPIClient?
+    private var activeCredentials: LegacyAppleCredentials?
     private var syncService: MobileSyncService?
     private var pendingPushToken: Data?
     private var observers: [NSObjectProtocol] = []
@@ -103,16 +104,14 @@ final class MobileRuntime: ObservableObject {
             message: "Associação do dispositivo iniciada."
         )
         do {
-            let environment = try apiEnvironment()
-            let result = try await requestEnrollment(idSync: normalized, environment: environment)
-            let credentials = try saveEnrollment(result, idSync: normalized)
+            let (credentials, client) = try await performEnrollment(idSync: normalized)
             resetAccessAttempts()
             await AgentLogger.shared.log(
                 category: "enrollment",
                 action: "success",
                 message: "Dispositivo associado com sucesso."
             )
-            await activate(credentials: credentials, environment: environment)
+            await activate(credentials: credentials, client: client)
         } catch {
             await AgentLogger.shared.log(
                 .error,
@@ -120,7 +119,7 @@ final class MobileRuntime: ObservableObject {
                 action: "failure",
                 message: "A associação falhou (\(String(describing: type(of: error))))."
             )
-            phase = .failed(String(describing: error))
+            phase = .failed(userMessage(for: error))
         }
     }
 
@@ -190,14 +189,14 @@ final class MobileRuntime: ObservableObject {
     }
 
     func loadTickets() async {
-        guard let supportRepository else { return }
+        guard let client, let credentials = activeCredentials else { return }
         await AgentLogger.shared.log(
             category: "support",
             action: "list-start",
             message: "Consulta de ocorrências iniciada."
         )
         do {
-            tickets = try await supportRepository.tickets()
+            tickets = try await client.tickets(uniqueID: credentials.uniqueID)
             await AgentLogger.shared.log(
                 category: "support",
                 action: "list-success",
@@ -214,14 +213,18 @@ final class MobileRuntime: ObservableObject {
     }
 
     func createTicket(name: String, message: String) async throws {
-        guard let supportRepository else { throw CoreError.unauthorized }
+        guard let client, let credentials = activeCredentials else { throw CoreError.unauthorized }
         await AgentLogger.shared.log(
             category: "support",
             action: "create-start",
             message: "Criação de pedido de suporte iniciada."
         )
         do {
-            let ticket = try await supportRepository.create(name: name, message: message)
+            let ticket = try await client.createTicket(
+                uniqueID: credentials.uniqueID,
+                name: name,
+                message: message
+            )
             tickets.insert(ticket, at: 0)
             await AgentLogger.shared.log(
                 category: "support",
@@ -275,10 +278,8 @@ final class MobileRuntime: ObservableObject {
                 action: "migration-start",
                 message: "Validação online do IDSYNC para instalação existente."
             )
-            let environment = try apiEnvironment()
-            let result = try await requestEnrollment(idSync: normalized, environment: environment)
-            let credentials = try saveEnrollment(result, idSync: normalized)
-            await activate(credentials: credentials, environment: environment)
+            let (credentials, client) = try await performEnrollment(idSync: normalized)
+            await activate(credentials: credentials, client: client)
             resetAccessAttempts()
             await AgentLogger.shared.log(
                 category: "access",
@@ -330,16 +331,18 @@ final class MobileRuntime: ObservableObject {
         guard await authorizeAccess(idSync: idSync) else { return false }
         do {
             try credentialStore.delete()
-            try trustStore.delete()
+            try? obsoleteCredentialStore.delete()
+            try? obsoleteTrustStore.delete()
             try accessCodeStore.delete()
             UserDefaults.standard.removeObject(forKey: Self.lastSyncDefaultsKey)
             client = nil
-            supportRepository = nil
+            activeCredentials = nil
             syncService = nil
             tickets = []
             lastSuccessfulSyncAt = nil
             lastSyncStatus = "ainda não executada"
             pushTokenAvailable = false
+            pendingPushToken = nil
             phase = .enrollmentRequired
             await AgentLogger.shared.clear()
             await AgentLogger.shared.log(
@@ -361,7 +364,7 @@ final class MobileRuntime: ObservableObject {
 
     private func configureFromKeychain() async {
         do {
-            let environment = try apiEnvironment()
+            let client = try legacyClient()
             guard let credentials = try credentialStore.load() else {
                 await AgentLogger.shared.log(
                     category: "lifecycle",
@@ -376,7 +379,7 @@ final class MobileRuntime: ObservableObject {
                 action: "credentials-loaded",
                 message: "Credenciais do dispositivo carregadas do Porta-chaves."
             )
-            await activate(credentials: credentials, environment: environment)
+            await activate(credentials: credentials, client: client)
         } catch {
             await AgentLogger.shared.log(
                 .error,
@@ -384,21 +387,22 @@ final class MobileRuntime: ObservableObject {
                 action: "configuration-failure",
                 message: "A configuração a partir do Porta-chaves falhou."
             )
-            phase = .failed(String(describing: error))
+            phase = .failed(userMessage(for: error))
         }
     }
 
-    private func activate(credentials: DeviceCredentials, environment: APIEnvironment) async {
-        let client = SecureAPIClient(
-            environment: environment,
-            authenticator: RequestAuthenticator(credentials: credentials)
-        )
+    private func activate(
+        credentials: LegacyAppleCredentials,
+        client: LegacyAppleAPIClient
+    ) async {
         let syncService = MobileSyncService(
             client: client,
+            credentialStore: credentialStore,
+            pushToken: pendingPushToken,
             pushTokenAvailable: pushTokenAvailable
         )
         self.client = client
-        self.supportRepository = SupportRepository(client: client)
+        self.activeCredentials = credentials
         self.syncService = syncService
         await MobileSyncTrigger.shared.install {
             await syncService.synchronize()
@@ -415,62 +419,56 @@ final class MobileRuntime: ObservableObject {
         await loadTickets()
     }
 
-    private func requestEnrollment(
-        idSync: String,
-        environment: APIEnvironment
-    ) async throws -> DeviceEnrollmentResponse {
-        try await EnrollmentAPIClient(environment: environment).enroll(
-            DeviceEnrollmentRequest(
-                idSync: idSync,
-                platform: UIDevice.current.userInterfaceIdiom == .pad ? .iPadOS : .iOS,
-                appVersion: appVersion,
-                appBuild: appBuild,
-                vendorIdentifier: UIDevice.current.identifierForVendor
-            )
-        )
-    }
-
-    private func saveEnrollment(
-        _ result: DeviceEnrollmentResponse,
+    private func performEnrollment(
         idSync: String
-    ) throws -> DeviceCredentials {
-        let credentials = DeviceCredentials(
-            deviceID: result.deviceID,
-            keyID: result.keyID,
-            sharedSecret: result.sharedSecret
+    ) async throws -> (LegacyAppleCredentials, LegacyAppleAPIClient) {
+        let client = try legacyClient()
+        let uniqueID = UIDevice.current.identifierForVendor?.uuidString.lowercased()
+            ?? installationIdentifier()
+        let company = try await client.company(idSync: idSync)
+        let credentials = LegacyAppleCredentials(
+            idSync: idSync,
+            uniqueID: uniqueID,
+            idCompany: company.idCompany
+        )
+        let snapshot = try await MobileDeviceCollector().collect(
+            deviceID: uniqueID,
+            lastSuccessfulSyncAt: lastSuccessfulSyncAt,
+            pushTokenAvailable: pendingPushToken != nil || pushTokenAvailable
+        )
+        try SnapshotPrivacyValidator().validateMobileAppOrigin(snapshot)
+        try await client.synchronize(
+            snapshot,
+            credentials: credentials,
+            pushToken: pendingPushToken.map(Self.hex)
         )
         try accessCodeStore.save(code: idSync)
-        try trustStore.save(
-            ServerTrustBundle(
-                commandPublicKeys: result.commandPublicKeys,
-                updatePublicKeys: result.updatePublicKeys
-            )
-        )
         try credentialStore.save(credentials)
-        return credentials
+        try? obsoleteCredentialStore.delete()
+        try? obsoleteTrustStore.delete()
+        return (credentials, client)
     }
 
     private func registerPendingPushToken() async {
-        guard let token = pendingPushToken, let client else { return }
-        do {
-            await syncService?.setPushTokenAvailable(true)
-            try await client.postWithoutResponse(
-                "/v2/devices/push-token",
-                body: PushTokenRegistration(token: token)
-            )
+        guard let token = pendingPushToken, let syncService else { return }
+        await syncService.setPushToken(token)
+        let succeeded = await syncService.synchronize()
+        if succeeded {
             pendingPushToken = nil
+            pushTokenAvailable = true
+            lastSuccessfulSyncAt = await syncService.lastSuccessfulSyncDate()
+            lastSyncStatus = "sucesso"
             await AgentLogger.shared.log(
                 category: "notifications",
                 action: "token-registered",
-                message: "Token APNs registado no backend."
+                message: "Token APNs sincronizado com o backend legado."
             )
-            await synchronize()
-        } catch {
+        } else {
             await AgentLogger.shared.log(
                 .error,
                 category: "notifications",
                 action: "token-registration-failure",
-                message: "Não foi possível registar o token APNs."
+                message: "Não foi possível sincronizar o token APNs."
             )
         }
     }
@@ -505,23 +503,61 @@ final class MobileRuntime: ObservableObject {
         UserDefaults.standard.removeObject(forKey: Self.accessLockedUntilKey)
     }
 
-    private func apiEnvironment() throws -> APIEnvironment {
-        guard let value = Bundle.main.object(forInfoDictionaryKey: "IWebITAPIBaseURL") as? String,
+    private func legacyClient() throws -> LegacyAppleAPIClient {
+        try LegacyAppleAPIClient(
+            syncURL: configuredURL("IWebITAppleSyncURL"),
+            apiURL: configuredURL("IWebITLegacyAPIURL"),
+            supportURL: configuredURL("IWebITLegacySupportURL")
+        )
+    }
+
+    private func configuredURL(_ key: String) throws -> URL {
+        guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String,
               let url = URL(string: value) else {
             throw CoreError.invalidURL
         }
-        return try APIEnvironment(baseURL: url)
+        return url
+    }
+
+    private func installationIdentifier() -> String {
+        let key = "app.iwebit.mobile.installation-identifier"
+        if let value = UserDefaults.standard.string(forKey: key), !value.isEmpty {
+            return value
+        }
+        let value = UUID().uuidString.lowercased()
+        UserDefaults.standard.set(value, forKey: key)
+        return value
+    }
+
+    private func userMessage(for error: Error) -> String {
+        if let coreError = error as? CoreError {
+            switch coreError {
+            case .unauthorized:
+                return "O IDSYNC não foi aceite. Confirme o código e tente novamente."
+            case .server(let statusCode):
+                return "O servidor iWebIT respondeu com o erro HTTP \(statusCode)."
+            case .invalidResponse:
+                return "O servidor iWebIT devolveu uma resposta inválida."
+            case .invalidURL, .insecureTransport:
+                return "A ligação segura ao servidor iWebIT não está corretamente configurada."
+            default:
+                break
+            }
+        }
+        if error is URLError {
+            return "Não foi possível contactar o servidor iWebIT. Confirme a ligação à Internet e tente novamente."
+        }
+        return "Não foi possível associar o dispositivo. Tente novamente."
+    }
+
+    private static func hex(_ data: Data) -> String {
+        data.map { String(format: "%02x", $0) }.joined()
     }
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
     }
-
     private var appBuild: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
     }
-}
-
-private struct PushTokenRegistration: Codable, Sendable {
-    let token: Data
 }

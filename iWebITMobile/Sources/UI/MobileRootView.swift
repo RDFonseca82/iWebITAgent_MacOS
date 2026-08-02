@@ -107,7 +107,7 @@ private struct MobileSettingsView: View {
             }
             Section("Privacidade") {
                 Text("A app identifica a origem e o estado de cada categoria sincronizada.")
-                Link("Política de privacidade", destination: URL(string: "https://www.iwebit.app/privacypolicy.php")!)
+                Link("Política de privacidade", destination: URL(string: "https://intranet.iwebit.app/privacypolicy.php")!)
             }
             ProtectedLogoutSection()
         }
