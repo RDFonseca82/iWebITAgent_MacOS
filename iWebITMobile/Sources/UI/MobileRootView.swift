@@ -94,7 +94,6 @@ private struct AppStoreScreenshotRootView: View {
                 List(Destination.allCases) { item in
                     Label(item.title, systemImage: item.systemImage)
                         .foregroundStyle(item == destination ? Color.accentColor : Color.primary)
-                        .fontWeight(item == destination ? .semibold : .regular)
                 }
                 .navigationTitle("iWebIT")
 
