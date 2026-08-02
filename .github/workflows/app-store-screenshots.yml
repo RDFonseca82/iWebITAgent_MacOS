@@ -49,6 +49,16 @@ jobs:
           print(sorted(available, key=lambda r: tuple(int(x) for x in r["version"].split(".")))[-1]["identifier"])
           ')"
 
+          IPAD_DEVICE_TYPE="$(xcrun simctl list devicetypes --json | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devicetypes"]
+          matches = [d for d in devices if "iPad Pro 13-inch" in d["name"]]
+          if not matches:
+              raise SystemExit("No iPad Pro 13-inch Simulator device type")
+          preferred = next((d for d in matches if "M4" in d["name"]), matches[0])
+          print(preferred["identifier"])
+          ')"
+
           mkdir -p \
             Documentation/AppStore/Screenshots/iPhone-6.5 \
             Documentation/AppStore/Screenshots/iPad-13
@@ -104,7 +114,7 @@ jobs:
 
           capture_device \
             'iWebIT iPad 13' \
-            'com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M4' \
+            "$IPAD_DEVICE_TYPE" \
             'Documentation/AppStore/Screenshots/iPad-13' \
             2064 2752
 
