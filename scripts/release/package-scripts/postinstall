@@ -2,17 +2,50 @@
 set -euo pipefail
 
 PRODUCT_DIR="/Library/Application Support/iWebITAgent"
+DATA_DIR="$PRODUCT_DIR/Data"
+
+CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
+/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+if [[ "$CONSOLE_UID" -ge 500 ]]; then
+  /bin/launchctl bootout "gui/$CONSOLE_UID/app.iwebit.agent.menubar" 2>/dev/null || true
+fi
 
 /usr/sbin/chown -R root:wheel "$PRODUCT_DIR"
 /bin/chmod 0755 "$PRODUCT_DIR" "$PRODUCT_DIR/iWebITService"
 /bin/chmod 0644 "$PRODUCT_DIR/update-channel.json"
-/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+
+# Keep mutable state out of the root-owned directory containing signed code.
+# Migrate files produced by older installations before starting either process.
+/bin/mkdir -p "$DATA_DIR"
+for legacy_path in \
+  "$PRODUCT_DIR/appInfo.json" \
+  "$PRODUCT_DIR/vars.json" \
+  "$PRODUCT_DIR/log_"*.log \
+  "$PRODUCT_DIR/old_log_"*.log \
+  "$PRODUCT_DIR/logo-on.jpg" \
+  "$PRODUCT_DIR/logo-off.jpg" \
+  "$PRODUCT_DIR/sct.jpg" \
+  "$PRODUCT_DIR/iWebITInstaller.pkg" \
+  "$PRODUCT_DIR/install_log.log" \
+  "$PRODUCT_DIR/UPDATE"; do
+  if [[ -e "$legacy_path" ]]; then
+    legacy_name="$(/usr/bin/basename "$legacy_path")"
+    if [[ ! -e "$DATA_DIR/$legacy_name" ]]; then
+      /bin/mv "$legacy_path" "$DATA_DIR/$legacy_name"
+    fi
+  fi
+done
+
+# Standard interactive macOS accounts belong to staff. The root daemon can
+# still access the data, while the signed code remains protected by root:wheel.
+/usr/sbin/chown -R root:staff "$DATA_DIR"
+/bin/chmod 0770 "$DATA_DIR"
+/usr/bin/find "$DATA_DIR" -type d -exec /bin/chmod 0770 {} \;
+/usr/bin/find "$DATA_DIR" -type f -exec /bin/chmod 0660 {} \;
 /bin/launchctl bootstrap system /Library/LaunchDaemons/app.iwebit.agent.service.plist
 /bin/launchctl enable system/app.iwebit.agent.service
 
-CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
 if [[ "$CONSOLE_UID" -ge 500 ]]; then
-  /bin/launchctl bootout "gui/$CONSOLE_UID/app.iwebit.agent.menubar" 2>/dev/null || true
   /bin/launchctl bootstrap "gui/$CONSOLE_UID" \
     /Library/LaunchAgents/app.iwebit.agent.menubar.plist || true
 fi

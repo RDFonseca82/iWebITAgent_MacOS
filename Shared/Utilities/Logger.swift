@@ -16,11 +16,19 @@ let DEBUG = false
 
 func log(_ text: String, important: Bool = false, callerName: String = #function, callerLineNum: Int = #line, retry: Bool = false, printOnly: Bool = false) {
 
-    if AppInfo.verbose == "0" && !important {
-        return
+    // Important errors can be emitted while AppInfoManager.shared is still
+    // initializing, so this path must not access AppInfo and re-enter it.
+    let verboseLoggingEnabled: Bool
+    if important {
+        verboseLoggingEnabled = false
+    } else {
+        verboseLoggingEnabled = AppInfo.verbose == "1"
+        if !verboseLoggingEnabled {
+            return
+        }
     }
-    
-    if AppInfo.verbose == "1" || DEBUG {
+
+    if verboseLoggingEnabled || DEBUG {
         print(text)
     }
     

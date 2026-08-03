@@ -57,6 +57,24 @@ cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.xpc.plist" \
 cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.menubar.plist" \
   "$PAYLOAD_DIR/Library/LaunchAgents/app.iwebit.agent.menubar.plist"
 
+validate_bundle_version() {
+  local app_path="$1"
+  local info_plist="$app_path/Contents/Info.plist"
+  local actual_version
+  local actual_build
+
+  actual_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$info_plist")"
+  actual_build="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$info_plist")"
+
+  if [[ "$actual_version" != "$VERSION" || "$actual_build" != "$BUILD" ]]; then
+    echo "Bundle version mismatch: $app_path is $actual_version ($actual_build), expected $VERSION ($BUILD)" >&2
+    exit 65
+  fi
+}
+
+validate_bundle_version "$INSTALL_DIR/iWebIT.app"
+validate_bundle_version "$INSTALL_DIR/iWebITAgent.app"
+
 resign_embedded_dylibs() {
   local app_path="$1"
   local frameworks_path="$app_path/Contents/Frameworks"

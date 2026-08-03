@@ -45,6 +45,8 @@ jobs:
         run: python3 scripts/ci/check_version_consistency.py
       - name: Test update channel configuration
         run: python3 scripts/ci/test_update_channel_config.py
+      - name: Test macOS bootstrap and installer safety
+        run: python3 scripts/ci/test_macos_bootstrap_safety.py
       - name: Test core, contracts and command security
         run: swift test --package-path Packages/iWebITCore
       - name: Validate release inputs and scripts

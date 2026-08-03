@@ -13,6 +13,7 @@ class FilesManager {
     
     private let fileManager = FileManager.default
     private let applicationFolderName = "iWebITAgent"
+    private let dataFolderName = "Data"
     
     private init() {}
     
@@ -24,7 +25,13 @@ class FilesManager {
         if !fileManager.dirExists(atPath: appDirectory.path) {
             try? fileManager.createDirectory(atPath: appDirectory.path, withIntermediateDirectories: true)
         }
-        return appDirectory
+        // Signed code remains root-owned in appDirectory. Only mutable runtime
+        // state is written to the separately permissioned Data directory.
+        let dataDirectory = appDirectory.appendingPathComponent(dataFolderName, isDirectory: true)
+        if !fileManager.dirExists(atPath: dataDirectory.path) {
+            try? fileManager.createDirectory(at: dataDirectory, withIntermediateDirectories: true)
+        }
+        return dataDirectory
     }
     
     func saveFile(filename: String, content: String) {
