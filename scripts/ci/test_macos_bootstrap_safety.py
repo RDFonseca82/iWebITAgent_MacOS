@@ -190,6 +190,9 @@ for expected in required_diagnostics:
     if expected not in settings_window:
         raise SystemExit(f"Diagnostics regression: missing {expected}")
 
+if "Color(nsColor:" in settings_window:
+    raise SystemExit("Compatibility regression: Color(nsColor:) requires macOS 12")
+
 if 'if !verboseLoggingEnabled {\n            return' in logger:
     raise SystemExit("Logger regression: non-verbose actions are not persisted")
 

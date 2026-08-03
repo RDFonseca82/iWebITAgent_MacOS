@@ -368,7 +368,7 @@ struct SettingsWindow: View {
             .background(Color.primary.opacity(0.035))
 
             ReadOnlyLogTextView(text: monitor.logText, followTail: !monitor.isPaused)
-                .background(Color(nsColor: .textBackgroundColor))
+                .background(Color(NSColor.textBackgroundColor))
         }
         .padding(24)
     }
