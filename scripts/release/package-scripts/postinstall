@@ -37,6 +37,11 @@ for legacy_path in \
   fi
 done
 
+if [[ -d "$PRODUCT_DIR/Logs" && ! -e "$DATA_DIR/LegacyLogs" ]]; then
+  /bin/mv "$PRODUCT_DIR/Logs" "$DATA_DIR/LegacyLogs"
+fi
+
+
 # Standard interactive macOS accounts belong to staff. The root daemon can
 # still access the data, while the signed code remains protected by root:wheel.
 /usr/sbin/chown -R root:staff "$DATA_DIR"

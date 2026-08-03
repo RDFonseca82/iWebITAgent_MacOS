@@ -1,11 +1,59 @@
 #!/bin/bash
 set -euo pipefail
 
-/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+PRODUCT_DIR="/Library/Application Support/iWebITAgent"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
+
+# Stop current and legacy jobs before replacing their files.
+/bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
+/bin/launchctl bootout system/com.rdfonseca.iWebITService 2>/dev/null || true
 if [[ "$CONSOLE_UID" -ge 500 ]]; then
   /bin/launchctl bootout "gui/$CONSOLE_UID/app.iwebit.agent.menubar" 2>/dev/null || true
+  /bin/launchctl bootout "gui/$CONSOLE_UID/com.rdfonseca.iWebITSysTray" 2>/dev/null || true
 fi
 /usr/bin/pkill -x iWebITService 2>/dev/null || true
 /usr/bin/pkill -x iWebITAgent 2>/dev/null || true
+/usr/bin/pkill -x iWebIT 2>/dev/null || true
+
+unregister_and_remove_known_bundle() {
+  local bundle_path="$1"
+  local info_plist="$bundle_path/Contents/Info.plist"
+  local bundle_id
+
+  [[ -d "$bundle_path" && -f "$info_plist" ]] || return 0
+  bundle_id="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$info_plist" 2>/dev/null || true)"
+  case "$bundle_id" in
+    app.iwebit.agent|app.iwebit.agent.menubar|com.rdfonseca.iWebIT|com.rdfonseca.iWebITSysTray)
+      if [[ "$CONSOLE_UID" -ge 500 && -x "$LSREGISTER" ]]; then
+        /bin/launchctl asuser "$CONSOLE_UID" /usr/bin/sudo -u "#$CONSOLE_UID" \
+          "$LSREGISTER" -u "$bundle_path" || true
+      fi
+      /bin/rm -rf "$bundle_path"
+      ;;
+    *)
+      echo "Preserving unrecognized application at $bundle_path ($bundle_id)" >&2
+      ;;
+  esac
+}
+
+# Remove only known product bundles. Runtime state under Data and legacy JSON
+# files in PRODUCT_DIR are deliberately preserved for postinstall migration.
+unregister_and_remove_known_bundle "$PRODUCT_DIR/iWebIT.app"
+unregister_and_remove_known_bundle "$PRODUCT_DIR/iWebITAgent.app"
+unregister_and_remove_known_bundle "/Applications/iWebIT.app"
+unregister_and_remove_known_bundle "/Applications/iWebITAgent.app"
+
+/bin/rm -f \
+  "$PRODUCT_DIR/iWebITService" \
+  "$PRODUCT_DIR/update-channel.json" \
+  /Library/LaunchDaemons/app.iwebit.agent.service.plist \
+  /Library/LaunchAgents/app.iwebit.agent.menubar.plist \
+  /Library/LaunchDaemons/com.rdfonseca.iWebITService.plist \
+  /Library/LaunchAgents/com.rdfonseca.iWebITSysTray.plist
+
+# Forget only the receipt used by the legacy installer. The current package
+# receipt is replaced normally by Installer after this script completes.
+/usr/sbin/pkgutil --forget com.rdfonseca.iWebITAgent >/dev/null 2>&1 || true
+
 exit 0

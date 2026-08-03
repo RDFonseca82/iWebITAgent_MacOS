@@ -13,6 +13,7 @@ def source(relative_path: str) -> str:
 logger = source("Shared/Utilities/Logger.swift")
 files_manager = source("Shared/Common/FilesManager.swift")
 postinstall = source("scripts/release/package-scripts/postinstall")
+preinstall = source("scripts/release/package-scripts/preinstall")
 project_spec = source("project-v2.yml")
 menu_bar = source("iWebITSysTray/MenuBarButton/MenuBarButton.swift")
 package_builder = source("scripts/release/build-signed-package.sh")
@@ -93,6 +94,32 @@ required_permissions = (
 for expected in required_permissions:
     if expected not in postinstall:
         raise SystemExit(f"Installer regression: missing {expected}")
+
+required_legacy_cleanup = (
+    "unregister_and_remove_known_bundle",
+    "Print :CFBundleIdentifier",
+    "com.rdfonseca.iWebIT",
+    "com.rdfonseca.iWebITSysTray",
+    "/Applications/iWebIT.app",
+    "/Applications/iWebITAgent.app",
+    "com.rdfonseca.iWebITAgent",
+)
+for expected in required_legacy_cleanup:
+    if expected not in preinstall:
+        raise SystemExit(f"Preinstall regression: missing legacy cleanup {expected}")
+
+for unsafe_target in ('rm -rf "$PRODUCT_DIR"', "DerivedData", 'rm -rf "$HOME"'):
+    if unsafe_target in preinstall:
+        raise SystemExit(f"Preinstall regression: unsafe cleanup target {unsafe_target}")
+
+if 'app.iwebit.mobile' in preinstall:
+    raise SystemExit("Preinstall regression: App Store bundle must be preserved")
+
+if '"$PRODUCT_DIR/Data"' in preinstall:
+    raise SystemExit("Preinstall regression: runtime Data must be preserved")
+
+if '"$DATA_DIR/LegacyLogs"' not in postinstall:
+    raise SystemExit("Installer regression: legacy logs are not migrated")
 
 version_check = package_builder.index(
     'validate_bundle_version "$INSTALL_DIR/iWebITAgent.app"'
