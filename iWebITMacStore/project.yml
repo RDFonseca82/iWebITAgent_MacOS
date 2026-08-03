@@ -25,7 +25,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
         PRODUCT_NAME: iWebIT
         MARKETING_VERSION: 2.0.0
-        CURRENT_PROJECT_VERSION: 207
+        CURRENT_PROJECT_VERSION: 208
         SWIFT_VERSION: 5.9
         MACOSX_DEPLOYMENT_TARGET: 11.0
         CODE_SIGN_ENTITLEMENTS: iWebITMacStore.entitlements
