@@ -31,11 +31,7 @@ class LoginViewModel: ObservableObject {
             await MainActor.run {
                 state = LoginState(error: .none, isLoading: false)
                 
-                let workspace = NSWorkspace.shared
-                
-                if let deepLinkUrl = URL(string: "iwebit://support") {
-                    workspace.open(deepLinkUrl)
-                }
+                openDeepLink(destination: "support")
                 loginWindow.close()
             }
         } catch {

@@ -21,6 +21,10 @@ menu_service = source("iWebITSysTray/MenuBarButton/MenuBarButtonService.swift")
 async_networking = source("Shared/Utilities/NetworkingManager.swift")
 sync_networking = source("iWebITService/Utils/NetworkingManagerExt.swift")
 service_launchd_plist = source("iWebITInstaller/payload/app.iwebit.agent.xpc.plist")
+internal_window = source("iWebITAgent/Core/Utils/OpenWindow.swift")
+settings_window = source("iWebITAgent/Core/Settings/SettingsWindow.swift")
+login_window = source("iWebITAgent/Core/Login/LoginWindow.swift")
+login_view_model = source("iWebITAgent/Core/Login/LoginViewModel.swift")
 
 important_branch = logger.index("if important")
 verbose_lookup = logger.index("AppInfo.verbose")
@@ -144,6 +148,39 @@ version_check = package_builder.index(
 )
 if version_check >= signing:
     raise SystemExit("Package regression: bundle version is checked after signing")
+
+required_protected_settings = (
+    'addItem("Abrir aplicação", action: #selector(openApplication)',
+    'openAgent(destination: "support")',
+)
+for expected in required_protected_settings:
+    if expected not in menu_bar:
+        raise SystemExit(f"Menu regression: missing {expected}")
+if "showAbout" in menu_bar or "Acerca da Aplicação iWebIT" in menu_bar:
+    raise SystemExit("Menu regression: obsolete About action remains")
+
+required_internal_routing = (
+    "withApplicationAt: Bundle.main.bundleURL",
+    "NSWorkspace.OpenConfiguration()",
+)
+for expected in required_internal_routing:
+    if expected not in internal_window:
+        raise SystemExit(f"Internal routing regression: missing {expected}")
+for login_source in (login_window, login_view_model):
+    if 'openDeepLink(destination: "support")' not in login_source:
+        raise SystemExit("Login routing regression: support does not use explicit app routing")
+
+required_settings_gate = (
+    'SecureField("IDSYNC", text: $accessCode)',
+    "candidate == AppInfo.idsync",
+    "if isUnlocked",
+    "SETTINGS ACCESS DENIED",
+    "SETTINGS ACCESS GRANTED",
+    "isUnlocked = false",
+)
+for expected in required_settings_gate:
+    if expected not in settings_window:
+        raise SystemExit(f"Settings security regression: missing {expected}")
 
 expected_service_program = "/Library/Application Support/iWebITAgent/iWebITService"
 if expected_service_program not in service_launchd_plist:

@@ -34,7 +34,7 @@ class MenuBarButton {
                 service.setIconBasedOnStatus()
             }
             if AppInfo.isLoggedIn() {
-                addItem("Acerca da Aplicação iWebIT", action: #selector(showAbout), key: "", to: menu)
+                addItem("Abrir aplicação", action: #selector(openApplication), key: "", to: menu)
                 addItem("Pedido de Suporte", action: #selector(showSuporte), key: "", to: menu)
                 menu.addItem(NSMenuItem.separator())
                 addItem("Forçar Sincronização", action: #selector(forceSync), key: "", to: menu)
@@ -84,8 +84,8 @@ class MenuBarButton {
     }
     
     @objc
-    func showAbout() {
-        openAgent(destination: "settings")
+    func openApplication() {
+        openAgent(destination: "support")
     }
 
     @objc

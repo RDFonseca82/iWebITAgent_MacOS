@@ -92,11 +92,7 @@ struct LoginWindow: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if AppInfo.isLoggedIn() {
                     if let window = window {
-                        let workspace = NSWorkspace.shared
-                        
-                        if let deepLinkUrl = URL(string: "iwebit://support") {
-                            workspace.open(deepLinkUrl)
-                        }
+                        openDeepLink(destination: "support")
                         window.close()
                     }
                 }
