@@ -17,6 +17,9 @@ preinstall = source("scripts/release/package-scripts/preinstall")
 project_spec = source("project-v2.yml")
 menu_bar = source("iWebITSysTray/MenuBarButton/MenuBarButton.swift")
 package_builder = source("scripts/release/build-signed-package.sh")
+menu_service = source("iWebITSysTray/MenuBarButton/MenuBarButtonService.swift")
+async_networking = source("Shared/Utilities/NetworkingManager.swift")
+sync_networking = source("iWebITService/Utils/NetworkingManagerExt.swift")
 
 important_branch = logger.index("if important")
 verbose_lookup = logger.index("AppInfo.verbose")
@@ -95,6 +98,16 @@ for expected in required_permissions:
     if expected not in postinstall:
         raise SystemExit(f"Installer regression: missing {expected}")
 
+required_daemon_health_checks = (
+    "launchctl kickstart -k system/app.iwebit.agent.service",
+    'grep -q "state = running"',
+    '[[ -f "$DATA_DIR/log_service.log" ]]',
+    "daemon failed its post-install health check",
+)
+for expected in required_daemon_health_checks:
+    if expected not in postinstall:
+        raise SystemExit(f"Installer regression: missing daemon health check {expected}")
+
 required_legacy_cleanup = (
     "unregister_and_remove_known_bundle",
     "Print :CFBundleIdentifier",
@@ -126,5 +139,24 @@ version_check = package_builder.index(
 )
 if version_check >= signing:
     raise SystemExit("Package regression: bundle version is checked after signing")
+
+required_network_guards = (
+    "import Network",
+    "NWPathMonitor()",
+    'AppInfo.uniqueid != "?"',
+    "devicePollInFlight",
+    "DEVICE POLL PAUSED: no network path",
+    "DEVICE POLL PAUSED: registration has no UniqueID",
+)
+for expected in required_network_guards:
+    if expected not in menu_service:
+        raise SystemExit(f"Network diagnostics regression: missing {expected}")
+
+if async_networking.count("request.timeoutInterval = 20") != 4:
+    raise SystemExit("Async networking regression: every request needs a timeout")
+if sync_networking.count("request.timeoutInterval = 20") != 3:
+    raise SystemExit("Daemon networking regression: every request needs a timeout")
+if sync_networking.count("semaphore.wait(timeout: .now() + 25)") != 3:
+    raise SystemExit("Daemon networking regression: semaphore waits must be bounded")
 
 print("macOS bootstrap safety tests passed.")

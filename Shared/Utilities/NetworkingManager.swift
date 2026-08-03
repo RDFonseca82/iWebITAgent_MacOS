@@ -19,7 +19,8 @@ class NetworkingManager {
             URLQueryItem(name: key, value: value)
         })
         
-        let request = URLRequest(url: components.url!)
+        var request = URLRequest(url: components.url!)
+        request.timeoutInterval = 20
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -35,6 +36,7 @@ class NetworkingManager {
         }
         
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -54,6 +56,7 @@ class NetworkingManager {
         }
         
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -75,6 +78,7 @@ class NetworkingManager {
         }
         
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         
         request.httpMethod = "POST"
         request.setValue(multipart.httpContentTypeHeadeValue, forHTTPHeaderField: "Content-Type")

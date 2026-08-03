@@ -17,13 +17,17 @@ class GetDeviceDataService {
         do {
             data = try await NetworkingManager.download(url: Constants.getDeviceInfoUrl, parameters: ["UniqueID": AppInfo.uniqueid])
         } catch {
+            AppInfo.net = "0"
+            log("BACKEND REQUEST FAILED: \(error)", important: true)
             throw iWebITError.httpError
         }
-        
-        guard let dtoData = (try? JSONDecoder().decode(DeviceDTO.self, from: data)) else {
+
+        AppInfo.net = "1"
+        do {
+            return try JSONDecoder().decode(DeviceDTO.self, from: data)
+        } catch {
+            log("BACKEND RESPONSE INVALID: \(data.count) bytes; \(error)", important: true)
             throw iWebITError.decodingError
         }
-        
-        return dtoData
     }
 }

@@ -24,19 +24,9 @@ class LoginViewModel: ObservableObject {
                 throw iWebITError.invalidCredentials
             }
             
-            var count = 0
-            
             AppInfo.idsync = idSync
-            
-            while AppInfo.allprepared != "1" {
-                if count >= 180 {
-                    AppInfo.idsync = ""
-                    throw iWebITError.incompleteOperation
-                }
-                
-                try? await Task.sleep(seconds: 3)
-                count += 3
-            }
+            // Initial inventory and synchronization continue in the daemon.
+            // Slow background work must not keep the user trapped in this window.
             
             await MainActor.run {
                 state = LoginState(error: .none, isLoading: false)

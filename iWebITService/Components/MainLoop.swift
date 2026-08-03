@@ -12,6 +12,10 @@ func mainLoop() {
     log("==> STARTING MAIN LOOP <==")
     
     waitForLogIn()
+    // Acknowledge login before network and inventory operations that may retry.
+    if AppInfo.allprepared != "1" {
+        AppInfo.allprepared = "1"
+    }
     
     resetRebootAndShutdownFlags()
     
@@ -32,10 +36,6 @@ func mainLoop() {
     updateTimers("timealive")
     updateCompanyInfo(onInit: false)
     checkAppsToUninstall()
-    
-    if AppInfo.allprepared != "1" {
-        AppInfo.allprepared = "1"
-    }
     
     var sixtyLoopClock = 0
     

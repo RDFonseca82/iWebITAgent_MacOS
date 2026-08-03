@@ -58,6 +58,24 @@ if [[ "$CONSOLE_UID" -ge 500 && -x "$LSREGISTER" ]]; then
 fi
 /bin/launchctl bootstrap system /Library/LaunchDaemons/app.iwebit.agent.service.plist
 /bin/launchctl enable system/app.iwebit.agent.service
+/bin/launchctl kickstart -k system/app.iwebit.agent.service
+
+DAEMON_READY=0
+for _ in {1..10}; do
+  if /bin/launchctl print system/app.iwebit.agent.service 2>/dev/null \
+      | /usr/bin/grep -q "state = running" \
+      && [[ -f "$DATA_DIR/log_service.log" ]]; then
+    DAEMON_READY=1
+    break
+  fi
+  /bin/sleep 1
+done
+
+if [[ "$DAEMON_READY" -ne 1 ]]; then
+  echo "iWebITAgent daemon failed its post-install health check" >&2
+  /bin/launchctl print system/app.iwebit.agent.service >&2 || true
+  exit 70
+fi
 
 if [[ "$CONSOLE_UID" -ge 500 ]]; then
   /bin/launchctl bootstrap "gui/$CONSOLE_UID" \

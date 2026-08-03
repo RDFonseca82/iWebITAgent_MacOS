@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import CoreLocation
+import Network
 
 
 class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
@@ -19,15 +20,21 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     private var forceUpdateIcon: Bool = false
     private var lastLocation: LocationPoint = LocationPoint(latitude: 0, longitude: 0)
     private var syncingLocation = false
+    private let pathMonitor = NWPathMonitor()
+    private let pathMonitorQueue = DispatchQueue(label: "app.iwebit.agent.network-monitor")
+    private let networkStateLock = NSLock()
+    private var networkAvailable: Bool?
+    private var lastLoopError: String?
+    private var devicePollInFlight = false
     
     private var cancellables: [AnyCancellable] = []
     
     init(statusItem: NSStatusItem) {
         self.statusItem = statusItem
         super.init()
-        
+
+        startNetworkMonitor()
         setIconBasedOnStatus()
-        the15sstep()
         
         if (CLLocationManager.locationServicesEnabled()) {
             locationManager = CLLocationManager()
@@ -52,6 +59,46 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
         
     }
     
+    deinit {
+        pathMonitor.cancel()
+    }
+
+    private func startNetworkMonitor() {
+        pathMonitor.pathUpdateHandler = { [weak self] path in
+            guard let self = self else { return }
+            let isAvailable = path.status == .satisfied
+            self.networkStateLock.lock()
+            let changed = self.networkAvailable != isAvailable
+            self.networkAvailable = isAvailable
+            self.networkStateLock.unlock()
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if changed {
+                    log("NETWORK PATH: \(isAvailable ? "available" : "unavailable")", important: true)
+                }
+                if isAvailable {
+                    self.the15sstep()
+                } else {
+                    AppInfo.net = "0"
+                }
+            }
+        }
+        pathMonitor.start(queue: pathMonitorQueue)
+    }
+
+    private func currentNetworkAvailability() -> Bool? {
+        networkStateLock.lock()
+        defer { networkStateLock.unlock() }
+        return networkAvailable
+    }
+
+    private func logLoopState(_ message: String) {
+        guard lastLoopError != message else { return }
+        lastLoopError = message
+        log(message, important: true)
+    }
+
     func setIconBasedOnStatus() {
         guard let button = statusItem.button else { return }
         let hasNet = AppInfo.net == "1"
@@ -91,9 +138,24 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
     
     func the15sstep() {
         if !AppInfo.isLoggedIn() { return }
+        guard AppInfo.uniqueid.isNotBlank(), AppInfo.uniqueid != "?" else {
+            AppInfo.net = "0"
+            logLoopState("DEVICE POLL PAUSED: registration has no UniqueID")
+            return
+        }
+        guard let networkAvailable = currentNetworkAvailability() else { return }
+        guard networkAvailable else {
+            AppInfo.net = "0"
+            logLoopState("DEVICE POLL PAUSED: no network path")
+            return
+        }
+        guard !devicePollInFlight else { return }
+        devicePollInFlight = true
         Task {
+            defer { devicePollInFlight = false }
             do {
                 let deviceInfo = try await GetDeviceDataService.shared.getDevice()
+                lastLoopError = nil
                 
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)
@@ -107,7 +169,7 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 }
                 
             } catch {
-                log("ERROR IN LOOP: \(error)", important: true)
+                logLoopState("DEVICE POLL FAILED: \(error)")
             }
         }
     }

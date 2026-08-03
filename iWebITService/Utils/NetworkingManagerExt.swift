@@ -18,7 +18,8 @@ extension NetworkingManager {
             URLQueryItem(name: key, value: value)
         })
         
-        let request = URLRequest(url: components.url!)
+        var request = URLRequest(url: components.url!)
+        request.timeoutInterval = 20
         
         do {
             var data: Data?
@@ -34,7 +35,7 @@ extension NetworkingManager {
                 semaphore.signal()
             }).resume()
             
-            _ = semaphore.wait(timeout: .distantFuture)
+            if semaphore.wait(timeout: .now() + 25) == .timedOut { throw URLError(.timedOut) }
             
             if let error = error {
                 throw error
@@ -53,6 +54,7 @@ extension NetworkingManager {
         }
         
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         
         request.httpMethod = "POST"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -72,7 +74,7 @@ extension NetworkingManager {
                 semaphore.signal()
             }).resume()
             
-            _ = semaphore.wait(timeout: .distantFuture)
+            if semaphore.wait(timeout: .now() + 25) == .timedOut { throw URLError(.timedOut) }
             
             if let error = error {
                 throw error
@@ -92,6 +94,7 @@ extension NetworkingManager {
         }
         
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -111,7 +114,7 @@ extension NetworkingManager {
                 semaphore.signal()
             }).resume()
             
-            _ = semaphore.wait(timeout: .distantFuture)
+            if semaphore.wait(timeout: .now() + 25) == .timedOut { throw URLError(.timedOut) }
             
             if let error = error {
                 throw error
