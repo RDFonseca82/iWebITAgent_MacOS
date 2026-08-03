@@ -10,6 +10,7 @@ import AppKit
 
 
 func synchronizeFiles() {
+    reportAgentActivity(id: "files", name: "Sincronização de ficheiros", status: "running")
     var filesToSync = [
         FileSyncModel(
             fileName: "logo-on.jpg",
@@ -28,6 +29,7 @@ func synchronizeFiles() {
     downloadFiles(filesToSync: &filesToSync)
     
     saveFiles(filesToSync: filesToSync)
+    reportAgentActivity(id: "files", name: "Sincronização de ficheiros", status: "completed")
 }
 
 

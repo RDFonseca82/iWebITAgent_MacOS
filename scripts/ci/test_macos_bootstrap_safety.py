@@ -171,13 +171,33 @@ for login_source in (login_window, login_view_model):
         raise SystemExit("Login routing regression: support does not use explicit app routing")
 
 required_settings_gate = (
-    'SecureField("IDSYNC", text: $accessCode)',
+    'SecureField("IDSYNC", text: $accessCode',
     "candidate == AppInfo.idsync",
     "if isUnlocked",
     "SETTINGS ACCESS DENIED",
     "SETTINGS ACCESS GRANTED",
     "isUnlocked = false",
 )
+required_diagnostics = (
+    '"Ver Logs"',
+    '"Monitor de Atividades"',
+    'ReadOnlyLogTextView',
+    'Timer.scheduledTimer(withTimeInterval: 1',
+    '"log_service.log"',
+    'refreshPublicIPAddress()',
+)
+for expected in required_diagnostics:
+    if expected not in settings_window:
+        raise SystemExit(f"Diagnostics regression: missing {expected}")
+
+if 'if !verboseLoggingEnabled {\n            return' in logger:
+    raise SystemExit("Logger regression: non-verbose actions are not persisted")
+
+main_loop = source("iWebITService/Components/MainLoop.swift")
+prepare_sync = source("iWebITService/Components/PrepareSync.swift")
+for expected in ('ACTIVITY|', 'status: "running"', 'status: "completed"'):
+    if expected not in main_loop + prepare_sync:
+        raise SystemExit(f"Activity monitor regression: missing {expected}")
 for expected in required_settings_gate:
     if expected not in settings_window:
         raise SystemExit(f"Settings security regression: missing {expected}")

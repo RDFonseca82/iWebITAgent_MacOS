@@ -7,8 +7,12 @@
 
 import Foundation
 
+func reportAgentActivity(id: String, name: String, status: String) {
+    log("ACTIVITY|\(id)|\(status)|\(name)", important: true)
+}
 
 func mainLoop() {
+    reportAgentActivity(id: "service", name: "Serviço do agente", status: "running")
     log("==> STARTING MAIN LOOP <==")
     
     waitForLogIn()
@@ -36,6 +40,7 @@ func mainLoop() {
     updateTimers("timealive")
     updateCompanyInfo(onInit: false)
     checkAppsToUninstall()
+    reportAgentActivity(id: "startup", name: "Inicialização", status: "completed")
     
     var sixtyLoopClock = 0
     

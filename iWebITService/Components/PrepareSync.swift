@@ -12,10 +12,12 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
     ensureUserLoggedIn()
     var data = [String: Any]()
     if typeSync == "1" {
+        reportAgentActivity(id: "full_sync", name: "Sincronização completa", status: "running")
         log("DOING FULL SYNC")
         data = prepareFullSyncData()
         
     } else if typeSync == "2" {
+        reportAgentActivity(id: "min_sync", name: "Sincronização mínima", status: "running")
         log("DOING MIN SYNC")
         data = prepareMinSyncData()
         
@@ -62,6 +64,12 @@ func prepareAndSendSync(_ typeSync: String = "0", extraData: [String: Any]? = ni
         try NetworkingManager.send(url: Constants.createOrSendDeviceInfoUrl, data: ["json": jsonData.toString()!])
         return false
     }, 60)
+
+    if typeSync == "1" {
+        reportAgentActivity(id: "full_sync", name: "Sincronização completa", status: "completed")
+    } else if typeSync == "2" {
+        reportAgentActivity(id: "min_sync", name: "Sincronização mínima", status: "completed")
+    }
     
 }
 

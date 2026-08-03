@@ -9,6 +9,7 @@ import Foundation
 
 
 func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line) {
+    reportAgentActivity(id: "device_info", name: "Informação do dispositivo", status: "running")
     log("UPDATING DEVICE INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
     doUntil({
@@ -24,9 +25,11 @@ func updateDeviceInfo(callerName: String = #function, callerLineNum: Int = #line
         
         return false
     }, 60)
+    reportAgentActivity(id: "device_info", name: "Informação do dispositivo", status: "completed")
 }
 
 func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineNum: Int = #line) {
+    reportAgentActivity(id: "company_info", name: "Informação da empresa", status: "running")
     log("UPDATING COMPANY INFO", important: true, callerName: callerName, callerLineNum: callerLineNum)
     
     doUntil({
@@ -76,6 +79,7 @@ func updateCompanyInfo(onInit: Bool, callerName: String = #function, callerLineN
         
         return false
     }, 60)
+    reportAgentActivity(id: "company_info", name: "Informação da empresa", status: "completed")
 }
 
 func updateTimers(_ timeType: String) {

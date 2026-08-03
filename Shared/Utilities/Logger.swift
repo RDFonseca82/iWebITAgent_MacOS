@@ -23,11 +23,10 @@ func log(_ text: String, important: Bool = false, callerName: String = #function
         verboseLoggingEnabled = false
     } else {
         verboseLoggingEnabled = AppInfo.verbose == "1"
-        if !verboseLoggingEnabled {
-            return
-        }
     }
 
+    // Verbose controls console noise only. Every agent action is persisted so
+    // diagnostics can show a complete, real-time audit trail.
     if verboseLoggingEnabled || DEBUG {
         print(text)
     }

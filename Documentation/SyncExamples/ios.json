@@ -41,7 +41,7 @@
   },
   "agent": {
     "version": "2.0.0",
-    "build": "212",
+    "build": "213",
     "bundleIdentifier": "app.iwebit.mobile",
     "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",
     "pushTokenAvailable": true,
