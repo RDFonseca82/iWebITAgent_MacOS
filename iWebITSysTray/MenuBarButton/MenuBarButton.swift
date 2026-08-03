@@ -101,11 +101,6 @@ class MenuBarButton {
             return
         }
 
-        if workspace.urlForApplication(toOpen: deepLinkURL) != nil,
-           workspace.open(deepLinkURL) {
-            return
-        }
-
         let agentURL = Bundle.main.bundleURL
             .deletingLastPathComponent()
             .appendingPathComponent("iWebIT.app", isDirectory: true)
@@ -116,18 +111,15 @@ class MenuBarButton {
 
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
-        workspace.openApplication(at: agentURL, configuration: configuration) { _, error in
+        // Route the URL to this installation explicitly. A stale Xcode build
+        // may still be registered as the default handler for iwebit://.
+        workspace.open(
+            [deepLinkURL],
+            withApplicationAt: agentURL,
+            configuration: configuration
+        ) { _, error in
             if let error = error {
-                log("Unable to open agent UI: \(error)", important: true)
-                return
-            }
-
-            // Launching the bundle registers its URL schemes. Retry the deep
-            // link so support/settings route to the requested scene as well.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                if !workspace.open(deepLinkURL) {
-                    log("Unable to open agent destination: \(destination)", important: true)
-                }
+                log("Unable to open agent destination \(destination): \(error)", important: true)
             }
         }
     }

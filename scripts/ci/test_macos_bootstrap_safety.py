@@ -69,10 +69,15 @@ scheme_validation = package_builder.index(
 if scheme_validation >= signing:
     raise SystemExit("Package regression: URL scheme is checked after signing")
 
-required_fallbacks = ("urlForApplication(toOpen:", "openApplication(at:")
+required_fallbacks = ("[deepLinkURL]", "withApplicationAt: agentURL")
 for expected in required_fallbacks:
     if expected not in menu_bar:
         raise SystemExit(f"Menu bar regression: missing URL fallback {expected}")
+
+if "urlForApplication(toOpen:" in menu_bar:
+    raise SystemExit(
+        "Menu bar regression: routing trusts a possibly stale default URL handler"
+    )
 
 
 
