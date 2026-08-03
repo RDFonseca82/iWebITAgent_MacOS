@@ -73,7 +73,7 @@
   },
   "agent": {
     "version": "2.0.0",
-    "build": "209",
+    "build": "210",
     "bundleIdentifier": "app.iwebit.agent",
     "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",
     "pushTokenAvailable": true,
@@ -92,7 +92,7 @@
       "name": "iWebIT",
       "bundleIdentifier": "app.iwebit.agent",
       "version": "2.0.0",
-      "build": "209",
+      "build": "210",
       "path": "/Applications/iWebIT.app",
       "managed": false,
       "source": "privilegedAgent"

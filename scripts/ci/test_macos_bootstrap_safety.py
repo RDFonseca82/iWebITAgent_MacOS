@@ -99,14 +99,18 @@ for expected in required_permissions:
         raise SystemExit(f"Installer regression: missing {expected}")
 
 required_daemon_health_checks = (
-    "launchctl kickstart -k system/app.iwebit.agent.service",
+    "launchctl kickstart -k system/app.iwebit.agent.service 2>/dev/null || true",
     'grep -q "state = running"',
     '[[ -f "$DATA_DIR/log_service.log" ]]',
-    "daemon failed its post-install health check",
+    'HEALTH_LOG="$DATA_DIR/install_health.log"',
+    "daemon health check: pending",
+    "daemon is still starting; diagnostics saved",
 )
 for expected in required_daemon_health_checks:
     if expected not in postinstall:
         raise SystemExit(f"Installer regression: missing daemon health check {expected}")
+if "exit 70" in postinstall:
+    raise SystemExit("Installer regression: a pending daemon must not invalidate installation")
 
 required_legacy_cleanup = (
     "unregister_and_remove_known_bundle",

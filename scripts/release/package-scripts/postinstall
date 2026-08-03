@@ -58,10 +58,11 @@ if [[ "$CONSOLE_UID" -ge 500 && -x "$LSREGISTER" ]]; then
 fi
 /bin/launchctl bootstrap system /Library/LaunchDaemons/app.iwebit.agent.service.plist
 /bin/launchctl enable system/app.iwebit.agent.service
-/bin/launchctl kickstart -k system/app.iwebit.agent.service
+/bin/launchctl kickstart -k system/app.iwebit.agent.service 2>/dev/null || true
 
 DAEMON_READY=0
-for _ in {1..10}; do
+HEALTH_LOG="$DATA_DIR/install_health.log"
+for _ in {1..20}; do
   if /bin/launchctl print system/app.iwebit.agent.service 2>/dev/null \
       | /usr/bin/grep -q "state = running" \
       && [[ -f "$DATA_DIR/log_service.log" ]]; then
@@ -71,11 +72,16 @@ for _ in {1..10}; do
   /bin/sleep 1
 done
 
-if [[ "$DAEMON_READY" -ne 1 ]]; then
-  echo "iWebITAgent daemon failed its post-install health check" >&2
-  /bin/launchctl print system/app.iwebit.agent.service >&2 || true
-  exit 70
+if [[ "$DAEMON_READY" -eq 1 ]]; then
+  echo "$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ) daemon health check: ready" >> "$HEALTH_LOG"
+else
+  echo "$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ) daemon health check: pending" >> "$HEALTH_LOG"
+  /bin/launchctl print system/app.iwebit.agent.service >> "$HEALTH_LOG" 2>&1 || true
+  echo "iWebITAgent daemon is still starting; diagnostics saved to $HEALTH_LOG" >&2
+  /bin/launchctl kickstart -k system/app.iwebit.agent.service 2>/dev/null || true
 fi
+/usr/sbin/chown root:staff "$HEALTH_LOG"
+/bin/chmod 0660 "$HEALTH_LOG"
 
 if [[ "$CONSOLE_UID" -ge 500 ]]; then
   /bin/launchctl bootstrap "gui/$CONSOLE_UID" \

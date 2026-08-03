@@ -3,7 +3,7 @@
 The Apple 2.0 release line uses:
 
 - marketing version: `2.0.0`;
-- build number: `209`;
+- build number: `210`;
 - synchronization schema: `2.0`.
 
 `Configuration/version.json` is the human-readable source of truth. The
@@ -11,7 +11,7 @@ macOS app, menu-bar agent, privileged daemon, iPhone/iPad app, legacy package
 builder, XcodeGen projects and GitHub release defaults must all match it.
 
 At runtime, Apple agents read `CFBundleShortVersionString` and
-`CFBundleVersion` from their signed binary. The constants `2.0.0` and `209`
+`CFBundleVersion` from their signed binary. The constants `2.0.0` and `210`
 are only fallbacks for a command-line build without embedded bundle metadata.
 
 Run this before a release:
