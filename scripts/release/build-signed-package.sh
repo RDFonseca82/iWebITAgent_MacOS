@@ -22,7 +22,8 @@ PAYLOAD_DIR="$DERIVED_DIR/Payload"
 SCRIPTS_DIR="$ROOT_DIR/scripts/release/package-scripts"
 UNSIGNED_PKG="$DERIVED_DIR/iWebIT-unsigned.pkg"
 SIGNED_PKG="$OUTPUT_DIR/iWebIT-${VERSION}-${BUILD}.pkg"
-INSTALL_DIR="$PAYLOAD_DIR/Library/Application Support/iWebITAgent"
+PRODUCT_INSTALL_DIR="/Library/Application Support/iWebITAgent"
+INSTALL_DIR="$PAYLOAD_DIR$PRODUCT_INSTALL_DIR"
 
 rm -rf "$DERIVED_DIR"
 mkdir -p "$PRODUCTS_DIR" "$INSTALL_DIR" "$PAYLOAD_DIR/Library/LaunchDaemons" \
@@ -56,6 +57,25 @@ cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.xpc.plist" \
   "$PAYLOAD_DIR/Library/LaunchDaemons/app.iwebit.agent.service.plist"
 cp "$ROOT_DIR/iWebITInstaller/payload/app.iwebit.agent.menubar.plist" \
   "$PAYLOAD_DIR/Library/LaunchAgents/app.iwebit.agent.menubar.plist"
+
+validate_launchd_program_path() {
+  local plist_path="$PAYLOAD_DIR/Library/LaunchDaemons/app.iwebit.agent.service.plist"
+  local expected_path="$PRODUCT_INSTALL_DIR/iWebITService"
+  local actual_path
+
+  /usr/bin/plutil -lint "$plist_path"
+  if /usr/bin/grep -q '__PRODUCT_DIR__' "$plist_path"; then
+    echo "Unresolved product directory placeholder in $plist_path" >&2
+    exit 65
+  fi
+  actual_path="$(/usr/libexec/PlistBuddy -c 'Print :ProgramArguments:0' "$plist_path")"
+  if [[ "$actual_path" != "$expected_path" ]]; then
+    echo "LaunchDaemon path mismatch: '$actual_path', expected '$expected_path'" >&2
+    exit 65
+  fi
+}
+
+validate_launchd_program_path
 
 validate_bundle_version() {
   local app_path="$1"

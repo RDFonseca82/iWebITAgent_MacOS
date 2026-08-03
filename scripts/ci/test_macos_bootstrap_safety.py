@@ -20,6 +20,7 @@ package_builder = source("scripts/release/build-signed-package.sh")
 menu_service = source("iWebITSysTray/MenuBarButton/MenuBarButtonService.swift")
 async_networking = source("Shared/Utilities/NetworkingManager.swift")
 sync_networking = source("iWebITService/Utils/NetworkingManagerExt.swift")
+service_launchd_plist = source("iWebITInstaller/payload/app.iwebit.agent.xpc.plist")
 
 important_branch = logger.index("if important")
 verbose_lookup = logger.index("AppInfo.verbose")
@@ -143,6 +144,21 @@ version_check = package_builder.index(
 )
 if version_check >= signing:
     raise SystemExit("Package regression: bundle version is checked after signing")
+
+expected_service_program = "/Library/Application Support/iWebITAgent/iWebITService"
+if expected_service_program not in service_launchd_plist:
+    raise SystemExit("LaunchDaemon regression: installed service path is incorrect")
+if "__PRODUCT_DIR__" in service_launchd_plist:
+    raise SystemExit("LaunchDaemon regression: unresolved product directory placeholder")
+required_package_path_checks = (
+    "validate_launchd_program_path()",
+    "plutil -lint",
+    "Unresolved product directory placeholder",
+    "Print :ProgramArguments:0",
+)
+for expected in required_package_path_checks:
+    if expected not in package_builder:
+        raise SystemExit(f"Package regression: missing LaunchDaemon validation {expected}")
 
 required_network_guards = (
     "import Network",

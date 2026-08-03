@@ -6,7 +6,7 @@
     <string>app.iwebit.agent.service</string>
     <key>ProgramArguments</key>
     <array>
-        <string>__PRODUCT_DIR__/iWebITService</string>
+        <string>/Library/Application Support/iWebITAgent/iWebITService</string>
     </array>
     <key>MachServices</key>
     <dict>
