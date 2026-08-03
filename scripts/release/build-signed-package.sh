@@ -75,6 +75,20 @@ validate_bundle_version() {
 validate_bundle_version "$INSTALL_DIR/iWebIT.app"
 validate_bundle_version "$INSTALL_DIR/iWebITAgent.app"
 
+validate_url_scheme() {
+  local app_path="$1"
+  local info_plist="$app_path/Contents/Info.plist"
+  local actual_scheme
+
+  actual_scheme="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleURLTypes:0:CFBundleURLSchemes:0' "$info_plist")"
+  if [[ "$actual_scheme" != "iwebit" ]]; then
+    echo "Bundle URL scheme mismatch: $app_path has '$actual_scheme', expected 'iwebit'" >&2
+    exit 65
+  fi
+}
+
+validate_url_scheme "$INSTALL_DIR/iWebIT.app"
+
 resign_embedded_dylibs() {
   local app_path="$1"
   local frameworks_path="$app_path/Contents/Frameworks"

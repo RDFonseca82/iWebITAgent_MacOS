@@ -14,6 +14,7 @@ logger = source("Shared/Utilities/Logger.swift")
 files_manager = source("Shared/Common/FilesManager.swift")
 postinstall = source("scripts/release/package-scripts/postinstall")
 project_spec = source("project-v2.yml")
+menu_bar = source("iWebITSysTray/MenuBarButton/MenuBarButton.swift")
 package_builder = source("scripts/release/build-signed-package.sh")
 
 important_branch = logger.index("if important")
@@ -40,6 +41,39 @@ expected_info_blocks = (
 for expected in expected_info_blocks:
     if expected not in project_spec:
         raise SystemExit(f"XcodeGen regression: missing app info block:\n{expected}")
+url_scheme_block = (
+    "CFBundleURLTypes:\n"
+    "          - CFBundleTypeRole: Editor\n"
+    "            CFBundleURLName: app.iwebit.agent\n"
+    "            CFBundleURLSchemes:\n"
+    "              - iwebit"
+)
+if url_scheme_block not in project_spec:
+    raise SystemExit("XcodeGen regression: iwebit URL scheme is missing")
+
+launch_services_registration = postinstall.index(
+    '"$LSREGISTER" -f "$PRODUCT_DIR/iWebIT.app"'
+)
+menu_bar_launch = postinstall.index(
+    'launchctl bootstrap "gui/$CONSOLE_UID"'
+)
+if launch_services_registration >= menu_bar_launch:
+    raise SystemExit(
+        "Installer regression: URL scheme is registered after the menu bar starts"
+    )
+
+signing = package_builder.index("resign_embedded_dylibs()")
+scheme_validation = package_builder.index(
+    'validate_url_scheme "$INSTALL_DIR/iWebIT.app"'
+)
+if scheme_validation >= signing:
+    raise SystemExit("Package regression: URL scheme is checked after signing")
+
+required_fallbacks = ("urlForApplication(toOpen:", "openApplication(at:")
+for expected in required_fallbacks:
+    if expected not in menu_bar:
+        raise SystemExit(f"Menu bar regression: missing URL fallback {expected}")
+
 
 
 data_setup = postinstall.index('mkdir -p "$DATA_DIR"')
@@ -58,7 +92,6 @@ for expected in required_permissions:
 version_check = package_builder.index(
     'validate_bundle_version "$INSTALL_DIR/iWebITAgent.app"'
 )
-signing = package_builder.index("resign_embedded_dylibs()")
 if version_check >= signing:
     raise SystemExit("Package regression: bundle version is checked after signing")
 

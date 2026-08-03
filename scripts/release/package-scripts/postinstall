@@ -3,6 +3,7 @@ set -euo pipefail
 
 PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 DATA_DIR="$PRODUCT_DIR/Data"
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 
 CONSOLE_UID="$(/usr/bin/stat -f %u /dev/console)"
 /bin/launchctl bootout system/app.iwebit.agent.service 2>/dev/null || true
@@ -42,6 +43,14 @@ done
 /bin/chmod 0770 "$DATA_DIR"
 /usr/bin/find "$DATA_DIR" -type d -exec /bin/chmod 0770 {} \;
 /usr/bin/find "$DATA_DIR" -type f -exec /bin/chmod 0660 {} \;
+
+# The main UI is outside /Applications, so explicitly register its iwebit://
+# handler in the interactive user's LaunchServices database before the menu bar
+# agent is started.
+if [[ "$CONSOLE_UID" -ge 500 && -x "$LSREGISTER" ]]; then
+  /bin/launchctl asuser "$CONSOLE_UID" /usr/bin/sudo -u "#$CONSOLE_UID" \
+    "$LSREGISTER" -f "$PRODUCT_DIR/iWebIT.app" || true
+fi
 /bin/launchctl bootstrap system /Library/LaunchDaemons/app.iwebit.agent.service.plist
 /bin/launchctl enable system/app.iwebit.agent.service
 
