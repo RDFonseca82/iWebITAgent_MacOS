@@ -201,6 +201,20 @@ prepare_sync = source("iWebITService/Components/PrepareSync.swift")
 for expected in ('ACTIVITY|', 'status: "running"', 'status: "completed"'):
     if expected not in main_loop + prepare_sync:
         raise SystemExit(f"Activity monitor regression: missing {expected}")
+required_safe_sync_json = (
+    "jsonSafeValue",
+    "JSONSerialization.isValidJSONObject(object)",
+    "JSON SANITIZATION STARTED",
+    "JSON SERIALIZATION FAILED",
+    "GETTING 13: JSON READY",
+    'status: "failed"',
+    "withJSONObject: safeObject",
+)
+for expected in required_safe_sync_json:
+    if expected not in prepare_sync:
+        raise SystemExit(f"Sync JSON safety regression: missing {expected}")
+if "withJSONObject: data, options: .withoutEscapingSlashes" in prepare_sync:
+    raise SystemExit("Sync JSON safety regression: raw inventory is serialized directly")
 for expected in required_settings_gate:
     if expected not in settings_window:
         raise SystemExit(f"Settings security regression: missing {expected}")
