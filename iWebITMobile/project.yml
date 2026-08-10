@@ -23,7 +23,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
-        MARKETING_VERSION: 2.0.0
+        MARKETING_VERSION: 2.0.1
         CURRENT_PROJECT_VERSION: 214
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: 5.9

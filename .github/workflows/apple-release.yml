@@ -6,7 +6,7 @@ on:
       version:
         description: Marketing version (for example 2.0.0)
         required: true
-        default: 2.0.0
+        default: 2.0.1
         type: string
       build:
         description: Monotonic build number
