@@ -17,6 +17,8 @@ struct DeviceDTO: Codable {
     let androidMessage: Int?
     let androidMessageTxt: String?
     let windowsPrintScreen: Int?
+    let setBackground: Int?
+    let backgroundImage: String?
     
     enum CodingKeys: String, CodingKey {
         case idDevice = "IdDevice"
@@ -37,5 +39,7 @@ struct DeviceDTO: Codable {
         case androidMessage = "AndroidMessage"
         case androidMessageTxt = "AndroidMessageTxt"
         case windowsPrintScreen = "WindowsPrintScreen"
+        case setBackground = "SetBackground"
+        case backgroundImage = "BackgroundImage"
     }
 }

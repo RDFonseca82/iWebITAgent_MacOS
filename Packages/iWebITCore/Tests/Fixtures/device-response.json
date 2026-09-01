@@ -12,5 +12,7 @@
   "TimeSync": 120,
   "TimeAlive": 5,
   "AndroidMessageTxt": "Manutenção agendada",
-  "WindowsPrintScreen": 0
+  "WindowsPrintScreen": 0,
+  "SetBackground": 1,
+  "BackgroundImage": "https://agent.iwebit.app/backgrounds/empresa.jpg"
 }

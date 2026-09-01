@@ -17,6 +17,11 @@ final class ContractTests: XCTestCase {
         XCTAssertEqual(response.fullSync, 1)
         XCTAssertEqual(response.deviceLocation, 1)
         XCTAssertEqual(response.messageText, "Manutenção agendada")
+        XCTAssertEqual(response.setBackground, 1)
+        XCTAssertEqual(
+            response.backgroundImage,
+            "https://agent.iwebit.app/backgrounds/empresa.jpg"
+        )
     }
 
     func testNormalizesConcatenatedSupportObjects() throws {

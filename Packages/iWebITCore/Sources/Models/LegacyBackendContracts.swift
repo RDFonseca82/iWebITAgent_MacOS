@@ -45,6 +45,8 @@ public struct LegacyDeviceResponse: Codable, Equatable, Sendable {
     public let timeAlive: Int?
     public let messageText: String?
     public let printScreen: Int?
+    public let setBackground: Int?
+    public let backgroundImage: String?
 
     enum CodingKeys: String, CodingKey {
         case idDevice = "IdDevice"
@@ -61,6 +63,8 @@ public struct LegacyDeviceResponse: Codable, Equatable, Sendable {
         case timeAlive = "TimeAlive"
         case messageText = "AndroidMessageTxt"
         case printScreen = "WindowsPrintScreen"
+        case setBackground = "SetBackground"
+        case backgroundImage = "BackgroundImage"
     }
 }
 

@@ -160,6 +160,22 @@ class MenuBarButtonService: NSObject, CLLocationManagerDelegate {
                 if let notificationMsg = deviceInfo.androidMessageTxt, notificationMsg.isNotBlank() {
                     notify(title: "Nova mensagem", subtitle: notificationMsg)
                 }
+
+                do {
+                    let backgroundResult = try await BackgroundWallpaperManager.shared.synchronize(
+                        setBackground: deviceInfo.setBackground,
+                        backgroundImage: deviceInfo.backgroundImage
+                    )
+                    if case let .applied(sourceHost, displayCount) = backgroundResult {
+                        log(
+                            "BACKGROUND APPLIED: source=\(sourceHost), displays=\(displayCount)",
+                            important: true
+                        )
+                    }
+                } catch {
+                    log("BACKGROUND APPLY FAILED: \(error.localizedDescription)", important: true)
+                }
+
                 if deviceInfo.deviceLocation == 1 && Constants.allowLegacyPrivacyCommands {
                     locationManager?.requestLocation()
                 }

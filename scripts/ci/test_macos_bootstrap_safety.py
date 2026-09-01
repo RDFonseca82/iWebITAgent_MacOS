@@ -18,6 +18,9 @@ project_spec = source("project-v2.yml")
 menu_bar = source("iWebITSysTray/MenuBarButton/MenuBarButton.swift")
 package_builder = source("scripts/release/build-signed-package.sh")
 menu_service = source("iWebITSysTray/MenuBarButton/MenuBarButtonService.swift")
+background_wallpaper = source(
+    "iWebITSysTray/Services/Background/BackgroundWallpaperManager.swift"
+)
 async_networking = source("Shared/Utilities/NetworkingManager.swift")
 sync_networking = source("iWebITService/Utils/NetworkingManagerExt.swift")
 service_launchd_plist = source("iWebITInstaller/payload/app.iwebit.agent.xpc.plist")
@@ -218,6 +221,23 @@ if "withJSONObject: data, options: .withoutEscapingSlashes" in prepare_sync:
 for expected in required_settings_gate:
     if expected not in settings_window:
         raise SystemExit(f"Settings security regression: missing {expected}")
+
+required_background_guards = (
+    'url.scheme?.lowercased() == "https"',
+    "maxDownloadBytes: Int64 = 10 * 1024 * 1024",
+    "maxImageDimension: Int64 = 16_384",
+    "maxImagePixels: Int64 = 67_108_864",
+    "httpResponse.url?.scheme?.lowercased() == \"https\"",
+    ".scaleProportionallyUpOrDown.rawValue",
+    ".allowClipping: true",
+    "NSScreen.screens",
+)
+for expected in required_background_guards:
+    if expected not in background_wallpaper:
+        raise SystemExit(f"Background safety regression: missing {expected}")
+for expected in ("deviceInfo.setBackground", "deviceInfo.backgroundImage"):
+    if expected not in menu_service:
+        raise SystemExit(f"Background polling regression: missing {expected}")
 
 expected_service_program = "/Library/Application Support/iWebITAgent/iWebITService"
 if expected_service_program not in service_launchd_plist:
