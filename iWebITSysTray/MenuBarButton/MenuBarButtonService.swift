@@ -251,7 +251,7 @@ struct LocationPoint {
         !(lhs == rhs)
     }
 }
-+enum BackgroundWallpaperUpdateResult {
+enum BackgroundWallpaperUpdateResult {
     case noRequest
     case alreadyApplied
     case applied(sourceHost: String, displayCount: Int)
