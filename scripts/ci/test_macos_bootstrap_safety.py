@@ -18,9 +18,7 @@ project_spec = source("project-v2.yml")
 menu_bar = source("iWebITSysTray/MenuBarButton/MenuBarButton.swift")
 package_builder = source("scripts/release/build-signed-package.sh")
 menu_service = source("iWebITSysTray/MenuBarButton/MenuBarButtonService.swift")
-background_wallpaper = source(
-    "iWebITSysTray/Services/Background/BackgroundWallpaperManager.swift"
-)
+background_wallpaper = menu_service
 async_networking = source("Shared/Utilities/NetworkingManager.swift")
 sync_networking = source("iWebITService/Utils/NetworkingManagerExt.swift")
 service_launchd_plist = source("iWebITInstaller/payload/app.iwebit.agent.xpc.plist")
