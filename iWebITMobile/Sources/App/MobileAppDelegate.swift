@@ -16,6 +16,12 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         UNUserNotificationCenter.current().delegate = self
         BackgroundRefreshCoordinator.shared.register()
+        BackgroundRefreshCoordinator.shared.scheduleRefresh()
+
+        // A device token is required for silent pushes even if the user declines
+        // visible alerts. Registering it independently keeps on-demand sync
+        // available without changing the user's notification preference.
+        application.registerForRemoteNotifications()
 
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
             granted, error in
@@ -29,9 +35,6 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
                         : "Notificações não autorizadas."
                 )
             }
-            DispatchQueue.main.async {
-                application.registerForRemoteNotifications()
-            }
         }
         return true
     }
@@ -44,6 +47,8 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
                 message: "Aplicação ativa."
             )
         }
+        BackgroundRefreshCoordinator.shared.scheduleRefresh()
+        NotificationCenter.default.post(name: .mobileAppDidBecomeActive, object: nil)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -87,4 +92,5 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
 extension Notification.Name {
     static let didReceiveAPNSToken = Notification.Name("app.iwebit.didReceiveAPNSToken")
     static let didFailAPNSRegistration = Notification.Name("app.iwebit.didFailAPNSRegistration")
+    static let mobileAppDidBecomeActive = Notification.Name("app.iwebit.mobileDidBecomeActive")
 }

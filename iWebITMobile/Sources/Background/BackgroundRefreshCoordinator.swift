@@ -58,7 +58,7 @@ final class BackgroundRefreshCoordinator {
                     .warning,
                     category: "background",
                     action: "schedule-failure",
-                    message: "O sistema recusou o agendamento em segundo plano."
+                    message: "O sistema recusou o agendamento em segundo plano (\(String(describing: error)))."
                 )
             }
         }
@@ -108,15 +108,33 @@ actor MobileSyncTrigger {
     }
 
     func performBackgroundSync() async -> Bool {
-        guard let operation else {
-            await AgentLogger.shared.log(
-                .warning,
-                category: "background",
-                action: "missing-operation",
-                message: "Não existe operação de sincronização instalada."
-            )
-            return false
+        if let operation {
+            return await operation()
         }
-        return await operation()
+
+        await AgentLogger.shared.log(
+            category: "background",
+            action: "waiting-for-operation",
+            message: "A aguardar a configuração das credenciais para sincronização em segundo plano."
+        )
+
+        // When iOS relaunches the app for a background task, SwiftUI may still
+        // be restoring the runtime and Keychain credentials. Wait briefly for
+        // that setup instead of reporting a false failure immediately.
+        for _ in 0..<20 {
+            guard !Task.isCancelled else { return false }
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            if let operation {
+                return await operation()
+            }
+        }
+
+        await AgentLogger.shared.log(
+            .warning,
+            category: "background",
+            action: "missing-operation",
+            message: "Não existe operação de sincronização instalada após a inicialização."
+        )
+        return false
     }
 }

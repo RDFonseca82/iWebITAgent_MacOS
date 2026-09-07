@@ -14,6 +14,8 @@ final class MobileRuntime: ObservableObject {
     private static let lastSyncDefaultsKey = "app.iwebit.mobile.last-successful-sync"
     private static let failedAccessAttemptsKey = "app.iwebit.mobile.failed-access-attempts"
     private static let accessLockedUntilKey = "app.iwebit.mobile.access-locked-until"
+    private static let foregroundSyncInterval: TimeInterval = 15 * 60
+    private static let foregroundSyncIntervalNanoseconds: UInt64 = 900_000_000_000
 
     @Published private(set) var phase: Phase = .loading
     @Published private(set) var tickets: [SupportTicket] = []
@@ -36,6 +38,7 @@ final class MobileRuntime: ObservableObject {
     private var syncService: MobileSyncService?
     private var pendingPushToken: Data?
     private var observers: [NSObjectProtocol] = []
+    private var foregroundSyncTask: Task<Void, Never>?
 
     init() {
 #if DEBUG
@@ -82,6 +85,17 @@ final class MobileRuntime: ObservableObject {
                 }
             }
         )
+        observers.append(
+            NotificationCenter.default.addObserver(
+                forName: .mobileAppDidBecomeActive,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                Task { @MainActor [weak self] in
+                    await self?.synchronizeIfDue()
+                }
+            }
+        )
 
         Task {
             await AgentLogger.shared.log(
@@ -94,6 +108,7 @@ final class MobileRuntime: ObservableObject {
     }
 
     deinit {
+        foregroundSyncTask?.cancel()
         observers.forEach(NotificationCenter.default.removeObserver)
     }
 
@@ -349,6 +364,8 @@ final class MobileRuntime: ObservableObject {
             lastSyncStatus = "ainda não executada"
             pushTokenAvailable = false
             pendingPushToken = nil
+            foregroundSyncTask?.cancel()
+            foregroundSyncTask = nil
             phase = .enrollmentRequired
             await AgentLogger.shared.clear()
             await AgentLogger.shared.log(
@@ -413,6 +430,8 @@ final class MobileRuntime: ObservableObject {
         await MobileSyncTrigger.shared.install {
             await syncService.synchronize()
         }
+        startForegroundSynchronization()
+        BackgroundRefreshCoordinator.shared.scheduleRefresh()
         lastSuccessfulSyncAt = await syncService.lastSuccessfulSyncDate()
         phase = .ready
         await AgentLogger.shared.log(
@@ -423,6 +442,40 @@ final class MobileRuntime: ObservableObject {
         await registerPendingPushToken()
         await synchronize()
         await loadTickets()
+    }
+
+    private func synchronizeIfDue() async {
+        guard case .ready = phase, !isSynchronizing else { return }
+        guard UIApplication.shared.applicationState == .active else { return }
+
+        if let lastSuccessfulSyncAt,
+           Date().timeIntervalSince(lastSuccessfulSyncAt) < Self.foregroundSyncInterval {
+            return
+        }
+        await AgentLogger.shared.log(
+            category: "sync",
+            action: "foreground-due",
+            message: "Sincronização periódica em primeiro plano iniciada."
+        )
+        await synchronize()
+    }
+
+    private func startForegroundSynchronization() {
+        guard foregroundSyncTask == nil else { return }
+        foregroundSyncTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                do {
+                    try await Task.sleep(
+                        nanoseconds: Self.foregroundSyncIntervalNanoseconds
+                    )
+                } catch {
+                    return
+                }
+                guard !Task.isCancelled else { return }
+                guard let self else { return }
+                await self.synchronizeIfDue()
+            }
+        }
     }
 
     private func performEnrollment(

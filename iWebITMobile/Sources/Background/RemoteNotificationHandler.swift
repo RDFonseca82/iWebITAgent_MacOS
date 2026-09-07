@@ -11,6 +11,7 @@ extension MobileAppDelegate {
             message: "Notificação silenciosa recebida."
         )
         let success = await MobileSyncTrigger.shared.performBackgroundSync()
+        BackgroundRefreshCoordinator.shared.scheduleRefresh()
         await AgentLogger.shared.log(
             success ? .info : .warning,
             category: "notifications",
