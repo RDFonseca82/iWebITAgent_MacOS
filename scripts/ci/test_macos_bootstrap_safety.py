@@ -12,6 +12,9 @@ def source(relative_path: str) -> str:
 
 logger = source("Shared/Utilities/Logger.swift")
 files_manager = source("Shared/Common/FilesManager.swift")
+constants = source("Shared/Common/Constants.swift")
+xpc_protocol = source("Shared/XPC/AgentXPCProtocol.swift")
+xpc_client = source("iWebITAgent/Services/XPC/AgentXPCClient.swift")
 postinstall = source("scripts/release/package-scripts/postinstall")
 preinstall = source("scripts/release/package-scripts/preinstall")
 project_spec = source("project-v2.yml")
@@ -36,6 +39,16 @@ if important_branch >= verbose_lookup:
 
 if 'dataFolderName = "Data"' not in files_manager:
     raise SystemExit("FilesManager regression: mutable Data directory is missing")
+
+if 'static let BUNDLE_ID = "app.iwebit.agent"' not in constants:
+    raise SystemExit("Identity regression: active macOS app bundle identifier is stale")
+if 'static let serviceBundleIdentifier = "app.iwebit.agent.service"' not in xpc_protocol:
+    raise SystemExit("XPC regression: current service bundle identifier is missing")
+if 'AgentXPCConfiguration.serviceBundleIdentifier' not in xpc_client:
+    raise SystemExit("XPC regression: client does not verify the current service identifier")
+legacy_vendor_fragment = "rdfon" + "seca"
+if legacy_vendor_fragment in xpc_client.lower():
+    raise SystemExit("XPC regression: client still pins the legacy service identifier")
 expected_info_blocks = (
     "info:\n"
     "      path: iWebITAgent/Info.plist\n"

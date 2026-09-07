@@ -8,6 +8,7 @@ import Foundation
 
 enum AgentXPCConfiguration {
     static let machServiceName = "app.iwebit.agent.xpc"
+    static let serviceBundleIdentifier = "app.iwebit.agent.service"
     static let allowedTeamID = "R8VHDNRMJJ"
     static let allowedBundleIdentifiers = [
         "com.rdfonseca.iWebIT",

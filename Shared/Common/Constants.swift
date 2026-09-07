@@ -15,10 +15,10 @@ struct Constants {
     ) as? String ?? "2.0.1"
     static let AGENT_BUILD = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleVersion"
-    ) as? String ?? "215"
+    ) as? String ?? "216"
     
     static let PRODUCT_DIR = "__PRODUCT_DIR__"
-    static let BUNDLE_ID = "com.rdfonseca.iWebIT"
+    static let BUNDLE_ID = "app.iwebit.agent"
 
     // Legacy remote actions stay disabled until the backend emits authenticated,
     // signed v2 commands and signed update manifests.

@@ -15,7 +15,7 @@ final class AgentXPCClient {
         connection.remoteObjectInterface = NSXPCInterface(with: AgentXPCProtocol.self)
         if #available(macOS 13.0, *) {
             connection.setCodeSigningRequirement(
-                "anchor apple generic and certificate leaf[subject.OU] = \"\(AgentXPCConfiguration.allowedTeamID)\" and identifier \"com.rdfonseca.iWebITService\""
+                "anchor apple generic and certificate leaf[subject.OU] = \"\(AgentXPCConfiguration.allowedTeamID)\" and identifier \"\(AgentXPCConfiguration.serviceBundleIdentifier)\""
             )
         }
         connection.resume()
