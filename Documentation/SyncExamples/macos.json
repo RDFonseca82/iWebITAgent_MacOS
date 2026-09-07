@@ -72,7 +72,7 @@
     "isManaged": false
   },
   "agent": {
-    "version": "2.0.1",
+    "version": "2.0.2",
     "build": "216",
     "bundleIdentifier": "app.iwebit.agent",
     "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",
@@ -91,7 +91,7 @@
     {
       "name": "iWebIT",
       "bundleIdentifier": "app.iwebit.agent",
-      "version": "2.0.1",
+      "version": "2.0.2",
       "build": "216",
       "path": "/Applications/iWebIT.app",
       "managed": false,

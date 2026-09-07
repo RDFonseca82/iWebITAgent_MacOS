@@ -40,7 +40,7 @@
     "isManaged": false
   },
   "agent": {
-    "version": "2.0.1",
+    "version": "2.0.2",
     "build": "216",
     "bundleIdentifier": "app.iwebit.mobile",
     "lastSuccessfulSyncAt": "2026-07-23T10:10:00Z",

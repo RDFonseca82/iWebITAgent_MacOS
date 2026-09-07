@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Version consistency is enforced by scripts/ci/check_version_consistency.py
-export VERSION="2.0.1"
+export VERSION="2.0.2"
 export PRODUCT="iWebITAgent"
 export PRODUCT_DIR="/Library/Application Support/iWebITAgent"
 

@@ -24,7 +24,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.iwebit.mobile
         PRODUCT_NAME: iWebIT
-        MARKETING_VERSION: 2.0.1
+        MARKETING_VERSION: 2.0.2
         CURRENT_PROJECT_VERSION: 216
         SWIFT_VERSION: 5.9
         MACOSX_DEPLOYMENT_TARGET: 11.0

@@ -12,7 +12,7 @@ struct Constants {
     
     static let AGENT_VERSION = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleShortVersionString"
-    ) as? String ?? "2.0.1"
+    ) as? String ?? "2.0.2"
     static let AGENT_BUILD = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleVersion"
     ) as? String ?? "216"
