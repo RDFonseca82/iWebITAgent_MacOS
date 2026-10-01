@@ -205,7 +205,7 @@ struct AppStoreScreenshotDiagnosticsView: View {
         return MobileDiagnosticsReport(
             generatedAt: now,
             items: [
-                DiagnosticItem(section: "Agente", label: "Versão", value: "2.0.2 (217)"),
+                DiagnosticItem(section: "Agente", label: "Versão", value: "2.0.3 (218)"),
                 DiagnosticItem(section: "Agente", label: "Servidor", value: "agent.iwebit.app"),
                 DiagnosticItem(section: "Sincronização", label: "Último resultado", value: "sucesso"),
                 DiagnosticItem(section: "Sincronização", label: "Token de notificações", value: "registado"),

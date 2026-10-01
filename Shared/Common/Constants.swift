@@ -12,10 +12,10 @@ struct Constants {
     
     static let AGENT_VERSION = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleShortVersionString"
-    ) as? String ?? "2.0.2"
+    ) as? String ?? "2.0.3"
     static let AGENT_BUILD = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleVersion"
-    ) as? String ?? "217"
+    ) as? String ?? "218"
     
     static let PRODUCT_DIR = "__PRODUCT_DIR__"
     static let BUNDLE_ID = "app.iwebit.agent"
