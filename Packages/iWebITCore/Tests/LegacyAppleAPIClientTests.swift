@@ -90,7 +90,8 @@ final class LegacyAppleAPIClientTests: XCTestCase {
             )
         )
 
-        let request = try XCTUnwrap(await transport.lastRequest())
+        let lastRequest = await transport.lastRequest()
+        let request = try XCTUnwrap(lastRequest)
         let form = try formFields(request)
         let json = try XCTUnwrap(form["json"])
         let object = try XCTUnwrap(
