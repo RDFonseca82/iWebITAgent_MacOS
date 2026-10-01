@@ -114,7 +114,7 @@ struct MacOSDeviceCollectorV2 {
             let build = bundle?.object(
                 forInfoDictionaryKey: "CFBundleVersion"
             ) as? String
-            InstalledApplication(
+            return InstalledApplication(
                 name: $0["_name"] as? String ?? "Unknown",
                 bundleIdentifier: ($0["info"] as? String) ?? bundle?.bundleIdentifier,
                 version: profilerVersion ?? bundleVersion,
