@@ -184,9 +184,13 @@ public struct LegacyAppleAPIClient: Sendable {
 private struct LegacyApplicationPayload: Encodable, Sendable {
     let name: String
     let date: String
+    let version: String?
+    let build: String?
 
     init(_ application: InstalledApplication) {
         name = application.name
+        version = application.version
+        build = application.build
         if let installedAt = application.installedAt {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "en_US_POSIX")

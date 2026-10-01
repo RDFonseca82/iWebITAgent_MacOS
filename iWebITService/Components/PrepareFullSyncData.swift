@@ -142,10 +142,46 @@ func getSPApplicationsDataType(_ spApplicationsDataType: AnyList?) -> [[String:S
             .replacingOccurrences(of: "T", with: " ")
             .replacingOccurrences(of: "Z", with: "")
         
-        return ["name": name, "date": date]
+        let versionInfo = applicationVersionInfo(app)
+        return [
+            "name": name,
+            "date": date,
+            "version": versionInfo.version,
+            "build": versionInfo.build
+        ]
     }
     
     return applications
+}
+
+private func applicationVersionInfo(_ application: AnyDict) -> (version: String, build: String) {
+    var version = application["version"] as? String ?? ""
+    var build = application["build"] as? String ?? ""
+
+    guard let path = application["path"] as? String,
+          !path.isEmpty,
+          let bundle = Bundle(path: path) else {
+        return (
+            version.isEmpty ? "Unknown" : version,
+            build
+        )
+    }
+
+    if version.isEmpty {
+        version = bundle.object(
+            forInfoDictionaryKey: "CFBundleShortVersionString"
+        ) as? String ?? ""
+    }
+    if build.isEmpty {
+        build = bundle.object(
+            forInfoDictionaryKey: "CFBundleVersion"
+        ) as? String ?? ""
+    }
+    if version.isEmpty {
+        version = build.isEmpty ? "Unknown" : build
+    }
+
+    return (version, build)
 }
 
 func getServices() -> [[String:String]] {

@@ -105,12 +105,22 @@ struct MacOSDeviceCollectorV2 {
     private func applications(from values: AnyList?) -> [InstalledApplication] {
         guard let applications = values as? [AnyDict] else { return [] }
         return applications.map {
+            let path = $0["path"] as? String
+            let bundle = path.flatMap { Bundle(path: $0) }
+            let profilerVersion = $0["version"] as? String
+            let bundleVersion = bundle?.object(
+                forInfoDictionaryKey: "CFBundleShortVersionString"
+            ) as? String
+            let build = bundle?.object(
+                forInfoDictionaryKey: "CFBundleVersion"
+            ) as? String
             InstalledApplication(
                 name: $0["_name"] as? String ?? "Unknown",
-                bundleIdentifier: $0["info"] as? String,
-                version: $0["version"] as? String,
+                bundleIdentifier: ($0["info"] as? String) ?? bundle?.bundleIdentifier,
+                version: profilerVersion ?? bundleVersion,
+                build: build,
                 installedAt: ($0["lastModified"] as? String).flatMap(ISO8601DateFormatter().date),
-                path: $0["path"] as? String,
+                path: path,
                 source: .privilegedAgent
             )
         }

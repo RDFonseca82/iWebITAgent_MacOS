@@ -33,6 +33,10 @@ available schema 2.0 diagnostics, APNs state, permissions and collection results
 full synchronization to this same endpoint; there is no separate Apple
 registration URL.
 
+For the full macOS agent, each item in the legacy Aplications inventory keeps
+the existing name and date fields and also sends version plus build when the
+application bundle provides them.
+
 Before posting, the app reads company information through
 `script_api.php?IdSync=...`. Support reads use `script_api.php` and support writes
 use `script_api_support.php`; neither replaces the synchronization endpoint.

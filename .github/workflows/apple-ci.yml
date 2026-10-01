@@ -21,6 +21,8 @@ jobs:
         run: python3 scripts/ci/test_update_channel_config.py
       - name: Test mobile background synchronization
         run: python3 scripts/ci/test_mobile_background_sync.py
+      - name: Test macOS application inventory
+        run: python3 scripts/ci/test_macos_application_inventory.py
       - name: Test iWebITCore
         run: swift test --package-path Packages/iWebITCore
       - name: Validate JSON examples and Apple manifests

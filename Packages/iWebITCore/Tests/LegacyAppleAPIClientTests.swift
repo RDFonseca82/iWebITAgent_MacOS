@@ -69,6 +69,40 @@ final class LegacyAppleAPIClientTests: XCTestCase {
         )
     }
 
+    func testApplicationInventoryIncludesVersionAndBuild() async throws {
+        let transport = RecordingTransport(data: Data("ok".utf8))
+        let client = try makeClient(transport: transport)
+        try await client.synchronize(
+            snapshot(
+                applications: [
+                    InstalledApplication(
+                        name: "Exemplo",
+                        version: "12.4.1",
+                        build: "2401",
+                        source: .privilegedAgent
+                    )
+                ]
+            ),
+            credentials: LegacyAppleCredentials(
+                idSync: "APPLE-REVIEW",
+                uniqueID: "device-review",
+                idCompany: "42"
+            )
+        )
+
+        let request = try XCTUnwrap(await transport.lastRequest())
+        let form = try formFields(request)
+        let json = try XCTUnwrap(form["json"])
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: Data(json.utf8)) as? [String: Any]
+        )
+        let applications = try XCTUnwrap(object["Aplications"] as? [[String: Any]])
+        XCTAssertEqual(applications.count, 1)
+        XCTAssertEqual(applications[0]["name"] as? String, "Exemplo")
+        XCTAssertEqual(applications[0]["version"] as? String, "12.4.1")
+        XCTAssertEqual(applications[0]["build"] as? String, "2401")
+    }
+
     func testNormalizesLegacySupportAndPostsLegacyFields() async throws {
         let response = Data(
             "{\"Nome\":\"Utilizador\",\"DeviceSupport\":\"Ajuda\",\"DeviceSupportDate\":\"2026-08-02 10:00:00\"}".utf8
@@ -105,7 +139,9 @@ final class LegacyAppleAPIClientTests: XCTestCase {
         )
     }
 
-    private func snapshot() -> DeviceSnapshot {
+    private func snapshot(
+        applications: [InstalledApplication] = []
+    ) -> DeviceSnapshot {
         DeviceSnapshot(
             snapshotID: UUID(uuidString: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")!,
             collectedAt: Date(timeIntervalSince1970: 1_700_000_000),
@@ -139,7 +175,8 @@ final class LegacyAppleAPIClientTests: XCTestCase {
                 bundleIdentifier: "app.iwebit.mobile",
                 pushTokenAvailable: true
             ),
-            location: nil
+            location: nil,
+            applications: applications
         )
     }
 
