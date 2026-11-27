@@ -440,7 +440,15 @@ final class MobileRuntime: ObservableObject {
             message: "Agente móvel pronto."
         )
         await registerPendingPushToken()
-        await synchronize()
+        if UIApplication.shared.applicationState != .background {
+            await synchronize()
+        } else {
+            await AgentLogger.shared.log(
+                category: "background",
+                action: "runtime-ready",
+                message: "Runtime configurado para sincronização em segundo plano."
+            )
+        }
         await loadTickets()
     }
 

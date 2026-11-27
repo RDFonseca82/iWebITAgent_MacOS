@@ -64,6 +64,30 @@ final class MobileAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificati
 
     func application(
         _ application: UIApplication,
+        performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        Task { @MainActor in
+            await AgentLogger.shared.log(
+                category: "background",
+                action: "legacy-fetch-received",
+                message: "O sistema solicitou uma atualização em segundo plano."
+            )
+            let success = await MobileSyncTrigger.shared.performBackgroundSync()
+            BackgroundRefreshCoordinator.shared.scheduleRefresh()
+            await AgentLogger.shared.log(
+                success ? .info : .warning,
+                category: "background",
+                action: "legacy-fetch-result",
+                message: success
+                    ? "Atualização do sistema concluída."
+                    : "A atualização do sistema falhou."
+            )
+            completionHandler(success ? .newData : .failed)
+        }
+    }
+
+    func application(
+        _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
         NotificationCenter.default.post(name: .didReceiveAPNSToken, object: deviceToken)

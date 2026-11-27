@@ -25,12 +25,19 @@ def test_apns_token_registration_does_not_depend_on_alert_permission() -> None:
     assert register < request
 
 
-def test_background_launch_waits_for_runtime_configuration() -> None:
+def test_background_launch_can_sync_without_runtime_configuration() -> None:
     coordinator = source("iWebITMobile/Sources/Background/BackgroundRefreshCoordinator.swift")
 
-    assert "waiting-for-operation" in coordinator
-    assert "for _ in 0..<20" in coordinator
-    assert "Task.sleep(nanoseconds: 500_000_000)" in coordinator
+    assert "MobileBackgroundSynchronizer.shared.synchronize()" in coordinator
+    assert "KeychainLegacyAppleCredentialStore" in coordinator
+    assert "independent-sync" in coordinator
+
+
+def test_legacy_background_fetch_triggers_sync() -> None:
+    app_delegate = source("iWebITMobile/Sources/App/MobileAppDelegate.swift")
+
+    assert "performFetchWithCompletionHandler" in app_delegate
+    assert "MobileSyncTrigger.shared.performBackgroundSync()" in app_delegate
 
 
 def test_active_app_has_a_periodic_sync_fallback() -> None:
@@ -44,6 +51,7 @@ def test_active_app_has_a_periodic_sync_fallback() -> None:
 if __name__ == "__main__":
     test_background_refresh_is_scheduled_on_launch_and_activation()
     test_apns_token_registration_does_not_depend_on_alert_permission()
-    test_background_launch_waits_for_runtime_configuration()
+    test_background_launch_can_sync_without_runtime_configuration()
+    test_legacy_background_fetch_triggers_sync()
     test_active_app_has_a_periodic_sync_fallback()
     print("Mobile background sync tests passed.")

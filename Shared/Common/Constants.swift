@@ -15,7 +15,7 @@ struct Constants {
     ) as? String ?? "2.0.3"
     static let AGENT_BUILD = Bundle.main.object(
         forInfoDictionaryKey: "CFBundleVersion"
-    ) as? String ?? "218"
+    ) as? String ?? "219"
     
     static let PRODUCT_DIR = "__PRODUCT_DIR__"
     static let BUNDLE_ID = "app.iwebit.agent"

@@ -1,5 +1,7 @@
 import BackgroundTasks
 import Foundation
+import iWebITCore
+import UIKit
 
 final class BackgroundRefreshCoordinator {
     static let shared = BackgroundRefreshCoordinator()
@@ -102,39 +104,93 @@ final class BackgroundRefreshCoordinator {
 actor MobileSyncTrigger {
     static let shared = MobileSyncTrigger()
     private var operation: (@Sendable () async -> Bool)?
+    private var isSynchronizing = false
 
     func install(_ operation: @escaping @Sendable () async -> Bool) {
         self.operation = operation
     }
 
     func performBackgroundSync() async -> Bool {
+        guard !isSynchronizing else {
+            await AgentLogger.shared.log(
+                category: "background",
+                action: "already-running",
+                message: "Já existe uma sincronização em segundo plano em execução."
+            )
+            return true
+        }
+        isSynchronizing = true
+        defer { isSynchronizing = false }
+
         if let operation {
             return await operation()
         }
 
         await AgentLogger.shared.log(
             category: "background",
-            action: "waiting-for-operation",
-            message: "A aguardar a configuração das credenciais para sincronização em segundo plano."
+            action: "independent-sync",
+            message: "A sincronização em segundo plano será executada sem depender da interface."
         )
+        return await MobileBackgroundSynchronizer.shared.synchronize()
+    }
+}
 
-        // When iOS relaunches the app for a background task, SwiftUI may still
-        // be restoring the runtime and Keychain credentials. Wait briefly for
-        // that setup instead of reporting a false failure immediately.
-        for _ in 0..<20 {
-            guard !Task.isCancelled else { return false }
-            try? await Task.sleep(nanoseconds: 500_000_000)
-            if let operation {
-                return await operation()
+private actor MobileBackgroundSynchronizer {
+    static let shared = MobileBackgroundSynchronizer()
+
+    private let credentialStore = KeychainLegacyAppleCredentialStore()
+
+    func synchronize() async -> Bool {
+        do {
+            guard try credentialStore.load() != nil else {
+                await AgentLogger.shared.log(
+                    .warning,
+                    category: "background",
+                    action: "credentials-unavailable",
+                    message: "Não existem credenciais guardadas para a sincronização em segundo plano."
+                )
+                return false
             }
-        }
 
-        await AgentLogger.shared.log(
-            .warning,
-            category: "background",
-            action: "missing-operation",
-            message: "Não existe operação de sincronização instalada após a inicialização."
-        )
-        return false
+            let client = try LegacyAppleAPIClient(
+                syncURL: try configuredURL("IWebITAppleSyncURL"),
+                apiURL: try configuredURL("IWebITLegacyAPIURL"),
+                supportURL: try configuredURL("IWebITLegacySupportURL")
+            )
+            let pushTokenAvailable = await MainActor.run {
+                UIApplication.shared.isRegisteredForRemoteNotifications
+            }
+            let service = MobileSyncService(
+                client: client,
+                credentialStore: credentialStore,
+                pushTokenAvailable: pushTokenAvailable
+            )
+            let success = await service.synchronize()
+            await AgentLogger.shared.log(
+                success ? .info : .warning,
+                category: "background",
+                action: "independent-result",
+                message: success
+                    ? "Sincronização autónoma em segundo plano concluída."
+                    : "A sincronização autónoma em segundo plano falhou."
+            )
+            return success
+        } catch {
+            await AgentLogger.shared.log(
+                .error,
+                category: "background",
+                action: "independent-configuration-failure",
+                message: "Não foi possível configurar a sincronização autónoma."
+            )
+            return false
+        }
+    }
+
+    private func configuredURL(_ key: String) throws -> URL {
+        guard let rawValue = Bundle.main.object(forInfoDictionaryKey: key) as? String,
+              let url = URL(string: rawValue) else {
+            throw CoreError.invalidURL
+        }
+        return url
     }
 }
